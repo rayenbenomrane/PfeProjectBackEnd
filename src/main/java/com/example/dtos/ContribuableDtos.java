@@ -1,13 +1,12 @@
 package com.example.dtos;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+
+
 
 import com.example.entity.Activite;
 import com.example.entity.FormeJuridique;
 import com.example.entity.Pays;
-import com.example.entity.User;
 
 import lombok.Data;
 @Data

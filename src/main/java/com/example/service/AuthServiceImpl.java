@@ -44,6 +44,8 @@ public class AuthServiceImpl implements AuthService {
         user.setPrenom(signupRequest.getPrenom());
         user.setTypeIdentifiant(signupRequest.getTypeIdentifiant());
         user.setValeurIdentifiant(signupRequest.getValueIdentifiant());
+        user.setNonLocked(false);
+        user.setDateInscri(new Date());
         String randomCode=RandomString.make(64);
         user.setVerificationCode(randomCode);
         User createdCustomer=userRepository.save(user);
@@ -56,6 +58,10 @@ public class AuthServiceImpl implements AuthService {
         createdUserDto.setNonLocked(false);
         createdUserDto.setDateInscri(new Date());
         createdUserDto.setContribuable(createdCustomer.getContribuable());
+        createdUserDto.setNom(createdCustomer.getNom());
+        createdUserDto.setPrenom(createdCustomer.getPrenom());
+        createdUserDto.setTypeIdentifiant(createdCustomer.getTypeIdentifiant());
+        createdUserDto.setValueIdentifiant(createdCustomer.getValeurIdentifiant());
         return createdUserDto;
 
     }
