@@ -13,7 +13,9 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +46,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 @Autowired
 private AuthenticationManager authenticationManager;
@@ -68,7 +71,8 @@ private PaysService paysservice;
 
 @PostMapping("/signup")
 public ResponseEntity<?> createCustomer(@RequestBody SignupRequest signupRequest ) throws UnsupportedEncodingException, MessagingException{
-    UserDtos createdUserDto=authService.createCustomer(signupRequest);
+    
+	UserDtos createdUserDto=authService.createCustomer(signupRequest);
     authService.sendVerificationEmail(createdUserDto);
     if(createdUserDto==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request!");
     return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
@@ -142,5 +146,13 @@ public ResponseEntity<?> createActivite(@RequestBody PaysDtos paysDtos){
 	if(payscree==null)return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation d'pays!");
     return ResponseEntity.status(HttpStatus.CREATED).body(payscree);
 }
-
+@GetMapping("/contribuableMatricule")
+public ResponseEntity<?> findByMatriculeFiscale(@RequestParam("matriculeFiscale") int matriculeFiscale) {
+		ContribuableDtos contribuable = contribuableservice.findContribuable(matriculeFiscale);
+        if (contribuable != null) 
+        	return ResponseEntity.ok(contribuable);
+        
+        return ResponseEntity.notFound().build();
+    
+}
 }

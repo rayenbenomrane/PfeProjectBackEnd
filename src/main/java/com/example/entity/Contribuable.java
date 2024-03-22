@@ -35,15 +35,15 @@ public class Contribuable {
 	private String directeur;
 	
 	
-	 @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	    @JoinColumn(name = "formejuridique_id")
 	    private FormeJuridique formeJuridique;
 
-	    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	    @JoinColumn(name = "pays_id")
 	    private Pays pays;
 
-	    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+	    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	    @JoinColumn(name = "activite_id")
 	    private Activite activite;
 

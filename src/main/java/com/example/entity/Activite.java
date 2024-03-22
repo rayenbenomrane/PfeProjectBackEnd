@@ -3,6 +3,7 @@ package com.example.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +26,7 @@ public class Activite {
 
     private String libelle;
     @OneToMany(mappedBy = "activite")
+    @JsonIgnore
     private List<Contribuable> contribuables;
 
 

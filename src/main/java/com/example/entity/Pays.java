@@ -2,6 +2,8 @@ package com.example.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,5 +23,6 @@ public class Pays {
 private long idPays;
 private String libelle;
 @OneToMany(mappedBy = "pays")
+@JsonIgnore
 private Set<Contribuable> contribuables;
 }

@@ -3,6 +3,7 @@ package com.example.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,5 +28,6 @@ public class FormeJuridique {
     private String libelle;
 
     @OneToMany(mappedBy = "formeJuridique")
+    @JsonIgnore
     private List<Contribuable> contribuables;
 }

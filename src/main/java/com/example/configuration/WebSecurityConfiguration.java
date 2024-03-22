@@ -1,6 +1,7 @@
 package com.example.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.DispatcherType;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,11 +43,9 @@ private UserService userService;
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 	http.csrf(AbstractHttpConfigurer::disable)
 	.authorizeHttpRequests(request->
-	request.requestMatchers("/api/auth/**")
-	.permitAll().requestMatchers("/api/admin/**")
-	.hasAnyAuthority(UserRole.Admin.name())
-	.requestMatchers("/api/user/**")
-	.hasAnyAuthority(UserRole.Client.name())
+	request.dispatcherTypeMatchers(jakarta.servlet.DispatcherType.ASYNC).permitAll().requestMatchers("/api/auth/**").permitAll()
+	.requestMatchers("/api/admin/**").hasAnyAuthority(UserRole.Admin.name())
+	.requestMatchers("/api/user/**").hasAnyAuthority(UserRole.Client.name())
 	.anyRequest().authenticated()).sessionManagement(manager 
 	->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authenticationProvider(authenticationProvider())
 	.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

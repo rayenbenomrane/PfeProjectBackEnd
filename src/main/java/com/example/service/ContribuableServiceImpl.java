@@ -1,5 +1,8 @@
 package com.example.service;
 
+import java.util.Optional;
+
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,5 +55,39 @@ public class ContribuableServiceImpl implements ContribuableService{
 		
 		
 	}
+
+	@Override
+	public ContribuableDtos findContribuable(int matriculeFiscale) {
+	    Optional<Contribuable> contribuableOptional = contribuableRepo.findByMatriculeFiscale(matriculeFiscale);
+	    if (contribuableOptional.isPresent()) {
+	        Contribuable contribuable = contribuableOptional.get();
+	        
+	        // Initialize lazy-loaded properties
+	        Hibernate.initialize(contribuable.getFormeJuridique());
+	        Hibernate.initialize(contribuable.getPays());
+	        Hibernate.initialize(contribuable.getActivite());
+	        
+	        ContribuableDtos contribuableDto = new ContribuableDtos();
+	        contribuableDto.setIdContribuable(contribuable.getIdContribuable());
+	        contribuableDto.setFormeJuridique(contribuable.getFormeJuridique());
+	        contribuableDto.setActivite(contribuable.getActivite());
+	        contribuableDto.setPays(contribuable.getPays());
+	        contribuableDto.setEmail(contribuable.getEmail());
+	        contribuableDto.setAdress(contribuable.getAdress());
+	        contribuableDto.setDateDeMatriculation(contribuable.getDateDeMatriculation());
+	        contribuableDto.setNomCommercial(contribuable.getNomCommercial());
+	        contribuableDto.setMatriculeFiscale(contribuable.getMatriculeFiscale());
+	        contribuableDto.setDirecteur(contribuable.getDirecteur());
+	        contribuableDto.setRaisonSocial(contribuable.getRaisonSocial());
+	        
+	        return contribuableDto;
+	    } else {
+	        return null;
+	    }
+	}
+
+
+
+	
 
 }
