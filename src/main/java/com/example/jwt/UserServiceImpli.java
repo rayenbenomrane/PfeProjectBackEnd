@@ -6,7 +6,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.example.repository.CompteRepository;
 import com.example.repository.UserRepository;
+import com.example.service.CompteService;
 
 import lombok.NoArgsConstructor;
 
@@ -16,6 +18,8 @@ public class UserServiceImpli implements UserService {
     
 	@Autowired
 	private  UserRepository userRepository;
+	@Autowired
+	private CompteRepository compteRepository;
 
  
 @Autowired
@@ -24,7 +28,7 @@ public class UserServiceImpli implements UserService {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return userRepository.findByEmail(username)
+                return compteRepository.findByEmail(username)
                         .orElseThrow(()->new UsernameNotFoundException("user not found"));
             }
         };

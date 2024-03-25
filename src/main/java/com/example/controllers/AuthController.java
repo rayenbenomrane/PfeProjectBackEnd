@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,16 +25,20 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.dtos.ActiviteDtos;
 import com.example.dtos.AuthenticationRequest;
 import com.example.dtos.AuthenticationResponse;
+import com.example.dtos.CompteDto;
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.FormeJuridiqueDtos;
 import com.example.dtos.PaysDtos;
 import com.example.dtos.SignupRequest;
 import com.example.dtos.UserDtos;
+import com.example.entity.Compte;
 import com.example.entity.User;
 import com.example.jwt.UserService;
+import com.example.repository.CompteRepository;
 import com.example.repository.UserRepository;
 import com.example.service.ActiviteService;
 import com.example.service.AuthService;
+import com.example.service.CompteService;
 import com.example.service.ContribuableService;
 import com.example.service.FormeJuridiqueService;
 import com.example.service.PaysService;
@@ -66,6 +70,8 @@ private FormeJuridiqueService formejuridiqueservice;
 private ContribuableService contribuableservice;
 @Autowired
 private PaysService paysservice;
+@Autowired
+private CompteRepository compteRepository; 
 
 
 
@@ -87,16 +93,16 @@ UsernameNotFoundException{
 	try {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
 	}catch (BadCredentialsException e) {
-		throw new BadCredentialsException("Incorrect username or password");// TODO: handle exception
+		throw new BadCredentialsException("Incorrect username or password");
 	}
 	final UserDetails userDetails=userservice.userDetailsService()
 			.loadUserByUsername(authenticationRequest.getEmail());
-	Optional<User> optionalUser= userRepository.findByEmail(userDetails.getUsername());
+	Optional<Compte> optionalUser= compteRepository.findByEmail(userDetails.getUsername());
 	final String jwt=jwtUtil.generateToken(userDetails);
 	AuthenticationResponse authenticationResponse=new AuthenticationResponse();
 	if(optionalUser.isPresent()) {
 		authenticationResponse.setJwt(jwt);
-		authenticationResponse.setUserId(optionalUser.get().getIdInscription());
+		authenticationResponse.setUserId(optionalUser.get().getIdCompte());
 		authenticationResponse.setUserRole(optionalUser.get().getUserRole());
 		
 	}
