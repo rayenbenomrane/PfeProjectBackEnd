@@ -9,6 +9,8 @@ import java.util.function.Function;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.example.enums.UserRole;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -26,18 +28,22 @@ public class JwtUtils {
 		final Claims claims=extractALLClaims(token);
 		return claimsResolver.apply(claims);
 	}
-	public String generateToken(UserDetails userdetail) {
-		return generateToken(new HashMap<>(),userdetail);
+	public String generateToken(UserDetails userdetail,UserRole userRole) {
+		return generateToken(new HashMap<>(),userdetail,userRole);
 	}
-	public String generateToken(Map<String,Object> extraClaims,
-			UserDetails userDetails) {
-		return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
-				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
-				.signWith(getSignInKey(),SignatureAlgorithm.HS256).compact();
-		
-		
+	public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails, UserRole userRole) {
+	    Map<String, Object> claims = new HashMap<>(extraClaims);
+	    claims.put("UserRole", userRole);
+
+	    return Jwts.builder()
+	            .setClaims(claims)
+	            .setSubject(userDetails.getUsername())
+	            .setIssuedAt(new Date(System.currentTimeMillis()))
+	            .setExpiration(new Date(System.currentTimeMillis() + 100000* 60 * 24))
+	            .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+	            .compact();
 	}
+
 	public boolean isTokenValid(String token,UserDetails userdetails) {
 		final String userName=extractUsername(token);
 		return (userName.equals(userdetails.getUsername()))&& !isTokenExpired(token);

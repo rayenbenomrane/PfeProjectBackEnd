@@ -1,6 +1,7 @@
 package com.example.controllers;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ import com.example.jwt.UserService;
 import com.example.repository.CompteRepository;
 import com.example.repository.UserRepository;
 import com.example.service.ActiviteService;
+import com.example.service.AdminService;
 import com.example.service.AuthService;
 import com.example.service.CompteService;
 import com.example.service.ContribuableService;
@@ -98,7 +100,7 @@ UsernameNotFoundException{
 	final UserDetails userDetails=userservice.userDetailsService()
 			.loadUserByUsername(authenticationRequest.getEmail());
 	Optional<Compte> optionalUser= compteRepository.findByEmail(userDetails.getUsername());
-	final String jwt=jwtUtil.generateToken(userDetails);
+	final String jwt=jwtUtil.generateToken(userDetails,optionalUser.get().getUserRole());
 	AuthenticationResponse authenticationResponse=new AuthenticationResponse();
 	if(optionalUser.isPresent()) {
 		authenticationResponse.setJwt(jwt);

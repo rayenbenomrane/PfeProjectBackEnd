@@ -36,7 +36,7 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
 	final String jwt;
 	final String userEmail;
 	logger.info(authHeader);
-	if(StringUtils.isEmpty(authHeader)||StringUtils.startsWith(authHeader,"Bearer")){
+	if(StringUtils.isEmpty(authHeader)){
 	    filterChain.doFilter(request,response);
 	    return;
 	}
@@ -45,6 +45,7 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
 	if(StringUtils.isNotEmpty(userEmail)&& SecurityContextHolder.getContext().getAuthentication()==null){
 	    UserDetails userDetails=userService.userDetailsService().loadUserByUsername(userEmail);
 	    if(JwtUtil.isTokenValid(jwt,userDetails)) {
+	    	logger.info("JWT token is valid and user authentication is set.");
 	        SecurityContext context = SecurityContextHolder.createEmptyContext();
 	        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
 	                userDetails, null, userDetails.getAuthorities());

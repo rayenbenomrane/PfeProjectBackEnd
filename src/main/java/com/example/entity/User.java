@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.example.dtos.UserDtos;
 import com.example.enums.Identifiant;
 import com.example.enums.UserRole;
 
@@ -111,6 +112,23 @@ public class User implements UserDetails{
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return enabled;
+	}
+	public UserDtos getInscription() {
+		UserDtos inscri=new UserDtos();
+		inscri.setIdInscription(idInscription);
+		inscri.setPassword(password);
+		inscri.setEmail(email);
+		inscri.setContribuable(contribuable);
+		inscri.setDateInscri(dateInscri);
+		inscri.setEnabled(enabled);
+		inscri.setNonLocked(NonLocked);
+		inscri.setNom(nom);
+		inscri.setPrenom(prenom);
+		inscri.setPoste(Poste);
+		inscri.setUserRole(userRole);
+		inscri.setTypeIdentifiant(typeIdentifiant);
+		inscri.setValueIdentifiant(valeurIdentifiant);
+		return inscri;
 	}
 	
 	
