@@ -58,6 +58,8 @@ public class AdminServiceImpl	implements AdminService {
 	        user.setTypeIdentifiant(ud.getTypeIdentifiant());
 	        user.setValeurIdentifiant(ud.getValueIdentifiant());
 	        user.setNonLocked(true);
+	        user.setDateInscri(ud.getDateInscri());
+	        user.setVerificationCode(ud.getVerificationCode());
 	        User modifierCustomer=userRepository.save(user);
 	        Compte compteCree=new Compte();
 	        compteCree.setEmail(modifierCustomer.getEmail());

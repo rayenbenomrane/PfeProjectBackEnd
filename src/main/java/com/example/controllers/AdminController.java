@@ -2,14 +2,13 @@ package com.example.controllers;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,14 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.CompteDto;
-import com.example.dtos.ContribuableDtos;
+
 import com.example.dtos.UserDtos;
 import com.example.service.AdminService;
 import com.example.service.CompteService;
 
 import jakarta.mail.MessagingException;
 
-import org.slf4j.LoggerFactory;
+
 
 import lombok.RequiredArgsConstructor;
 

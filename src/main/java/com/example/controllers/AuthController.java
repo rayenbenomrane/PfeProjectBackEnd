@@ -28,14 +28,18 @@ import com.example.dtos.AuthenticationRequest;
 import com.example.dtos.AuthenticationResponse;
 import com.example.dtos.CompteDto;
 import com.example.dtos.ContribuableDtos;
+import com.example.dtos.DeclarationDto;
 import com.example.dtos.FormeJuridiqueDtos;
 import com.example.dtos.PaysDtos;
 import com.example.dtos.SignupRequest;
 import com.example.dtos.UserDtos;
 import com.example.entity.Compte;
+import com.example.entity.Contribuable;
+import com.example.entity.ObligationFiscale;
 import com.example.entity.User;
 import com.example.jwt.UserService;
 import com.example.repository.CompteRepository;
+import com.example.repository.ObligationFiscaleRepository;
 import com.example.repository.UserRepository;
 import com.example.service.ActiviteService;
 import com.example.service.AdminService;
@@ -43,6 +47,7 @@ import com.example.service.AuthService;
 import com.example.service.CompteService;
 import com.example.service.ContribuableService;
 import com.example.service.FormeJuridiqueService;
+import com.example.service.ObligationFiscaleService;
 import com.example.service.PaysService;
 import com.example.utils.JwtUtils;
 
@@ -74,6 +79,9 @@ private ContribuableService contribuableservice;
 private PaysService paysservice;
 @Autowired
 private CompteRepository compteRepository; 
+@Autowired
+private ObligationFiscaleService obligationFiscaleService;
+
 
 
 
@@ -163,4 +171,18 @@ public ResponseEntity<?> findByMatriculeFiscale(@RequestParam("matriculeFiscale"
         return ResponseEntity.notFound().build();
     
 }
+
+@GetMapping("/checkDeclaration")
+public ResponseEntity<String> checkDeclaration(@RequestBody DeclarationDto request) {
+    boolean result = obligationFiscaleService.getNumerodeclaration(request.getCd(), request.getIddecalaration());
+    if (result) {
+        return ResponseEntity.ok("Declaration found!");
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Declaration not found!"); 
+    }
+}
+
+
+
+
 }
