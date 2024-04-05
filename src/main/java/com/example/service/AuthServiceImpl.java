@@ -2,7 +2,6 @@ package com.example.service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
-
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,9 +64,10 @@ public class AuthServiceImpl implements AuthService {
         return createdUserDto;
 
     }
-	
+
+	@Override
 	public void sendVerificationEmail(UserDtos user) throws UnsupportedEncodingException, MessagingException {
-		
+
 		String subject="Please verify your registration";
 		String senderName="direction generale d'impots";
 		String mailContent="<p>Dear  "+user.getEmail()+",</p>";
@@ -83,16 +83,17 @@ public class AuthServiceImpl implements AuthService {
 		helper.setSubject(subject);
 
 	        mailSender.send(message);
-		
+
 	}
+	@Override
 	public boolean verify(String verificationCode) {
-		
+
 		 if (verificationCode == null || verificationCode.trim().isEmpty()) {
 		        System.out.println("Verification code is empty or whitespace.");
 		        return false;
 		    }
 
-		 
+
 		 Optional<User> userOptional = userRepository.findByVerificationCode(verificationCode);
 		 System.out.println("Input Verification Code: " + verificationCode);
 		 System.out.println("User Optional: " + userOptional);
@@ -104,7 +105,7 @@ public class AuthServiceImpl implements AuthService {
 
 	        if (!user.isEnabled()) {
 	            user.setEnabled(true);
-	            
+
 	            userRepository.save(user);
 	            return true;
 	        }
@@ -115,5 +116,5 @@ public class AuthServiceImpl implements AuthService {
 
 	}
 
-	
+
 }

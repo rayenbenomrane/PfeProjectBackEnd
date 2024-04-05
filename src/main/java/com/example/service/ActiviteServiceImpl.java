@@ -14,17 +14,17 @@ public class ActiviteServiceImpl implements ActiviteService{
 
 	@Autowired
 	private ActiviteRepository Activiterepo;
-	
+
 	@Override
 	public ActiviteDtos saveActivite(ActiviteDtos ad) {
 		Activite activite=new Activite();
 		activite.setLibelle(ad.getLibelle());
-		
+
 		Activite activiteCree=Activiterepo.save(activite);
 		ActiviteDtos activiteCreeDtos=new ActiviteDtos();
 		activiteCreeDtos.setIdActivite(activiteCree.getIdActivite());
 		activiteCreeDtos.setLibelle(activiteCree.getLibelle());
-		
+
 		return activiteCreeDtos;
 	}
 

@@ -4,6 +4,6 @@ import com.example.dtos.FormeJuridiqueDtos;
 
 public interface FormeJuridiqueService {
 
-	
+
 	FormeJuridiqueDtos saveFormeJuridique(FormeJuridiqueDtos fd);
 }

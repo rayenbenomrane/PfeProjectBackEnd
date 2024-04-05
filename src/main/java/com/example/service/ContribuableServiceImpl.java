@@ -49,11 +49,11 @@ public class ContribuableServiceImpl implements ContribuableService{
 		contribuablecreeDtos.setDirecteur(contribuableCree.getDirecteur());
 		contribuablecreeDtos.setRaisonSocial(contribuableCree.getRaisonSocial());
 		return contribuablecreeDtos;
-		
-		
-		
-		
-		
+
+
+
+
+
 	}
 
 	@Override
@@ -61,12 +61,12 @@ public class ContribuableServiceImpl implements ContribuableService{
 	    Optional<Contribuable> contribuableOptional = contribuableRepo.findByMatriculeFiscale(matriculeFiscale);
 	    if (contribuableOptional.isPresent()) {
 	        Contribuable contribuable = contribuableOptional.get();
-	        
+
 	        // Initialize lazy-loaded properties
 	        Hibernate.initialize(contribuable.getFormeJuridique());
 	        Hibernate.initialize(contribuable.getPays());
 	        Hibernate.initialize(contribuable.getActivite());
-	        
+
 	        ContribuableDtos contribuableDto = new ContribuableDtos();
 	        contribuableDto.setIdContribuable(contribuable.getIdContribuable());
 	        contribuableDto.setFormeJuridique(contribuable.getFormeJuridique());
@@ -79,7 +79,7 @@ public class ContribuableServiceImpl implements ContribuableService{
 	        contribuableDto.setMatriculeFiscale(contribuable.getMatriculeFiscale());
 	        contribuableDto.setDirecteur(contribuable.getDirecteur());
 	        contribuableDto.setRaisonSocial(contribuable.getRaisonSocial());
-	        
+
 	        return contribuableDto;
 	    } else {
 	        return null;
@@ -88,6 +88,6 @@ public class ContribuableServiceImpl implements ContribuableService{
 
 
 
-	
+
 
 }

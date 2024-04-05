@@ -23,15 +23,15 @@ import lombok.ToString;
 @Entity
 @Table(name = "Echeance")
 public class Echeance {
-	
+
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator10Name")
 	 @SequenceGenerator(name = "yourGenerator10Name", sequenceName = "echeance_seq", allocationSize = 1)
 	private long idEcheance;
-	
+
 	 private int jour;
 	 private int mois;
 	 private int numeroEcheance;
 	 private int annee;
-	 
+
 }

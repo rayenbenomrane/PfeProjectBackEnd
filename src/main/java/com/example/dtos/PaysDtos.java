@@ -9,5 +9,5 @@ public class PaysDtos {
 
 	private long idPays;
 	private String libelle;
-	
+
 }

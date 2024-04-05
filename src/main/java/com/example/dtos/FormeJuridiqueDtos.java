@@ -8,5 +8,5 @@ public class FormeJuridiqueDtos {
 	private Long idFormeJuridique;
 
     private String libelle;
-    
+
 }

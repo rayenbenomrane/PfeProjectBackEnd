@@ -2,8 +2,6 @@ package com.example.dtos;
 
 import java.util.Date;
 
-
-
 import com.example.entity.Activite;
 import com.example.entity.FormeJuridique;
 import com.example.entity.Pays;

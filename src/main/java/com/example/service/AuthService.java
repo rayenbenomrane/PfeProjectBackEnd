@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import com.example.dtos.SignupRequest;
 import com.example.dtos.UserDtos;
 
-
 import jakarta.mail.MessagingException;
 
 public interface AuthService {

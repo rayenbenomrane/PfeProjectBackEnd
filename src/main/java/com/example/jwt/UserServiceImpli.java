@@ -8,20 +8,19 @@ import org.springframework.stereotype.Service;
 
 import com.example.repository.CompteRepository;
 import com.example.repository.UserRepository;
-import com.example.service.CompteService;
 
 import lombok.NoArgsConstructor;
 
 @Service
 @NoArgsConstructor
 public class UserServiceImpli implements UserService {
-    
+
 	@Autowired
 	private  UserRepository userRepository;
 	@Autowired
 	private CompteRepository compteRepository;
 
- 
+
 @Autowired
     @Override
     public UserDetailsService userDetailsService() {

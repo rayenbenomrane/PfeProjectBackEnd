@@ -7,5 +7,5 @@ import lombok.Data;
 public class ActiviteDtos {
 	private Long idActivite;
 	private String libelle;
-	
+
 }

@@ -7,7 +7,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
 import com.example.enums.UserRole;
 
 import jakarta.persistence.Entity;
@@ -38,10 +37,10 @@ import lombok.ToString;
 @Entity
 @Table(name = "\"Compte\"")
 public class Compte implements UserDetails{
-	
-	
+
+
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -52,9 +51,9 @@ public class Compte implements UserDetails{
     private String email;
     private String password;
 	private UserRole userRole;
-	
+
     // Other fields
-    
+
     @OneToOne(optional = true)
     @JoinColumn(name = "inscription_id", referencedColumnName = "idInscription")
     private User inscription;

@@ -1,9 +1,6 @@
 package com.example.entity;
 
-import java.util.List;
-
 import com.example.enums.Periode;
-
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,7 +31,7 @@ public class Periodicite {
 	 @GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator9Name")
 	 @SequenceGenerator(name = "yourGenerator9Name", sequenceName = "periodicite_seq", allocationSize = 1)
 	private long idPeriodicite;
-	
+
 	private Periode periode;
-	
+
 }

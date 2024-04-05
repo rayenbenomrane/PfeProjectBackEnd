@@ -38,22 +38,22 @@ public class ObligationFiscale {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator7Name")
 	@SequenceGenerator(name = "yourGenerator7Name", sequenceName = "Obligation_seq", allocationSize = 1)
 	private long idObligationFiscale;
-	
-	
-	
+
+
+
 	private Date dateDebut;
 	private Date dateFin;
-	
+
 	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	    @JoinColumn(name = "contribuable_id")
 	 	private Contribuable contribuable;
-	
+
 	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	    @JoinColumn(name = "typeImpot_id")
 	 	private TypeImpot impot;
-	 
+
 	 @OneToOne(fetch = FetchType.EAGER)
 	    @JoinColumn(name = "declaration_id")
 	    private Declaration declaration;
-	
+
 }

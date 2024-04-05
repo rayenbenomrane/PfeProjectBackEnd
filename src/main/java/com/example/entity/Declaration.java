@@ -36,15 +36,14 @@ public class Declaration {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator11Name")
 	@SequenceGenerator(name = "yourGenerator11Name", sequenceName = "decalaration_seq", allocationSize = 1)
 	private long idDeclaration;
-	
+
 	private Date dateDeclaration;
-	
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "declaration", cascade = CascadeType.ALL)
-    private ObligationFiscale obligationFiscale;
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
 }

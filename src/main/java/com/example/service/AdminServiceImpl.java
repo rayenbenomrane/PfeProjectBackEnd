@@ -1,14 +1,12 @@
 package com.example.service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.dtos.CompteDto;
@@ -22,7 +20,6 @@ import com.example.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.utility.RandomString;
 
 @Service
 @RequiredArgsConstructor
@@ -33,8 +30,8 @@ public class AdminServiceImpl	implements AdminService {
 	private UserRepository userRepository;
 	@Autowired
 	private CompteRepository compteRepository;
-	
-	
+
+
 	@Override
 	public List<UserDtos> getAllInscription() {
 		// TODO Auto-generated method stub
@@ -74,11 +71,11 @@ public class AdminServiceImpl	implements AdminService {
 	        compteCreeDto.setInscription(compteCreefinal.getInscription());
 	        return compteCreeDto;
 
-		
+
 	}
 	@Override
 public void sendVerificationEmail(UserDtos user) throws UnsupportedEncodingException, MessagingException {
-		
+
 		String subject="Felicitation,Compte Cree";
 		String senderName="direction generale d'impots";
 		String mailContent="<p>Dear  "+user.getEmail()+",</p>";
@@ -94,7 +91,7 @@ public void sendVerificationEmail(UserDtos user) throws UnsupportedEncodingExcep
 		helper.setSubject(subject);
 
 	        mailSender.send(message);
-		
+
 	}
 
 }

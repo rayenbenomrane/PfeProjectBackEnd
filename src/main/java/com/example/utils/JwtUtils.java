@@ -23,7 +23,7 @@ public class JwtUtils {
 	public String extractUsername(String token) {
 		return extractClaim(token,Claims::getSubject);
 	}
-	
+
 	public  <T> T extractClaim(String token,Function<Claims,T> claimsResolver){
 		final Claims claims=extractALLClaims(token);
 		return claimsResolver.apply(claims);
@@ -61,6 +61,6 @@ public class JwtUtils {
 	}
 	private Key getSignInKey() {
 		byte[] keyBytes=Decoders.BASE64.decode("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
-		return Keys.hmacShaKeyFor(keyBytes); 
+		return Keys.hmacShaKeyFor(keyBytes);
 	}
 }

@@ -17,5 +17,5 @@ public class SignupRequest {
 	private Contribuable contribuable;
 	private Identifiant typeIdentifiant;
 	private String valueIdentifiant;
-	
+
 }
