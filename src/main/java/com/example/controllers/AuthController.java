@@ -166,7 +166,7 @@ public ResponseEntity<?> findByMatriculeFiscale(@RequestParam("matriculeFiscale"
 
 }
 
-@GetMapping("/checkDeclaration")
+@PostMapping("/checkDeclaration")
 public ResponseEntity<?> checkDeclaration(@RequestBody DeclarationDto request) {
 	Declaration result = obligationFiscaleService.getNumerodeclaration(request.getCd(), request.getIddecalaration());
     if (result!=null) {
