@@ -27,11 +27,14 @@ import com.example.dtos.AuthenticationResponse;
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.DeclarationDto;
 import com.example.dtos.FormeJuridiqueDtos;
+import com.example.dtos.PasswordDto;
 import com.example.dtos.PaysDtos;
 import com.example.dtos.SignupRequest;
 import com.example.dtos.UserDtos;
+import com.example.dtos.VerificationDto;
 import com.example.entity.Compte;
 import com.example.entity.Declaration;
+import com.example.entity.User;
 import com.example.jwt.UserService;
 import com.example.repository.CompteRepository;
 import com.example.repository.UserRepository;
@@ -115,18 +118,18 @@ UsernameNotFoundException{
 
 
 @GetMapping("/verify")
-public String verificationresponse(@RequestParam("code") String parambody) {
+public ResponseEntity<?> verificationresponse(@RequestParam("code") String parambody) {
 	 if (parambody != null && parambody.endsWith("\"")) {
 	        parambody = parambody.substring(0, parambody.length() - 1);
 	    }
 
     Boolean verified = authService.verify(parambody);
-
+   UserDtos user=authService.convertUser(parambody);
+    
     if (verified) {
-
-        return "Verification confirmed";
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new VerificationDto("succefful validation",true,user));
     } else {
-        return "Something went wrong";
+        return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(new VerificationDto("something went wrong",false,user));
     }
 }
 @PostMapping("/formejuridique")
@@ -183,6 +186,14 @@ public ResponseEntity<List<UserDtos>> getAllInscription(){
 
 	List<UserDtos> inscriptionList=adminservice.getAllInscription();
 	return ResponseEntity.ok(inscriptionList);
+}
+@PostMapping("/savepassword")
+public ResponseEntity<?> savePassword(@RequestBody PasswordDto signupRequest ) throws UnsupportedEncodingException, MessagingException{
+
+	UserDtos createdUserDto=authService.validePassword(signupRequest);
+    
+    if(createdUserDto==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request!");
+    return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
 }
 
 

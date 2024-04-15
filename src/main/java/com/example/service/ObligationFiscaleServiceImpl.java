@@ -17,7 +17,7 @@ public class ObligationFiscaleServiceImpl implements ObligationFiscaleService{
 	@Override
 	public Declaration getNumerodeclaration(Contribuable cd, int iddecalaration) {
 		List<ObligationFiscale> lesobligations=obligationFiscaleRepository.findByContribuable(cd);
-		
+
 		Declaration declaration;
 		for (ObligationFiscale obligation : lesobligations) {
 	        if (obligation.getDeclaration().getIdDeclaration() == iddecalaration) {
