@@ -34,7 +34,6 @@ import com.example.dtos.UserDtos;
 import com.example.dtos.VerificationDto;
 import com.example.entity.Compte;
 import com.example.entity.Declaration;
-import com.example.entity.User;
 import com.example.jwt.UserService;
 import com.example.repository.CompteRepository;
 import com.example.repository.UserRepository;
@@ -125,7 +124,7 @@ public ResponseEntity<?> verificationresponse(@RequestParam("code") String param
 
     Boolean verified = authService.verify(parambody);
    UserDtos user=authService.convertUser(parambody);
-    
+
     if (verified) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(new VerificationDto("succefful validation",true,user));
     } else {
@@ -191,7 +190,7 @@ public ResponseEntity<List<UserDtos>> getAllInscription(){
 public ResponseEntity<?> savePassword(@RequestBody PasswordDto signupRequest ) throws UnsupportedEncodingException, MessagingException{
 
 	UserDtos createdUserDto=authService.validePassword(signupRequest);
-    
+
     if(createdUserDto==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request!");
     return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
 }

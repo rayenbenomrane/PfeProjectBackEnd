@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,7 +69,20 @@ public class AdminServiceImpl	implements AdminService {
 	        compteCreeDto.setEmail(compteCreefinal.getEmail());
 	        compteCreeDto.setPassword(compteCreefinal.getPassword());
 	        compteCreeDto.setUserRole(compteCreefinal.getUserRole());
-	        compteCreeDto.setInscription(compteCreefinal.getInscription());
+	        UserDtos UserDto=new UserDtos();
+	       UserDto.setIdInscription(compteCreefinal.getInscription().getIdInscription());
+	       UserDto.setEmail(compteCreefinal.getInscription().getEmail());
+	        UserDto.setUserRole(compteCreefinal.getInscription().getUserRole());
+	        UserDto.setVerificationCode(compteCreefinal.getInscription().getVerificationCode());
+	        UserDto.setEnabled(true);
+	        UserDto.setNonLocked(true);
+	        UserDto.setDateInscri(compteCreefinal.getInscription().getDateInscri());
+	        UserDto.setContribuable(compteCreefinal.getInscription().getContribuable());
+	        UserDto.setNom(compteCreefinal.getInscription().getNom());
+	      UserDto.setPrenom(compteCreefinal.getInscription().getPrenom());
+	        UserDto.setTypeIdentifiant(compteCreefinal.getInscription().getTypeIdentifiant());
+	        UserDto.setValueIdentifiant(compteCreefinal.getInscription().getValeurIdentifiant());
+	        compteCreeDto.setInscription(UserDto);
 	        return compteCreeDto;
 
 

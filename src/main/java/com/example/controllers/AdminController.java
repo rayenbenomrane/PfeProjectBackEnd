@@ -60,6 +60,21 @@ public class AdminController {
 		if(compteCree==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("problem de mise a jour");
 		return ResponseEntity.status(HttpStatus.CREATED).body(compteCree);
 	}
+	@GetMapping("/lescompte")
+	public ResponseEntity<List<CompteDto>> getAllcompte(){
+
+
+
+		List<CompteDto> inscriptionList=compteservice.getAllCompte();
+		return ResponseEntity.ok(inscriptionList);
+	}
+	@PostMapping("/bloqueCompte")
+	public ResponseEntity<?> bloqueCompte(@RequestBody CompteDto compteDto ){
+		boolean compteCree=compteservice.blocageCompte(compteDto);
+		if(!compteCree) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation de compte!");
+	    return ResponseEntity.status(HttpStatus.CREATED).body(compteCree);
+
+	}
 
 
 
