@@ -73,14 +73,14 @@ public class CompteServiceImpl implements CompteService{
 
 		@Override
 		public boolean blocageCompte(CompteDto cd) {
-		    // Search for the Compte entity by its ID
+		    
 		    Optional<Compte> existingCompteOptional = compteRepository.findById(cd.getIdCompte());
 		    
 		    // Check if the Compte exists
 		    if (existingCompteOptional.isPresent()) {
 		        Compte existingCompte = existingCompteOptional.get();
 
-		        // Update existing Compte details
+		       
 		        existingCompte.setEmail(cd.getEmail());
 		        existingCompte.setUserRole(cd.getUserRole());
 		        
@@ -90,7 +90,7 @@ public class CompteServiceImpl implements CompteService{
 		            existingCompte.setPassword(cd.getPassword());
 		        }
 
-		        // Update associated User details
+		        
 		        User existingUser = existingCompte.getInscription();
 		        existingUser.setEmail(cd.getInscription().getEmail());
 		        existingUser.setUserRole(cd.getInscription().getUserRole());
@@ -119,6 +119,57 @@ public class CompteServiceImpl implements CompteService{
 		        // Compte with the given ID not found
 		        return false;
 		    }
+		}
+
+
+
+		@Override
+		public boolean AcceptCompte(CompteDto cd) {
+			 Optional<Compte> existingCompteOptional = compteRepository.findById(cd.getIdCompte());
+			    
+			    
+			    if (existingCompteOptional.isPresent()) {
+			        Compte existingCompte = existingCompteOptional.get();
+
+			       
+			        existingCompte.setEmail(cd.getEmail());
+			        existingCompte.setUserRole(cd.getUserRole());
+			        
+			        if (existingCompte.getUserRole() == UserRole.Admin) {
+			            existingCompte.setPassword(new BCryptPasswordEncoder().encode(cd.getPassword()));
+			        } else {
+			            existingCompte.setPassword(cd.getPassword());
+			        }
+
+			        
+			        User existingUser = existingCompte.getInscription();
+			        existingUser.setEmail(cd.getInscription().getEmail());
+			        existingUser.setUserRole(cd.getInscription().getUserRole());
+			        existingUser.setVerificationCode(cd.getInscription().getVerificationCode());
+			        existingUser.setEnabled(cd.getInscription().getEnabled());
+			        existingUser.setNonLocked(true); // Consider revising this logic
+			        existingUser.setDateInscri(cd.getInscription().getDateInscri());
+			        existingUser.setContribuable(cd.getInscription().getContribuable());
+			        existingUser.setNom(cd.getInscription().getNom());
+			        existingUser.setPrenom(cd.getInscription().getPrenom());
+			        existingUser.setTypeIdentifiant(cd.getInscription().getTypeIdentifiant());
+			        existingUser.setValeurIdentifiant(cd.getInscription().getValueIdentifiant());
+			        existingUser.setPoste(cd.getInscription().getPoste());
+			        existingUser.setPassword(cd.getPassword());
+			        
+			       
+			        Compte compteCree = compteRepository.save(existingCompte);
+
+			        
+			        if (!compteCree.getInscription().isNonLocked()) {
+			            return false;
+			        } else {
+			            return true;
+			        }
+			    } else {
+			        
+			        return false;
+			    }
 		}
 
 
