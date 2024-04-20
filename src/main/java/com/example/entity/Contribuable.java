@@ -2,6 +2,8 @@ package com.example.entity;
 
 import java.util.Date;
 
+import com.example.dtos.ContribuableDtos;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -65,6 +67,21 @@ public class Contribuable {
 	                ", pays=" + (pays != null ? pays.getIdPays() : null) + // Avoid cyclic reference
 	                ", activite=" + (activite != null ? activite.getIdActivite() : null) + // Avoid cyclic reference
 	                '}';
+	    }
+	    public ContribuableDtos getContribuable() {
+	    	ContribuableDtos contribuable=new ContribuableDtos();
+	    	contribuable.setActivite(activite);
+	    	contribuable.setAdress(adress);
+	    	contribuable.setDateDeMatriculation(dateDeMatriculation);
+	    	contribuable.setDirecteur(directeur);
+	    	contribuable.setFormeJuridique(formeJuridique);
+	    	contribuable.setMatriculeFiscale(matriculeFiscale);
+	    	contribuable.setEmail(email);
+	    	contribuable.setRaisonSocial(raisonSocial);
+	    	contribuable.setPays(pays);
+	    	contribuable.setNomCommercial(nomCommercial);
+	    	return contribuable;
+	    	
 	    }
 
 }

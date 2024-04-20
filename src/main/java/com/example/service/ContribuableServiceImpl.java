@@ -1,12 +1,15 @@
 package com.example.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dtos.ContribuableDtos;
+import com.example.entity.Compte;
 import com.example.entity.Contribuable;
 import com.example.repository.ContribuableRepository;
 
@@ -84,6 +87,12 @@ public class ContribuableServiceImpl implements ContribuableService{
 	    } else {
 	        return null;
 	    }
+	}
+
+	@Override
+	public List<ContribuableDtos> lesContribuables() {
+		// TODO Auto-generated method stub
+		return contribuableRepo.findAll().stream().map(Contribuable::getContribuable).collect(Collectors.toList());
 	}
 
 

@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.CompteDto;
+import com.example.dtos.ContribuableDtos;
 import com.example.dtos.UserDtos;
 import com.example.service.AdminService;
 import com.example.service.CompteService;
+import com.example.service.ContribuableService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.mail.MessagingException;
@@ -31,6 +33,8 @@ public class AdminController {
 	private CompteService compteservice;
 	@Autowired
 	private AdminService adminservice;
+	@Autowired
+	private ContribuableService contribuableservice;
 		
 	 @ExceptionHandler(ExpiredJwtException.class)
 	    public ResponseEntity<String> handleExpiredJwtException(ExpiredJwtException ex) {
@@ -109,6 +113,15 @@ public class AdminController {
 	         return ResponseEntity.status(HttpStatus.CREATED).body(compteCree);
 	     } catch (ExpiredJwtException ex) {
 	         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("JWT token has expired");
+	     }
+	 }
+	 @GetMapping("/lesContribuables")
+	 public ResponseEntity<List<ContribuableDtos>> getAllcontribuable() {
+	     try {
+	         List<ContribuableDtos> contribuableList = contribuableservice.lesContribuables();
+	         return ResponseEntity.ok(contribuableList);
+	     } catch (ExpiredJwtException ex) {
+	         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 	     }
 	 }
 
