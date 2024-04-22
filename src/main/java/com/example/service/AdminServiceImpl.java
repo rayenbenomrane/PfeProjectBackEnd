@@ -3,14 +3,17 @@ package com.example.service;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.dtos.CompteDto;
+import com.example.dtos.UpdatePasswordDto;
 import com.example.dtos.UserDtos;
 import com.example.entity.Compte;
 import com.example.entity.User;
@@ -106,6 +109,33 @@ public void sendVerificationEmail(UserDtos user) throws UnsupportedEncodingExcep
 
 	        mailSender.send(message);
 
+	}
+	@Override
+	public CompteDto changePassword(UpdatePasswordDto up) {
+	    Optional<Compte> c=compteRepository.findById(up.getId());
+	    if(verifyPassword(up.getPasswordPrec(), c.get().getPassword())) {
+	        Compte nvCompte=new Compte();
+	        nvCompte.setIdCompte(c.get().getIdCompte());
+	        nvCompte.setEmail(c.get().getEmail());
+	        nvCompte.setPassword((new BCryptPasswordEncoder().encode(up.getNvPassword())));
+	        nvCompte.setUserRole(c.get().getUserRole());
+	         Compte compteCreefinal=compteRepository.save(nvCompte);
+	           CompteDto compteCreeDto=new CompteDto();
+	           compteCreeDto.setEmail(compteCreefinal.getEmail());
+	           compteCreeDto.setPassword(compteCreefinal.getPassword());
+	           compteCreeDto.setUserRole(compteCreefinal.getUserRole());
+	           return compteCreeDto;
+	    }
+	    else {
+	        return null;
+	    }
+
+	}
+	@Override
+	public boolean verifyPassword(String rawPassword, String encodedPasswordFromDB) {
+	    
+	       BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	    return encoder.matches(rawPassword, encodedPasswordFromDB);
 	}
 
 }

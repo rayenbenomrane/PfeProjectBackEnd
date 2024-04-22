@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.CompteDto;
 import com.example.dtos.ContribuableDtos;
+import com.example.dtos.UpdatePasswordDto;
 import com.example.dtos.UserDtos;
 import com.example.service.AdminService;
 import com.example.service.CompteService;
@@ -123,6 +124,14 @@ public class AdminController {
 	     } catch (ExpiredJwtException ex) {
 	         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 	     }
+	 }
+	 @PostMapping("/changepassword")
+	 public ResponseEntity<?> changePswword(@RequestBody UpdatePasswordDto up){
+	     CompteDto cd=adminservice.changePassword(up);
+	     if(cd==null) {
+	         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de modifer password!");
+	     }
+	      return ResponseEntity.status(HttpStatus.CREATED).body(cd);
 	 }
 
 

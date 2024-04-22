@@ -122,8 +122,7 @@ public class Compte implements UserDetails{
 	        userDto.setPassword(inscription.getPassword());
 	        compte.setInscription(userDto);
 	    } else {
-	        // Handle the case where inscription is null, maybe set default values or do something else
-	        // For now, let's just set the inscription to null in the CompteDto
+	        
 	        compte.setInscription(null);
 	    }
 	    
