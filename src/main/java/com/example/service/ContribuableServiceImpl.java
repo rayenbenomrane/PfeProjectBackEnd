@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.dtos.ContribuableDtos;
 import com.example.entity.Compte;
 import com.example.entity.Contribuable;
+import com.example.repository.CompteRepository;
 import com.example.repository.ContribuableRepository;
 
 import jakarta.transaction.Transactional;
@@ -21,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 public class ContribuableServiceImpl implements ContribuableService{
 	@Autowired
 	private ContribuableRepository contribuableRepo;
+	@Autowired
+	private CompteRepository compterepository;
 
 	@Override
 	@Transactional
@@ -95,8 +98,36 @@ public class ContribuableServiceImpl implements ContribuableService{
 		return contribuableRepo.findAll().stream().map(Contribuable::getContribuable).collect(Collectors.toList());
 	}
 
+	@Override
+	public ContribuableDtos findContribuableByIdCompte(long IdCompte) {
+	Optional<Compte> compteTrouve=compterepository.findById(IdCompte);
+	 if (compteTrouve.isPresent()) {
+	        Compte compteTrouve1 = compteTrouve.get();
+	        
+	        // Assuming there's a method to retrieve registration associated with the account
+	        Contribuable contribuable = compteTrouve1.getInscription().getContribuable();
+	        ContribuableDtos contribuableTrouve=new ContribuableDtos();
+	        contribuableTrouve.setActivite(contribuable.getActivite());
+	        contribuableTrouve.setFormeJuridique(contribuable.getFormeJuridique());
+	        contribuableTrouve.setPays(contribuable.getPays());
+	        contribuableTrouve.setAdress(contribuable.getAdress());
+	        contribuableTrouve.setDateDeMatriculation(contribuable.getDateDeMatriculation());
+	        contribuableTrouve.setDirecteur(contribuable.getDirecteur());
+	        contribuableTrouve.setEmail(contribuable.getEmail());
+	        contribuableTrouve.setIdContribuable(contribuable.getIdContribuable());
+	        contribuableTrouve.setMatriculeFiscale(contribuable.getMatriculeFiscale());
+	        contribuableTrouve.setNomCommercial(contribuable.getNomCommercial());
+	        contribuableTrouve.setRaisonSocial(contribuable.getRaisonSocial());
+	        return contribuableTrouve;
+	 }else return null;
+	        
+	 }      
+	
+	
+	}
 
 
 
 
-}
+
+

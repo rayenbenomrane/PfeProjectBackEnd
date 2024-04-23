@@ -9,5 +9,6 @@ public interface ContribuableService {
 	ContribuableDtos saveContribuable(ContribuableDtos cd);
 	ContribuableDtos findContribuable(int matriculeFiscale);
 	List<ContribuableDtos> lesContribuables();
+	ContribuableDtos findContribuableByIdCompte(long IdCompte);
 
 }
