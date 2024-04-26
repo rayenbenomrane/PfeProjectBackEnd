@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -92,14 +93,18 @@ public ResponseEntity<?> createCustomer(@RequestBody SignupRequest signupRequest
 
 
 @PostMapping("/login")
-public AuthenticationResponse createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)throws
+public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)throws
 BadCredentialsException,
 DisabledException,
 UsernameNotFoundException{
 	try {
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
-	}catch (BadCredentialsException e) {
-		throw new BadCredentialsException("Incorrect username or password");
+	    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
+	} catch (BadCredentialsException e) {
+	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
+	} catch (LockedException e) {
+	    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Account is disabled");
+	} catch (UsernameNotFoundException e) {
+	    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
 	}
 	final UserDetails userDetails=userservice.userDetailsService()
 			.loadUserByUsername(authenticationRequest.getEmail());
@@ -112,7 +117,7 @@ UsernameNotFoundException{
 		authenticationResponse.setUserRole(optionalUser.get().getUserRole());
 
 	}
-	return authenticationResponse;
+	return ResponseEntity.status(HttpStatus.OK).body(authenticationResponse);
 }
 
 
