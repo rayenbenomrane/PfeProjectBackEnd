@@ -30,6 +30,7 @@ import com.example.dtos.DeclarationDto;
 import com.example.dtos.FormeJuridiqueDtos;
 import com.example.dtos.PasswordDto;
 import com.example.dtos.PaysDtos;
+import com.example.dtos.ReclamationDto;
 import com.example.dtos.SignupRequest;
 import com.example.dtos.UserDtos;
 import com.example.dtos.VerificationDto;
@@ -45,6 +46,7 @@ import com.example.service.ContribuableService;
 import com.example.service.FormeJuridiqueService;
 import com.example.service.ObligationFiscaleService;
 import com.example.service.PaysService;
+import com.example.service.ReclamationService;
 import com.example.utils.JwtUtils;
 
 import jakarta.mail.MessagingException;
@@ -79,6 +81,8 @@ private CompteRepository compteRepository;
 private ObligationFiscaleService obligationFiscaleService;
 @Autowired
 private AdminService adminservice;
+@Autowired
+private ReclamationService reclamationservice;
 
 
 
@@ -136,7 +140,7 @@ public ResponseEntity<?> verificationresponse(@RequestParam("code") String param
         return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(new VerificationDto("something went wrong",false,user));
     }
 }
-@PostMapping("/formejuridique")
+/*@PostMapping("/formejuridique")
 public ResponseEntity<?> createFormejuridique(@RequestBody FormeJuridiqueDtos formejuridiqueDtos){
 	FormeJuridiqueDtos formeJuridiqueCree=formejuridiqueservice.saveFormeJuridique(formejuridiqueDtos);
 	if(formeJuridiqueCree==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation de forme juridique!");
@@ -162,7 +166,7 @@ public ResponseEntity<?> createActivite(@RequestBody PaysDtos paysDtos){
 	PaysDtos payscree=paysservice.savePays(paysDtos);
 	if(payscree==null)return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation d'pays!");
     return ResponseEntity.status(HttpStatus.CREATED).body(payscree);
-}
+}*/
 @GetMapping("/contribuableMatricule")
 public ResponseEntity<?> findByMatriculeFiscale(@RequestParam("matriculeFiscale") int matriculeFiscale) {
 		ContribuableDtos contribuable = contribuableservice.findContribuable(matriculeFiscale);
@@ -191,6 +195,7 @@ public ResponseEntity<List<UserDtos>> getAllInscription(){
 	List<UserDtos> inscriptionList=adminservice.getAllInscription();
 	return ResponseEntity.ok(inscriptionList);
 }
+/*
 @PostMapping("/savepassword")
 public ResponseEntity<?> savePassword(@RequestBody PasswordDto signupRequest ) throws UnsupportedEncodingException, MessagingException{
 
@@ -198,7 +203,8 @@ public ResponseEntity<?> savePassword(@RequestBody PasswordDto signupRequest ) t
 
     if(createdUserDto==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request!");
     return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
-}
+}*/
+
 
 
 }
