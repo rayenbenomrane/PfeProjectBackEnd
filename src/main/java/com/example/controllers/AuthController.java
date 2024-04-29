@@ -195,7 +195,7 @@ public ResponseEntity<List<UserDtos>> getAllInscription(){
 	List<UserDtos> inscriptionList=adminservice.getAllInscription();
 	return ResponseEntity.ok(inscriptionList);
 }
-/*
+
 @PostMapping("/savepassword")
 public ResponseEntity<?> savePassword(@RequestBody PasswordDto signupRequest ) throws UnsupportedEncodingException, MessagingException{
 
@@ -203,7 +203,7 @@ public ResponseEntity<?> savePassword(@RequestBody PasswordDto signupRequest ) t
 
     if(createdUserDto==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request!");
     return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
-}*/
+}
 
 
 

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.ReclamationDto;
-
+import com.example.entity.Reclamation;
 import com.example.service.ContribuableService;
 import com.example.service.ReclamationService;
 
@@ -39,11 +39,11 @@ public class ClientController {
 	    }
 	 @PostMapping("/savereclamation")
 	 public ResponseEntity<?> saveReclamation(@RequestBody ReclamationDto reclamationDto) {
-	     Boolean saved = reclamationservice.saveReclamation(reclamationDto);
-	     if (saved) {
-	         return ResponseEntity.ok("Reclamation saved successfully");
+	     Reclamation saved = reclamationservice.saveReclamation(reclamationDto);
+	     if (saved!=null) {
+	         return ResponseEntity.ok(saved);
 	     } else {
-	         return ResponseEntity.badRequest().body("Failed to save reclamation");
+	         return ResponseEntity.badRequest().body(null);
 	     }
 	 }
 }
