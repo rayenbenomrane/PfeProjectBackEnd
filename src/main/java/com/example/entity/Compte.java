@@ -3,7 +3,6 @@ package com.example.entity;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -56,7 +55,7 @@ public class Compte implements UserDetails{
 	private UserRole userRole;
 
     // Other fields
-	
+
     @OneToOne(optional = true)
     @JoinColumn(name = "inscription_id", referencedColumnName = "idInscription")
     private User inscription;
@@ -103,7 +102,7 @@ public class Compte implements UserDetails{
 	    CompteDto compte = new CompteDto();
 	    compte.setIdCompte(idCompte);
 	    compte.setEmail(email);
-	    
+
 	    if (inscription != null) {
 	        UserDtos userDto = new UserDtos();
 	        userDto.setIdInscription(inscription.getInscription().getIdInscription());
@@ -122,13 +121,13 @@ public class Compte implements UserDetails{
 	        userDto.setPassword(inscription.getPassword());
 	        compte.setInscription(userDto);
 	    } else {
-	        
+
 	        compte.setInscription(null);
 	    }
-	    
+
 	    compte.setPassword(password);
 	    compte.setUserRole(userRole);
-	    
+
 	    return compte;
 	}
 

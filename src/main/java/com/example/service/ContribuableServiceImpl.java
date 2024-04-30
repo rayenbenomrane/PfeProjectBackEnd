@@ -103,7 +103,7 @@ public class ContribuableServiceImpl implements ContribuableService{
 	Optional<Compte> compteTrouve=compterepository.findById(IdCompte);
 	 if (compteTrouve.isPresent()) {
 	        Compte compteTrouve1 = compteTrouve.get();
-	        
+
 	        // Assuming there's a method to retrieve registration associated with the account
 	        Contribuable contribuable = compteTrouve1.getInscription().getContribuable();
 	        ContribuableDtos contribuableTrouve=new ContribuableDtos();
@@ -120,10 +120,10 @@ public class ContribuableServiceImpl implements ContribuableService{
 	        contribuableTrouve.setRaisonSocial(contribuable.getRaisonSocial());
 	        return contribuableTrouve;
 	 }else return null;
-	        
-	 }      
-	
-	
+
+	 }
+
+
 	}
 
 

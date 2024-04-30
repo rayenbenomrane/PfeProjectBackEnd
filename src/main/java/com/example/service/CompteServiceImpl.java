@@ -9,7 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.dtos.CompteDto;
-import com.example.dtos.UserDtos;
 import com.example.entity.Compte;
 import com.example.entity.User;
 import com.example.enums.UserRole;
@@ -73,24 +72,24 @@ public class CompteServiceImpl implements CompteService{
 
 		@Override
 		public boolean blocageCompte(CompteDto cd) {
-		    
+
 		    Optional<Compte> existingCompteOptional = compteRepository.findById(cd.getIdCompte());
-		    
+
 		    // Check if the Compte exists
 		    if (existingCompteOptional.isPresent()) {
 		        Compte existingCompte = existingCompteOptional.get();
 
-		       
+
 		        existingCompte.setEmail(cd.getEmail());
 		        existingCompte.setUserRole(cd.getUserRole());
-		        
+
 		        if (existingCompte.getUserRole() == UserRole.Admin) {
 		            existingCompte.setPassword(new BCryptPasswordEncoder().encode(cd.getPassword()));
 		        } else {
 		            existingCompte.setPassword(cd.getPassword());
 		        }
 
-		        
+
 		        User existingUser = existingCompte.getInscription();
 		        existingUser.setEmail(cd.getInscription().getEmail());
 		        existingUser.setUserRole(cd.getInscription().getUserRole());
@@ -105,7 +104,7 @@ public class CompteServiceImpl implements CompteService{
 		        existingUser.setValeurIdentifiant(cd.getInscription().getValueIdentifiant());
 		        existingUser.setPoste(cd.getInscription().getPoste());
 		        existingUser.setPassword(cd.getPassword()); // Revisit this assignment
-		        
+
 		        // Save the updated Compte
 		        Compte compteCree = compteRepository.save(existingCompte);
 
@@ -126,22 +125,22 @@ public class CompteServiceImpl implements CompteService{
 		@Override
 		public boolean AcceptCompte(CompteDto cd) {
 			 Optional<Compte> existingCompteOptional = compteRepository.findById(cd.getIdCompte());
-			    
-			    
+
+
 			    if (existingCompteOptional.isPresent()) {
 			        Compte existingCompte = existingCompteOptional.get();
 
-			       
+
 			        existingCompte.setEmail(cd.getEmail());
 			        existingCompte.setUserRole(cd.getUserRole());
-			        
+
 			        if (existingCompte.getUserRole() == UserRole.Admin) {
 			            existingCompte.setPassword(new BCryptPasswordEncoder().encode(cd.getPassword()));
 			        } else {
 			            existingCompte.setPassword(cd.getPassword());
 			        }
 
-			        
+
 			        User existingUser = existingCompte.getInscription();
 			        existingUser.setEmail(cd.getInscription().getEmail());
 			        existingUser.setUserRole(cd.getInscription().getUserRole());
@@ -156,18 +155,18 @@ public class CompteServiceImpl implements CompteService{
 			        existingUser.setValeurIdentifiant(cd.getInscription().getValueIdentifiant());
 			        existingUser.setPoste(cd.getInscription().getPoste());
 			        existingUser.setPassword(cd.getPassword());
-			        
-			       
+
+
 			        Compte compteCree = compteRepository.save(existingCompte);
 
-			        
+
 			        if (!compteCree.getInscription().isNonLocked()) {
 			            return false;
 			        } else {
 			            return true;
 			        }
 			    } else {
-			        
+
 			        return false;
 			    }
 		}

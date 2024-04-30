@@ -17,16 +17,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReclamationServiceImpl implements ReclamationService{
 
-	
-	@Autowired 
+
+	@Autowired
 	private ReclamationRepository reclamationrepo;
 	@Autowired
 	private ContribuableRepository contribuableRepository;
-	
-	
+
+
 	@Override
 	public Reclamation saveReclamation(ReclamationDto c) {
-	   
+
 	    Contribuable existingContribuable = this.contribuableRepository.findById(c.getContribuable().getIdContribuable())
 	            .orElseThrow(() -> new IllegalArgumentException("Contribuable not found"));
 

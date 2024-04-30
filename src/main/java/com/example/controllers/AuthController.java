@@ -22,33 +22,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.dtos.ActiviteDtos;
 import com.example.dtos.AuthenticationRequest;
 import com.example.dtos.AuthenticationResponse;
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.DeclarationDto;
-import com.example.dtos.FormeJuridiqueDtos;
+import com.example.dtos.DetailImpotDto;
 import com.example.dtos.PasswordDto;
-import com.example.dtos.PaysDtos;
-import com.example.dtos.ReclamationDto;
 import com.example.dtos.SignupRequest;
+import com.example.dtos.TypeImpotDto;
 import com.example.dtos.UserDtos;
 import com.example.dtos.VerificationDto;
 import com.example.entity.Compte;
 import com.example.entity.Declaration;
+import com.example.entity.DetailImpot;
 import com.example.jwt.UserService;
 import com.example.repository.CompteRepository;
-import com.example.repository.UserRepository;
-import com.example.service.ActiviteService;
 import com.example.service.AdminService;
 import com.example.service.AuthService;
 import com.example.service.ContribuableService;
-import com.example.service.FormeJuridiqueService;
+import com.example.service.DetailImpotService;
 import com.example.service.ObligationFiscaleService;
-import com.example.service.PaysService;
-import com.example.service.ReclamationService;
+import com.example.service.TypeImpotService;
 import com.example.utils.JwtUtils;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
@@ -63,26 +60,23 @@ private AuthenticationManager authenticationManager;
 private UserService userservice;
 @Autowired
 private JwtUtils jwtUtil;
-@Autowired
-private  UserRepository userRepository;
+
 @Autowired
 private AuthService authService;
-@Autowired
-private ActiviteService activiteservice;
-@Autowired
-private FormeJuridiqueService formejuridiqueservice;
+
 @Autowired
 private ContribuableService contribuableservice;
-@Autowired
-private PaysService paysservice;
+
 @Autowired
 private CompteRepository compteRepository;
 @Autowired
 private ObligationFiscaleService obligationFiscaleService;
 @Autowired
 private AdminService adminservice;
+
+
 @Autowired
-private ReclamationService reclamationservice;
+private DetailImpotService detailservice;
 
 
 
@@ -203,6 +197,31 @@ public ResponseEntity<?> savePassword(@RequestBody PasswordDto signupRequest ) t
 
     if(createdUserDto==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request!");
     return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
+}
+/*@GetMapping("/lesperiodes")
+public ResponseEntity<List<PeriodeDto>> getAllcontribuable() {
+    try {
+        List<PeriodeDto> contribuableList = periodeservice.findAllPeriode();
+        return ResponseEntity.ok(contribuableList);
+    } catch (ExpiredJwtException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+}
+@GetMapping("/lesimpots")
+public ResponseEntity<List<TypeImpotDto>> getAllimpots() {
+    try {
+        List<TypeImpotDto> impotsList = impotservice.getAllImpots();
+        return ResponseEntity.ok(impotsList);
+    } catch (ExpiredJwtException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+    }
+}
+*/
+@PostMapping("/detail")
+public ResponseEntity<?> createActivite(@RequestBody DetailImpotDto pi){
+	DetailImpotDto payscree=detailservice.saveDetailImpot(pi);
+	if(payscree==null)return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation de detail!");
+    return ResponseEntity.status(HttpStatus.CREATED).body(payscree);
 }
 
 

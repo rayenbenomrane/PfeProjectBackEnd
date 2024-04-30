@@ -1,6 +1,5 @@
 package com.example.dtos;
 
-import com.example.entity.User;
 import com.example.enums.UserRole;
 
 import lombok.AllArgsConstructor;

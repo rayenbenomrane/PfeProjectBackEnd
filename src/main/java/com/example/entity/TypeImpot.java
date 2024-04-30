@@ -1,5 +1,8 @@
 package com.example.entity;
 
+import com.example.dtos.PeriodeDto;
+import com.example.dtos.TypeImpotDto;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -8,7 +11,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -37,14 +39,20 @@ public class TypeImpot {
 
 	private String libelle;
 
-	@OneToOne
-	@JoinColumn(name = "echeance_id", referencedColumnName = "idEcheance")
-	private Echeance echeance;
+
 
 	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	    @JoinColumn(name = "periodicite_id")
 	 	private Periodicite periodicite;
 
-
+public TypeImpotDto getImpot() {
+	TypeImpotDto impot=new TypeImpotDto();
+	impot.setLibelle(libelle);
+	PeriodeDto pd=new PeriodeDto();
+	pd.setIdPeriodicite(periodicite.getIdPeriodicite());
+	pd.setPeriode(periodicite.getPeriode());
+	impot.setPeriodicite(pd);
+	return impot;
+}
 
 }

@@ -1,5 +1,6 @@
 package com.example.entity;
 
+import com.example.dtos.PeriodeDto;
 import com.example.enums.Periode;
 
 import jakarta.persistence.Entity;
@@ -33,5 +34,10 @@ public class Periodicite {
 	private long idPeriodicite;
 
 	private Periode periode;
-
+	public PeriodeDto getperiodicite() {
+		PeriodeDto periode1=new PeriodeDto();
+		periode1.setIdPeriodicite(idPeriodicite);
+		periode1.setPeriode(periode);
+		return periode1;
+	}
 }

@@ -22,12 +22,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/client")
 public class ClientController {
-	
+
 	@Autowired
 	private ContribuableService contribuableservice;
 	@Autowired
 	private ReclamationService reclamationservice;
-	
+
 	 @GetMapping("/contribuable/{id}")
 	    public ResponseEntity<?> findContribuableByIdCompte(@PathVariable("id") long id) {
 	        ContribuableDtos contribuable = contribuableservice.findContribuableByIdCompte(id);

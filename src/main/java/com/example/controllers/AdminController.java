@@ -15,11 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.CompteDto;
 import com.example.dtos.ContribuableDtos;
+import com.example.dtos.PeriodeDto;
+import com.example.dtos.TypeImpotDto;
 import com.example.dtos.UpdatePasswordDto;
 import com.example.dtos.UserDtos;
 import com.example.service.AdminService;
 import com.example.service.CompteService;
 import com.example.service.ContribuableService;
+import com.example.service.PeriodiciteService;
+import com.example.service.TypeImpotService;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.mail.MessagingException;
@@ -36,7 +40,14 @@ public class AdminController {
 	private AdminService adminservice;
 	@Autowired
 	private ContribuableService contribuableservice;
-		
+	@Autowired
+	private TypeImpotService typeImpotservice;
+	@Autowired
+	private PeriodiciteService periodeservice;
+	@Autowired
+	private TypeImpotService impotservice;
+
+
 	 @ExceptionHandler(ExpiredJwtException.class)
 	    public ResponseEntity<String> handleExpiredJwtException(ExpiredJwtException ex) {
 	        // Log the exception or handle it as needed
@@ -69,11 +80,11 @@ public class AdminController {
 	     try {
 	         CompteDto compteCree = adminservice.acceptInscri(userDTO);
 	         adminservice.sendVerificationEmail(userDTO);
-	         
+
 	         if (compteCree == null) {
 	             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Problem de mise a jour");
 	         }
-	         
+
 	         return ResponseEntity.status(HttpStatus.CREATED).body(compteCree);
 	     } catch (ExpiredJwtException ex) {
 	         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("JWT token has expired");
@@ -133,7 +144,31 @@ public class AdminController {
 	     }
 	      return ResponseEntity.status(HttpStatus.CREATED).body(cd);
 	 }
+	 @PostMapping("/typeImpot")
+	 public ResponseEntity<?> createImpot(@RequestBody TypeImpotDto typeImpot ){
+	 	TypeImpotDto impotcree=typeImpotservice.saveImpot(typeImpot);
+	 	if(impotcree==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation de Contribuable!");
+	     return ResponseEntity.status(HttpStatus.CREATED).body(impotcree);
 
+	 }
+	 @GetMapping("/lesperiodes")
+	 public ResponseEntity<List<PeriodeDto>> getAllperiodes() {
+	     try {
+	         List<PeriodeDto> contribuableList = periodeservice.findAllPeriode();
+	         return ResponseEntity.ok(contribuableList);
+	     } catch (ExpiredJwtException ex) {
+	         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+	     }
+	 }
+	 @GetMapping("/lesimpots")
+	 public ResponseEntity<List<TypeImpotDto>> getAllimpots() {
+	     try {
+	         List<TypeImpotDto> impotsList = impotservice.getAllImpots();
+	         return ResponseEntity.ok(impotsList);
+	     } catch (ExpiredJwtException ex) {
+	         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+	     }
+	 }
 
 
 

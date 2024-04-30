@@ -81,7 +81,7 @@ public class Contribuable {
 	    	contribuable.setPays(pays);
 	    	contribuable.setNomCommercial(nomCommercial);
 	    	return contribuable;
-	    	
+
 	    }
 
 }

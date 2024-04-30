@@ -1,7 +1,6 @@
 package com.example.service;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -133,7 +132,7 @@ public void sendVerificationEmail(UserDtos user) throws UnsupportedEncodingExcep
 	}
 	@Override
 	public boolean verifyPassword(String rawPassword, String encodedPasswordFromDB) {
-	    
+
 	       BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	    return encoder.matches(rawPassword, encodedPasswordFromDB);
 	}
