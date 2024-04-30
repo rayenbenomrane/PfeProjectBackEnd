@@ -11,17 +11,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.CompteDto;
 import com.example.dtos.ContribuableDtos;
+import com.example.dtos.DetailImpotDto;
 import com.example.dtos.PeriodeDto;
 import com.example.dtos.TypeImpotDto;
 import com.example.dtos.UpdatePasswordDto;
 import com.example.dtos.UserDtos;
+import com.example.entity.DetailImpot;
 import com.example.service.AdminService;
 import com.example.service.CompteService;
 import com.example.service.ContribuableService;
+import com.example.service.DetailImpotService;
 import com.example.service.PeriodiciteService;
 import com.example.service.TypeImpotService;
 
@@ -46,6 +50,8 @@ public class AdminController {
 	private PeriodiciteService periodeservice;
 	@Autowired
 	private TypeImpotService impotservice;
+	@Autowired
+	private DetailImpotService detailservice;
 
 
 	 @ExceptionHandler(ExpiredJwtException.class)
@@ -169,6 +175,22 @@ public class AdminController {
 	         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 	     }
 	 }
+	 @PostMapping("/detail")
+	 public ResponseEntity<?> createActivite(@RequestBody DetailImpotDto pi){
+	 	DetailImpotDto payscree=detailservice.saveDetailImpot(pi);
+	 	if(payscree==null)return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation de detail!");
+	     return ResponseEntity.status(HttpStatus.CREATED).body(payscree);
+	 }
+	 @GetMapping("/detailimpot")
+	 public ResponseEntity<?> findByimpot(@RequestParam("libelle") String libelle) {
+	 	List<DetailImpot> listDetail= detailservice.findbytypeImpot(libelle);
+	         if (listDetail != null)
+	         	return ResponseEntity.ok(listDetail);
+
+	         return ResponseEntity.notFound().build();
+
+	 }
+	 
 
 
 

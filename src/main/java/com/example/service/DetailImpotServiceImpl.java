@@ -1,5 +1,8 @@
 package com.example.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +59,18 @@ public class DetailImpotServiceImpl implements DetailImpotService{
 		
 		
 		
+		
+	}
+
+	@Override
+	public List<DetailImpot> findbytypeImpot(String libelle) {
+		// TODO Auto-generated method stub
+		Optional<TypeImpot> typetrouve=typeimpotrepo.findByLibelle(libelle);
+		if(typetrouve.get()!=null) {
+			
+			List<DetailImpot> listtrouve=detailrepo.findByTypeImpot(typetrouve.get());
+			return listtrouve;
+		}else return null;
 		
 	}
 

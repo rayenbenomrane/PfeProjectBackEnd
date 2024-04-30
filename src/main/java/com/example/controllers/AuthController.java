@@ -216,14 +216,17 @@ public ResponseEntity<List<TypeImpotDto>> getAllimpots() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 }
-*/
-@PostMapping("/detail")
-public ResponseEntity<?> createActivite(@RequestBody DetailImpotDto pi){
-	DetailImpotDto payscree=detailservice.saveDetailImpot(pi);
-	if(payscree==null)return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation de detail!");
-    return ResponseEntity.status(HttpStatus.CREATED).body(payscree);
-}
 
+@GetMapping("/detailimpot")
+public ResponseEntity<?> findByimpot(@RequestParam("libelle") String libelle) {
+	List<DetailImpot> listDetail= detailservice.findbytypeImpot(libelle);
+        if (listDetail != null)
+        	return ResponseEntity.ok(listDetail);
+
+        return ResponseEntity.notFound().build();
+
+}
+*/
 
 
 }
