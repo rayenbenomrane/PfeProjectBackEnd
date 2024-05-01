@@ -74,6 +74,9 @@ private ObligationFiscaleService obligationFiscaleService;
 @Autowired
 private AdminService adminservice;
 
+@Autowired
+private TypeImpotService impotservice;
+
 
 @Autowired
 private DetailImpotService detailservice;
@@ -226,7 +229,16 @@ public ResponseEntity<?> findByimpot(@RequestParam("libelle") String libelle) {
         return ResponseEntity.notFound().build();
 
 }
-*/
 
+@GetMapping("/typeimpot")
+public ResponseEntity<?> findByimpot(@RequestParam("libelle") String libelle) {
+	 TypeImpotDto  impot= impotservice.findTypeImpotbyLibelle(libelle);
+        if (impot != null)
+        	return ResponseEntity.ok(impot);
+
+        return ResponseEntity.notFound().build();
+
+}
+*/
 
 }

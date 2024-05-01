@@ -190,6 +190,15 @@ public class AdminController {
 	         return ResponseEntity.notFound().build();
 
 	 }
+	 @GetMapping("/typeimpot")
+	 public ResponseEntity<?> findBytypeimpot(@RequestParam("libelle") String libelle) {
+	 	 TypeImpotDto  impot= impotservice.findTypeImpotbyLibelle(libelle);
+	         if (impot != null)
+	         	return ResponseEntity.ok(impot);
+
+	         return ResponseEntity.notFound().build();
+
+	 }
 	 
 
 

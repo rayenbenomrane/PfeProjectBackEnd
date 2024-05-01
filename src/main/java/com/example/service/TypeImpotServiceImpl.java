@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,6 +132,22 @@ nb.setPeriode(td.getPeriodicite().getPeriode());
 	public List<TypeImpotDto> getAllImpots() {
 		// TODO Auto-generated method stub
 		return impotrepo.findAll().stream().map(TypeImpot::getImpot).collect(Collectors.toList());
+	}
+
+
+	@Override
+	public TypeImpotDto findTypeImpotbyLibelle(String libelle) {
+		Optional<TypeImpot> typetrouve=impotrepo.findByLibelle(libelle);
+		if(typetrouve.get()!=null) {
+			TypeImpotDto impot=new TypeImpotDto();
+			impot.setLibelle(typetrouve.get().getLibelle());
+			
+			PeriodeDto periode=new PeriodeDto();
+			periode.setIdPeriodicite(typetrouve.get().getPeriodicite().getIdPeriodicite());
+			periode.setPeriode(typetrouve.get().getPeriodicite().getPeriode());
+			impot.setPeriodicite(periode);
+			return impot;
+		}else return null;
 	}
 
 }

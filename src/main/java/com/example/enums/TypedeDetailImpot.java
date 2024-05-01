@@ -1,5 +1,5 @@
 package com.example.enums;
 
 public enum TypedeDetailImpot {
-Int,String,Boolean
+Int,String,Boolean,Float
 }
