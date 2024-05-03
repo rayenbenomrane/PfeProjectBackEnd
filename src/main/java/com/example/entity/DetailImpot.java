@@ -51,6 +51,8 @@ public class DetailImpot {
 	 private boolean  obligatoire;
 	 
 	 
+	 
+	 
 	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	    @JoinColumn(name = "typeImpot_id")
 	 	private TypeImpot typeImpot;

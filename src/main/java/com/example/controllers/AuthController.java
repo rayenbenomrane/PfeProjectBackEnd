@@ -2,6 +2,7 @@ package com.example.controllers;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,20 +28,27 @@ import com.example.dtos.AuthenticationRequest;
 import com.example.dtos.AuthenticationResponse;
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.DeclarationDto;
+import com.example.dtos.DetailDeclarationDto;
 import com.example.dtos.DetailImpotDto;
+import com.example.dtos.ObligationDto;
 import com.example.dtos.PasswordDto;
+import com.example.dtos.SaveDeclaration;
 import com.example.dtos.SignupRequest;
 import com.example.dtos.TypeImpotDto;
 import com.example.dtos.UserDtos;
 import com.example.dtos.VerificationDto;
 import com.example.entity.Compte;
+import com.example.entity.Contribuable;
 import com.example.entity.Declaration;
+import com.example.entity.DetailDeclaration;
 import com.example.entity.DetailImpot;
 import com.example.jwt.UserService;
 import com.example.repository.CompteRepository;
+import com.example.repository.ContribuableRepository;
 import com.example.service.AdminService;
 import com.example.service.AuthService;
 import com.example.service.ContribuableService;
+import com.example.service.DeclarationService;
 import com.example.service.DetailImpotService;
 import com.example.service.ObligationFiscaleService;
 import com.example.service.TypeImpotService;
@@ -81,7 +90,11 @@ private TypeImpotService impotservice;
 @Autowired
 private DetailImpotService detailservice;
 
+@Autowired
+private DeclarationService declarationService;
 
+@Autowired 
+private ContribuableRepository contribuableRepository ;
 
 @PostMapping("/signup")
 public ResponseEntity<?> createCustomer(@RequestBody SignupRequest signupRequest ) throws UnsupportedEncodingException, MessagingException{
@@ -240,5 +253,12 @@ public ResponseEntity<?> findByimpot(@RequestParam("libelle") String libelle) {
 
 }
 */
-
+@GetMapping("/contribuable/{contribuableId}")
+public ResponseEntity<?> getObligationsByContribuable(@PathVariable Long contribuableId) {
+    Optional<Contribuable> cd = this.contribuableRepository.findById(contribuableId);
+    if(cd.isPresent()) {
+    List<ObligationDto> obligations = obligationFiscaleService.getlesObligationsdeContribuable(cd.get());
+    return ResponseEntity.ok(obligations);
+}else return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de création de déclaration!");
+    }
 }

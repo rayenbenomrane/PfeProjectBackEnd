@@ -12,7 +12,7 @@ import java.util.List;
 public interface DetailImpotRepository extends JpaRepository<DetailImpot,Long>{
 
 	
-	List<DetailImpot> findByTypeImpot(TypeImpot typeImpot);
+	List<DetailImpot>  findByTypeImpot(TypeImpot typeImpot);
 	
 	
 }

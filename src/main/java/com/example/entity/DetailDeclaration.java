@@ -1,8 +1,6 @@
 package com.example.entity;
 
-
-
-import java.util.Date;
+import com.example.enums.UserRole;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -16,6 +14,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,28 +29,27 @@ import lombok.ToString;
 @NoArgsConstructor
 
 @ToString
+@Data
 @Entity
-@Table(name = "obligationFiscale")
-public class ObligationFiscale {
-
+@Table(name = "\"DetailDeclaration\"")
+public class DetailDeclaration {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator7Name")
-	@SequenceGenerator(name = "yourGenerator7Name", sequenceName = "Obligation_seq", allocationSize = 1)
-	private long idObligationFiscale;
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator19Name")
+	@SequenceGenerator(name = "yourGenerator19Name", sequenceName = "detailDeclaration_seq", allocationSize = 1)
+	private Long idDetailDeclaration;
+	
+	private String valeur;
+	
+	
+	
 
-
-
-	private Date dateDebut;
-	private Date dateFin;
-
+    @ManyToOne
+    @JoinColumn(name = "detailImpot_id")
+    private DetailImpot detailImpot;
+	
 	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	    @JoinColumn(name = "contribuable_id")
-	 	private Contribuable contribuable;
+    @JoinColumn(name = "declaration_id")
+ 	private Declaration declaration;
 
-	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	    @JoinColumn(name = "typeImpot_id")
-	 	private TypeImpot impot;
-
-	 
-
+	
 }
