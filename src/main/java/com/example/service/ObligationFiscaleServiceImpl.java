@@ -41,7 +41,7 @@ public class ObligationFiscaleServiceImpl implements ObligationFiscaleService{
 		        ObligationDto obligationDto = new ObligationDto();
 		        obligationDto.setDateDebut(obligation.getDateDebut());
 		        obligationDto.setDateFin(obligation.getDateFin());
-		        // Assuming TypeImpotDto has a constructor that takes ObligationFiscale as argument
+		      
 		        
 		        TypeImpotDto impot=new TypeImpotDto();
 		        impot.setLibelle(obligation.getImpot().getLibelle());

@@ -49,7 +49,9 @@ public class Declaration {
     @JoinColumn(name = "obligation_id")
     private ObligationFiscale obligation;
 
-
+	@ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "typeDeclaration_id")
+	private TypeDeclaration type;
 
 
 

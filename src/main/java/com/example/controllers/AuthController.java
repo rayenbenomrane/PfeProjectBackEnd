@@ -253,6 +253,16 @@ public ResponseEntity<?> findByimpot(@RequestParam("libelle") String libelle) {
 
 }
 */
+@PostMapping("/declaration")
+public ResponseEntity<?> createDeclaration(@RequestBody SaveDeclaration declarationDtos) {
+    Map<DetailImpot, DetailDeclarationDto> detailMap = declarationService.saveDeclaration(declarationDtos);
+    
+    if (detailMap.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de création de déclaration!");
+    } else {
+        return ResponseEntity.status(HttpStatus.CREATED).body(detailMap);
+    }
+}
 @GetMapping("/contribuable/{contribuableId}")
 public ResponseEntity<?> getObligationsByContribuable(@PathVariable Long contribuableId) {
     Optional<Contribuable> cd = this.contribuableRepository.findById(contribuableId);
