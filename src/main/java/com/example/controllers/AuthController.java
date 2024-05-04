@@ -26,14 +26,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.AuthenticationRequest;
 import com.example.dtos.AuthenticationResponse;
+import com.example.dtos.CompteDto;
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.DeclarationDto;
 import com.example.dtos.DetailDeclarationDto;
 import com.example.dtos.DetailImpotDto;
 import com.example.dtos.ObligationDto;
+import com.example.dtos.ObligationresponseDto;
 import com.example.dtos.PasswordDto;
 import com.example.dtos.SaveDeclaration;
 import com.example.dtos.SignupRequest;
+import com.example.dtos.TypeDeclarationDto;
 import com.example.dtos.TypeImpotDto;
 import com.example.dtos.UserDtos;
 import com.example.dtos.VerificationDto;
@@ -51,6 +54,7 @@ import com.example.service.ContribuableService;
 import com.example.service.DeclarationService;
 import com.example.service.DetailImpotService;
 import com.example.service.ObligationFiscaleService;
+import com.example.service.TypeDeclarationService;
 import com.example.service.TypeImpotService;
 import com.example.utils.JwtUtils;
 
@@ -95,6 +99,7 @@ private DeclarationService declarationService;
 
 @Autowired 
 private ContribuableRepository contribuableRepository ;
+
 
 @PostMapping("/signup")
 public ResponseEntity<?> createCustomer(@RequestBody SignupRequest signupRequest ) throws UnsupportedEncodingException, MessagingException{
@@ -150,33 +155,7 @@ public ResponseEntity<?> verificationresponse(@RequestParam("code") String param
         return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body(new VerificationDto("something went wrong",false,user));
     }
 }
-/*@PostMapping("/formejuridique")
-public ResponseEntity<?> createFormejuridique(@RequestBody FormeJuridiqueDtos formejuridiqueDtos){
-	FormeJuridiqueDtos formeJuridiqueCree=formejuridiqueservice.saveFormeJuridique(formejuridiqueDtos);
-	if(formeJuridiqueCree==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation de forme juridique!");
-    return ResponseEntity.status(HttpStatus.CREATED).body(formeJuridiqueCree);
 
-}
-
-@PostMapping("/contribuable")
-public ResponseEntity<?> createContribuable(@RequestBody ContribuableDtos contribuableDtos ){
-	ContribuableDtos contribuableCree=contribuableservice.saveContribuable(contribuableDtos);
-	if(contribuableCree==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation de Contribuable!");
-    return ResponseEntity.status(HttpStatus.CREATED).body(contribuableCree);
-
-}
-@PostMapping("/activite")
-public ResponseEntity<?> createActivite(@RequestBody ActiviteDtos activiteDtos){
-	ActiviteDtos activitecree=activiteservice.saveActivite(activiteDtos);
-	if(activitecree==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation d'activite!");
-    return ResponseEntity.status(HttpStatus.CREATED).body(activitecree);
-}
-@PostMapping("/pays")
-public ResponseEntity<?> createActivite(@RequestBody PaysDtos paysDtos){
-	PaysDtos payscree=paysservice.savePays(paysDtos);
-	if(payscree==null)return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation d'pays!");
-    return ResponseEntity.status(HttpStatus.CREATED).body(payscree);
-}*/
 @GetMapping("/contribuableMatricule")
 public ResponseEntity<?> findByMatriculeFiscale(@RequestParam("matriculeFiscale") int matriculeFiscale) {
 		ContribuableDtos contribuable = contribuableservice.findContribuable(matriculeFiscale);
@@ -214,45 +193,7 @@ public ResponseEntity<?> savePassword(@RequestBody PasswordDto signupRequest ) t
     if(createdUserDto==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("bad request!");
     return ResponseEntity.status(HttpStatus.CREATED).body(createdUserDto);
 }
-/*@GetMapping("/lesperiodes")
-public ResponseEntity<List<PeriodeDto>> getAllcontribuable() {
-    try {
-        List<PeriodeDto> contribuableList = periodeservice.findAllPeriode();
-        return ResponseEntity.ok(contribuableList);
-    } catch (ExpiredJwtException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-    }
-}
-@GetMapping("/lesimpots")
-public ResponseEntity<List<TypeImpotDto>> getAllimpots() {
-    try {
-        List<TypeImpotDto> impotsList = impotservice.getAllImpots();
-        return ResponseEntity.ok(impotsList);
-    } catch (ExpiredJwtException ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-    }
-}
 
-@GetMapping("/detailimpot")
-public ResponseEntity<?> findByimpot(@RequestParam("libelle") String libelle) {
-	List<DetailImpot> listDetail= detailservice.findbytypeImpot(libelle);
-        if (listDetail != null)
-        	return ResponseEntity.ok(listDetail);
-
-        return ResponseEntity.notFound().build();
-
-}
-
-@GetMapping("/typeimpot")
-public ResponseEntity<?> findByimpot(@RequestParam("libelle") String libelle) {
-	 TypeImpotDto  impot= impotservice.findTypeImpotbyLibelle(libelle);
-        if (impot != null)
-        	return ResponseEntity.ok(impot);
-
-        return ResponseEntity.notFound().build();
-
-}
-*/
 @PostMapping("/declaration")
 public ResponseEntity<?> createDeclaration(@RequestBody SaveDeclaration declarationDtos) {
     Map<DetailImpot, DetailDeclarationDto> detailMap = declarationService.saveDeclaration(declarationDtos);
@@ -267,8 +208,9 @@ public ResponseEntity<?> createDeclaration(@RequestBody SaveDeclaration declarat
 public ResponseEntity<?> getObligationsByContribuable(@PathVariable Long contribuableId) {
     Optional<Contribuable> cd = this.contribuableRepository.findById(contribuableId);
     if(cd.isPresent()) {
-    List<ObligationDto> obligations = obligationFiscaleService.getlesObligationsdeContribuable(cd.get());
+    List<ObligationresponseDto> obligations = obligationFiscaleService.getlesObligationsdeContribuable(cd.get());
     return ResponseEntity.ok(obligations);
 }else return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de création de déclaration!");
     }
+
 }

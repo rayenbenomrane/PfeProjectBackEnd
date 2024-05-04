@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dtos.ObligationDto;
+import com.example.dtos.ObligationresponseDto;
 import com.example.dtos.PeriodeDto;
 import com.example.dtos.TypeImpotDto;
 import com.example.entity.Contribuable;
@@ -33,14 +34,15 @@ public class ObligationFiscaleServiceImpl implements ObligationFiscaleService{
 
 	}
 	@Override
-	public List<ObligationDto> getlesObligationsdeContribuable(Contribuable cd) {
+	public List<ObligationresponseDto> getlesObligationsdeContribuable(Contribuable cd) {
 		List<ObligationFiscale> lesobligations=obligationFiscaleRepository.findByContribuable(cd);
-		 List<ObligationDto> lesObligationsDto = new ArrayList<>();
+		 List<ObligationresponseDto> lesObligationsDto = new ArrayList<>();
 		    
 		    for(ObligationFiscale obligation : lesobligations) {
-		        ObligationDto obligationDto = new ObligationDto();
+		    	ObligationresponseDto obligationDto = new ObligationresponseDto();
 		        obligationDto.setDateDebut(obligation.getDateDebut());
 		        obligationDto.setDateFin(obligation.getDateFin());
+		        obligationDto.setIdObligation(obligation.getIdObligationFiscale());
 		      
 		        
 		        TypeImpotDto impot=new TypeImpotDto();

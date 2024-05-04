@@ -49,6 +49,7 @@ public class DeclarationServiceImpl implements DeclarationService{
 	            newDeclaration.setAnneeEffet(dc.getAnneeEffet());
 	            newDeclaration.setMoisEffet(dc.getMoisEffet());
 	            newDeclaration.setDateDeclaration(new Date());
+	            newDeclaration.setType(dc.getType());
 	            this.declarationRepo.save(newDeclaration);
 	            List<DetailImpot> lesDetailsImpot = detailimpotRepo.findByTypeImpot(obligation.get().getImpot());
 
@@ -59,6 +60,7 @@ public class DeclarationServiceImpl implements DeclarationService{
 	                // Assuming you have setters for detailImpot and declaration in DetailDeclaration class
 	                newDetailDeclaration.setDetailImpot(detail);
 	                newDetailDeclaration.setDeclaration(newDeclaration);
+	                
 	                this.detailDeclarationRepo.save(newDetailDeclaration);
 	                DetailDeclarationDto dto = new DetailDeclarationDto();
 	                dto.setIddetailDeclaration(newDetailDeclaration.getIdDetailDeclaration());

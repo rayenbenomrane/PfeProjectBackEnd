@@ -2,6 +2,7 @@ package com.example.entity;
 
 import java.util.List;
 
+import com.example.dtos.TypeDeclarationDto;
 import com.example.enums.TypeDeclarationEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -41,5 +42,12 @@ public class TypeDeclaration {
 	 
 	 
 	 private TypeDeclarationEnum libelle;
+	 
+	 public TypeDeclarationDto getType() {
+		 TypeDeclarationDto type=new TypeDeclarationDto();
+		 type.setIdTypeDeclaration(idTypeDeclaration);
+		 type.setType(libelle);
+		 return type;
+	 }
 	
 }
