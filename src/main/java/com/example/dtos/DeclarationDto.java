@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 public class DeclarationDto {
 	 private Contribuable cd;
-	    private int iddecalaration;
+	    private Long iddecalaration;
 
 }

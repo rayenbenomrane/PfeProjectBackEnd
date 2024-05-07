@@ -2,6 +2,7 @@ package com.example.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,24 +14,29 @@ import com.example.dtos.TypeImpotDto;
 import com.example.entity.Contribuable;
 import com.example.entity.Declaration;
 import com.example.entity.ObligationFiscale;
+import com.example.repository.DeclarationRepository;
 import com.example.repository.ObligationFiscaleRepository;
 
 @Service
 public class ObligationFiscaleServiceImpl implements ObligationFiscaleService{
 	@Autowired
 	private ObligationFiscaleRepository obligationFiscaleRepository;
+	@Autowired
+	private DeclarationRepository declarationRepo;
 	@Override
-	public Declaration getNumerodeclaration(Contribuable cd, int iddecalaration) {
-		/*List<ObligationFiscale> lesobligations=obligationFiscaleRepository.findByContribuable(cd);
+	public Declaration getNumerodeclaration(Contribuable cd, Long iddecalaration) {
+		  List<ObligationFiscale> lesobligations = obligationFiscaleRepository.findByContribuable(cd);
+		    Optional<Declaration> declaration = declarationRepo.findById(iddecalaration);
 
-		Declaration declaration;
-		for (ObligationFiscale obligation : lesobligations) {
-	        if (obligation.getDeclaration().getIdDeclaration() == iddecalaration) {
-	            declaration=obligation.getDeclaration();
-	            return declaration;
-	        }
-	    }*/
-		return null;
+		    if (declaration.isPresent()) {
+		        for (ObligationFiscale obligation : lesobligations) {
+		            if (obligation.getIdObligationFiscale() == declaration.get().getObligation().getIdObligationFiscale()) {
+		                return declaration.get();
+		            }
+		        }
+		    }
+
+		    return null;
 
 	}
 	@Override

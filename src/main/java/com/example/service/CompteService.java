@@ -9,4 +9,7 @@ public interface CompteService {
 	List<CompteDto> getAllCompte();
 	boolean blocageCompte(CompteDto cd);
 	boolean AcceptCompte(CompteDto cd);
+	boolean blocageCompteParEmail(String email);
+	void updateFailedAttempt(String email);
+	void resetFailedAttempt(String email);
 }

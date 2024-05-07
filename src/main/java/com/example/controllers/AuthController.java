@@ -50,6 +50,7 @@ import com.example.repository.CompteRepository;
 import com.example.repository.ContribuableRepository;
 import com.example.service.AdminService;
 import com.example.service.AuthService;
+import com.example.service.CompteService;
 import com.example.service.ContribuableService;
 import com.example.service.DeclarationService;
 import com.example.service.DetailImpotService;
@@ -99,6 +100,8 @@ private DeclarationService declarationService;
 
 @Autowired 
 private ContribuableRepository contribuableRepository ;
+@Autowired
+private CompteService compteservice;
 
 
 @PostMapping("/signup")
@@ -118,8 +121,21 @@ DisabledException,
 UsernameNotFoundException{
 	try {
 	    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
+	    compteservice.resetFailedAttempt(authenticationRequest.getEmail());
+	
 	} catch (BadCredentialsException e) {
-	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
+		
+		 compteservice.updateFailedAttempt(authenticationRequest.getEmail());
+
+	        Optional<Compte> compteOptional = compteRepository.findByEmail(authenticationRequest.getEmail());
+	        if (compteOptional.isPresent() && compteOptional.get().getFailedAttempt() == 3) {
+	           
+	            compteservice.blocageCompteParEmail(authenticationRequest.getEmail());
+	            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Account is disabled");
+	        }
+
+	        // Return response for incorrect password
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect username or password");
 	} catch (LockedException e) {
 	    return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Account is disabled");
 	} catch (UsernameNotFoundException e) {
@@ -212,5 +228,16 @@ public ResponseEntity<?> getObligationsByContribuable(@PathVariable Long contrib
     return ResponseEntity.ok(obligations);
 }else return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de création de déclaration!");
     }
-
+@PostMapping("/Compte")
+public ResponseEntity<?> createCompte(@RequestBody CompteDto compteDto ){
+    try {
+        boolean compteCree = compteservice.saveCompte(compteDto);
+        if(!compteCree) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation de compte!");
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(compteCree);
+    } catch (ExpiredJwtException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("JWT token has expired");
+    }
+}
 }

@@ -53,12 +53,13 @@ public class Compte implements UserDetails{
     private String email;
     private String password;
 	private UserRole userRole;
+	private int failedAttempt = 0;
 
-    // Other fields
-
+  
     @OneToOne(optional = true)
     @JoinColumn(name = "inscription_id", referencedColumnName = "idInscription")
     private User inscription;
+    
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

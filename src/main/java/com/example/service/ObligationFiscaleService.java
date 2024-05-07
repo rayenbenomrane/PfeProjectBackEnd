@@ -8,7 +8,7 @@ import com.example.entity.Contribuable;
 import com.example.entity.Declaration;
 
 public interface ObligationFiscaleService {
-	Declaration getNumerodeclaration(Contribuable cd,int iddecalaration);
+	Declaration getNumerodeclaration(Contribuable cd,Long iddecalaration);
 	
 	List<ObligationresponseDto> getlesObligationsdeContribuable(Contribuable cd);
 }

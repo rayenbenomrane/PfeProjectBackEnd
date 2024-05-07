@@ -34,21 +34,22 @@ public class CompteServiceImpl implements CompteService{
 		        newCompte.setPassword(new BCryptPasswordEncoder().encode(cd.getPassword()));
 		    } else {
 		        newCompte.setPassword(cd.getPassword());
+		        User UserDto=new User();
+			       UserDto.setIdInscription(cd.getInscription().getIdInscription());
+			       UserDto.setEmail(cd.getInscription().getEmail());
+			        UserDto.setUserRole(cd.getInscription().getUserRole());
+			        UserDto.setVerificationCode(cd.getInscription().getVerificationCode());
+			        UserDto.setEnabled(cd.getInscription().getEnabled());
+			        UserDto.setNonLocked(cd.getInscription().isNonLocked());
+			        UserDto.setDateInscri(cd.getInscription().getDateInscri());
+			        UserDto.setContribuable(cd.getInscription().getContribuable());
+			        UserDto.setNom(cd.getInscription().getNom());
+			      UserDto.setPrenom(cd.getInscription().getPrenom());
+			        UserDto.setTypeIdentifiant(cd.getInscription().getTypeIdentifiant());
+			        UserDto.setValeurIdentifiant(cd.getInscription().getValueIdentifiant());
+			    newCompte.setInscription(UserDto);
 		    }
-		    User UserDto=new User();
-		       UserDto.setIdInscription(cd.getInscription().getIdInscription());
-		       UserDto.setEmail(cd.getInscription().getEmail());
-		        UserDto.setUserRole(cd.getInscription().getUserRole());
-		        UserDto.setVerificationCode(cd.getInscription().getVerificationCode());
-		        UserDto.setEnabled(cd.getInscription().getEnabled());
-		        UserDto.setNonLocked(cd.getInscription().isNonLocked());
-		        UserDto.setDateInscri(cd.getInscription().getDateInscri());
-		        UserDto.setContribuable(cd.getInscription().getContribuable());
-		        UserDto.setNom(cd.getInscription().getNom());
-		      UserDto.setPrenom(cd.getInscription().getPrenom());
-		        UserDto.setTypeIdentifiant(cd.getInscription().getTypeIdentifiant());
-		        UserDto.setValeurIdentifiant(cd.getInscription().getValueIdentifiant());
-		    newCompte.setInscription(UserDto);
+		   
 		    Compte compteCree = compteRepository.save(newCompte);
 
 
@@ -82,6 +83,7 @@ public class CompteServiceImpl implements CompteService{
 
 		        existingCompte.setEmail(cd.getEmail());
 		        existingCompte.setUserRole(cd.getUserRole());
+		        
 
 		        if (existingCompte.getUserRole() == UserRole.Admin) {
 		            existingCompte.setPassword(new BCryptPasswordEncoder().encode(cd.getPassword()));
@@ -133,7 +135,7 @@ public class CompteServiceImpl implements CompteService{
 
 			        existingCompte.setEmail(cd.getEmail());
 			        existingCompte.setUserRole(cd.getUserRole());
-
+			        existingCompte.setFailedAttempt(0);
 			        if (existingCompte.getUserRole() == UserRole.Admin) {
 			            existingCompte.setPassword(new BCryptPasswordEncoder().encode(cd.getPassword()));
 			        } else {
@@ -170,6 +172,87 @@ public class CompteServiceImpl implements CompteService{
 			        return false;
 			    }
 		}
+
+
+
+		@Override
+		public boolean blocageCompteParEmail(String email) {
+			// TODO Auto-generated method stub
+			 Optional<Compte> existingCompteOptional = compteRepository.findByEmail(email);
+
+
+			    if (existingCompteOptional.isPresent()) {
+			        Compte existingCompte = existingCompteOptional.get();
+
+
+			        existingCompte.setEmail(existingCompteOptional.get().getEmail());
+			        existingCompte.setUserRole(existingCompteOptional.get().getUserRole());
+
+			        if (existingCompte.getUserRole() == UserRole.Admin) {
+			            existingCompte.setPassword(new BCryptPasswordEncoder().encode(existingCompteOptional.get().getPassword()));
+			        } else {
+			            existingCompte.setPassword(existingCompteOptional.get().getPassword());
+			        }
+
+
+			        User existingUser = existingCompte.getInscription();
+			        existingUser.setEmail(existingCompteOptional.get().getInscription().getEmail());
+			        existingUser.setUserRole(existingCompteOptional.get().getInscription().getUserRole());
+			        existingUser.setVerificationCode(existingCompteOptional.get().getInscription().getVerificationCode());
+			        existingUser.setEnabled(existingCompteOptional.get().getInscription().isEnabled());
+			        existingUser.setNonLocked(false); // Consider revising this logic
+			        existingUser.setDateInscri(existingCompteOptional.get().getInscription().getDateInscri());
+			        existingUser.setContribuable(existingCompteOptional.get().getInscription().getContribuable());
+			        existingUser.setNom(existingCompteOptional.get().getInscription().getNom());
+			        existingUser.setPrenom(existingCompteOptional.get().getInscription().getPrenom());
+			        existingUser.setTypeIdentifiant(existingCompteOptional.get().getInscription().getTypeIdentifiant());
+			        existingUser.setValeurIdentifiant(existingCompteOptional.get().getInscription().getValeurIdentifiant());
+			        existingUser.setPoste(existingCompteOptional.get().getInscription().getPoste());
+			        existingUser.setPassword(existingCompteOptional.get().getPassword());
+
+
+			        Compte compteCree = compteRepository.save(existingCompte);
+
+
+			        if (!compteCree.getInscription().isNonLocked()) {
+			            return false;
+			        } else {
+			            return true;
+			        }
+			    } else {
+
+			        return false;
+			    }
+		}
+
+
+
+		@Override
+		public void updateFailedAttempt(String email) {
+		    Optional<Compte> existingCompteOptional = compteRepository.findByEmail(email);
+		    if(existingCompteOptional.isPresent()) {
+		        Compte existingCompte = existingCompteOptional.get();
+		        int currentFailedAttempt = existingCompte.getFailedAttempt();
+		        existingCompte.setFailedAttempt(currentFailedAttempt + 1);
+		        compteRepository.save(existingCompte);
+		    }
+		}
+
+
+
+		@Override
+		public void resetFailedAttempt(String email) {
+			// TODO Auto-generated method stub
+			Optional<Compte> existingCompteOptional = compteRepository.findByEmail(email);
+		    if(existingCompteOptional.isPresent()) {
+		        Compte existingCompte = existingCompteOptional.get();
+		        
+		        existingCompte.setFailedAttempt(0);
+		        compteRepository.save(existingCompte);
+		    }
+			
+		}
+
 
 
 
