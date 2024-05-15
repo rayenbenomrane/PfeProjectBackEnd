@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 public class ObligationresponseDto {
-	
-	
+
+
 	private Long idObligation;
 	private Date dateDebut;
 	private Date dateFin;

@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 public class ObligationDto {
 
-	
-	
+
+
 	private Date dateDebut;
 	private Date dateFin;
 	private TypeImpotDto impot;

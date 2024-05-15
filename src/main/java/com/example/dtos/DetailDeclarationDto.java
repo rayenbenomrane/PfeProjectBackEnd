@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class DetailDeclarationDto {
 
-	
+
 	private Long iddetailDeclaration;
-	
+
 	private String valeur;
 }

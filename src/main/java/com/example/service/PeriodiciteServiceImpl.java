@@ -14,8 +14,8 @@ public class PeriodiciteServiceImpl implements PeriodiciteService{
 
 	@Autowired
 	private PeriodiciteRepository perioderepo;
-	
-	
+
+
 	@Override
 	public List<PeriodeDto> findAllPeriode() {
 		return perioderepo.findAll().stream().map(Periodicite::getperiodicite).collect(Collectors.toList());

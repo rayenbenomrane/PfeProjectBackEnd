@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -37,12 +36,12 @@ public class Declaration {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator11Name")
 	@SequenceGenerator(name = "yourGenerator11Name", sequenceName = "decalaration_seq", allocationSize = 1)
 	private long idDeclaration;
-	
+
 	private Date dateDeclaration;
-	 
-	
+
+
 	private int moisEffet;
-	
+
 	private int anneeEffet;
 
 	@ManyToOne(fetch = FetchType.EAGER)

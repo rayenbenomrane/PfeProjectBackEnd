@@ -9,17 +9,17 @@ import lombok.Data;
 public class DetailImpotDto {
 
 	private long idDetailImpot;
-	 
-	 
+
+
 	 private String libelle;
-	 
+
 	 private TypedeDetailImpot typeDetail;
-	 
+
 	 private NatureRebrique naturerebrique;
-	 
+
 	 private int ordre;
-	 
+
 	 private boolean  obligatoire;
-	
+
 	 private TypeImpotDto typeImpot;
 }

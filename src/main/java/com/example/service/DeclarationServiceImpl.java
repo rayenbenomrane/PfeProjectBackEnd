@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +23,8 @@ import com.example.repository.ObligationFiscaleRepository;
 @Service
 public class DeclarationServiceImpl implements DeclarationService{
 
-	
-	@Autowired 
+
+	@Autowired
 	private ObligationFiscaleRepository obligationRepo;
 	@Autowired
 	private DetailImpotRepository detailimpotRepo;
@@ -33,14 +32,14 @@ public class DeclarationServiceImpl implements DeclarationService{
 	private DetailDeclarationRepository detailDeclarationRepo;
 	@Autowired
 	private DeclarationRepository declarationRepo;
-	
+
 	@Override
 	public Map<DetailImpot, DetailDeclarationDto> saveDeclaration(SaveDeclaration dc) {
 	    Optional<ObligationFiscale> obligation = obligationRepo.findById(dc.getIdObligation());
-	    
+
 	    // Initialize detailMap here
 	    Map<DetailImpot, DetailDeclarationDto> detailMap = new HashMap<>();
-	    
+
 	    if (obligation.isPresent()) {
 	        Optional<Declaration> declaration = declarationRepo.findByMoisEffetAndAnneeEffetAndObligation(dc.getMoisEffet(), dc.getAnneeEffet(), obligation.get());
 	        if (!declaration.isPresent()) {
@@ -60,7 +59,7 @@ public class DeclarationServiceImpl implements DeclarationService{
 	                // Assuming you have setters for detailImpot and declaration in DetailDeclaration class
 	                newDetailDeclaration.setDetailImpot(detail);
 	                newDetailDeclaration.setDeclaration(newDeclaration);
-	                
+
 	                this.detailDeclarationRepo.save(newDetailDeclaration);
 	                DetailDeclarationDto dto = new DetailDeclarationDto();
 	                dto.setIddetailDeclaration(newDetailDeclaration.getIdDetailDeclaration());
@@ -84,13 +83,13 @@ public class DeclarationServiceImpl implements DeclarationService{
 	                    Optional<DetailDeclaration> relatedDetail = lesdetailsDeclaration.stream()
 	                            .filter(detailDeclaration -> detailDeclaration.getDetailImpot().getIdDetailImpot() == detail.getIdDetailImpot())
 	                            .findFirst();
-	                    
+
 	                    // If a matching DetailDeclaration is found, create a DetailDeclarationDto
 	                    relatedDetail.ifPresent(detailDeclaration -> {
 	                        DetailDeclarationDto dto = new DetailDeclarationDto();
 	                        dto.setIddetailDeclaration(detailDeclaration.getIdDetailDeclaration());
 	                        dto.setValeur(detailDeclaration.getValeur());
-	                        
+
 	                        // Put the DetailImpot object as the key and DetailDeclarationDto object as the value into the map
 	                        detailMap.put(detail, dto);
 	                    });
@@ -100,7 +99,7 @@ public class DeclarationServiceImpl implements DeclarationService{
 	            }
 	        }
 	    }
-	    return new HashMap<>(); // Return an empty map if obligation is not present
+	    return new HashMap<>();
 	}
 
 	}

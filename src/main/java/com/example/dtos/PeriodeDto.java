@@ -8,6 +8,6 @@ public class PeriodeDto {
 
 	private long idPeriodicite;
 	private Periode periode;
-	
-	
+
+
 }

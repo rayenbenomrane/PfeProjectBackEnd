@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.dtos.ObligationDto;
 import com.example.dtos.ObligationresponseDto;
 import com.example.dtos.PeriodeDto;
 import com.example.dtos.TypeImpotDto;
@@ -43,14 +42,14 @@ public class ObligationFiscaleServiceImpl implements ObligationFiscaleService{
 	public List<ObligationresponseDto> getlesObligationsdeContribuable(Contribuable cd) {
 		List<ObligationFiscale> lesobligations=obligationFiscaleRepository.findByContribuable(cd);
 		 List<ObligationresponseDto> lesObligationsDto = new ArrayList<>();
-		    
+
 		    for(ObligationFiscale obligation : lesobligations) {
 		    	ObligationresponseDto obligationDto = new ObligationresponseDto();
 		        obligationDto.setDateDebut(obligation.getDateDebut());
 		        obligationDto.setDateFin(obligation.getDateFin());
 		        obligationDto.setIdObligation(obligation.getIdObligationFiscale());
-		      
-		        
+
+
 		        TypeImpotDto impot=new TypeImpotDto();
 		        impot.setLibelle(obligation.getImpot().getLibelle());
 		        PeriodeDto periode=new PeriodeDto();
@@ -58,10 +57,10 @@ public class ObligationFiscaleServiceImpl implements ObligationFiscaleService{
 		        periode.setPeriode(obligation.getImpot().getPeriodicite().getPeriode());
 		        impot.setPeriodicite(periode);
 		        obligationDto.setImpot(impot);
-		        
+
 		        lesObligationsDto.add(obligationDto);
 		    }
-		    
+
 		    return lesObligationsDto;
 	}
 

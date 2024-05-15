@@ -1,10 +1,7 @@
 package com.example.entity;
 
-import java.util.List;
-
 import com.example.dtos.TypeDeclarationDto;
 import com.example.enums.TypeDeclarationEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,23 +28,23 @@ import lombok.ToString;
 @Table(name = "TypeDeclaration")
 public class TypeDeclaration {
 
-	
-	
-	
-	
+
+
+
+
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator20Name")
 	 @SequenceGenerator(name = "yourGenerator20Name", sequenceName = "typedeclaration_seq", allocationSize = 1)
 	private Long idTypeDeclaration;
-	 
-	 
+
+
 	 private TypeDeclarationEnum libelle;
-	 
+
 	 public TypeDeclarationDto getType() {
 		 TypeDeclarationDto type=new TypeDeclarationDto();
 		 type.setIdTypeDeclaration(idTypeDeclaration);
 		 type.setType(libelle);
 		 return type;
 	 }
-	
+
 }

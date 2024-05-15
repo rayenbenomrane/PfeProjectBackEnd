@@ -9,7 +9,7 @@ import com.example.entity.Compte;
 
 public interface CompteRepository extends JpaRepository<Compte,Long>{
 	 Optional<Compte> findByEmail(String email);
-	 
-	 
+
+
 
 }

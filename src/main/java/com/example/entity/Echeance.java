@@ -41,5 +41,5 @@ public class Echeance {
 	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	    @JoinColumn(name = "typeImpot_id")
 	 	private TypeImpot typeImpot;
-	 
+
 }

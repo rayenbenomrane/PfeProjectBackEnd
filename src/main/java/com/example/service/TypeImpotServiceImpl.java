@@ -21,7 +21,7 @@ import com.example.repository.TypeImpotRepository;
 @Service
 public class TypeImpotServiceImpl implements TypeImpotService{
 
-	
+
 	@Autowired
 	private EcheanceRepository echeanceRepository;
 	@Autowired
@@ -30,7 +30,7 @@ public class TypeImpotServiceImpl implements TypeImpotService{
 	private PeriodiciteRepository periodiciteRepository;
 	@Autowired
 	private TypeImpotRepository impotrepo;
-	
+
 	@Override
 	public TypeImpotDto saveImpot(TypeImpotDto td) {
 		TypeImpot impot=new TypeImpot();
@@ -50,22 +50,22 @@ nb.setPeriode(td.getPeriodicite().getPeriode());
 		            echeance.setJour(15); // Jour de l'échéance (exemple : le 15 de chaque mois)
 		            echeance.setMois(mois+1); // Mois de l'échéance (1 pour janvier, 2 pour février, etc.)
 		            echeance.setNumeroEcheance(mois); // Numéro de l'échéance (1 à 12 pour chaque mois)
-		            
-		            
+
+
 		            int annee = 0;
 		            if (mois == 12) {
 		            	echeance.setMois(1);
 		                annee = 1;
 		            }
-		           
-		            echeance.setAnnee(annee); 
-		            
-		            echeance.setTypeImpot(impot); 
 
-		           
+		            echeance.setAnnee(annee);
+
+		            echeance.setTypeImpot(impot);
+
+
 		            echeanceRepository.save(echeance); // Assurez-vous d'injecter echeanceRepository dans votre classe
 		        }
-			
+
 		}else if (impot.getPeriodicite().getPeriode() == Periode.TRIMESTRE) {
 	        for (int trimestre = 1; trimestre <= 4; trimestre++) {
 	        	Echeance echeance = new Echeance();
@@ -77,48 +77,48 @@ nb.setPeriode(td.getPeriodicite().getPeriode());
 	            	echeance.setMois(1);
 	                annee = 1;
 	            }
-	            echeance.setAnnee(annee); 
-	            
-	            echeance.setTypeImpot(impot); 
+	            echeance.setAnnee(annee);
 
-	           
+	            echeance.setTypeImpot(impot);
+
+
 	            echeanceRepository.save(echeance);
 	        }
 	    } else if (impot.getPeriodicite().getPeriode() == Periode.SEMESTRE) {
 	        for (int semestre = 1; semestre <= 2; semestre++) {
 	        	Echeance echeance = new Echeance();
-	            echeance.setJour(15); 
-	            echeance.setMois(7); 
+	            echeance.setJour(15);
+	            echeance.setMois(7);
 	            echeance.setNumeroEcheance(semestre);
 	            int annee = 0;
 	            if (semestre == 2) {
 	            	echeance.setMois(1);
 	                annee = 1;
 	            }
-	            echeance.setAnnee(annee); 
-	            
-	            echeance.setTypeImpot(impot); 
-	            
-	           
+	            echeance.setAnnee(annee);
+
+	            echeance.setTypeImpot(impot);
+
+
 	            echeanceRepository.save(echeance);
 	        }
 	    } else if (impot.getPeriodicite().getPeriode() == Periode.ANNUELLE) {
 	    	Echeance echeance = new Echeance();
-            echeance.setJour(15); 
-            echeance.setMois(1); 
+            echeance.setJour(15);
+            echeance.setMois(1);
             echeance.setNumeroEcheance(1);
-         
-           
-            echeance.setAnnee(1); 
-            
-            echeance.setTypeImpot(impot); 
-            
-           
+
+
+            echeance.setAnnee(1);
+
+            echeance.setTypeImpot(impot);
+
+
             echeanceRepository.save(echeance);
 	    }
-		
+
 		TypeImpotDto savedImpot=new TypeImpotDto();
-		
+
 		savedImpot.setLibelle(impot1.getLibelle());
 		PeriodeDto pd=new PeriodeDto();
 		pd.setIdPeriodicite(impot1.getPeriodicite().getIdPeriodicite());
@@ -141,7 +141,7 @@ nb.setPeriode(td.getPeriodicite().getPeriode());
 		if(typetrouve.get()!=null) {
 			TypeImpotDto impot=new TypeImpotDto();
 			impot.setLibelle(typetrouve.get().getLibelle());
-			
+
 			PeriodeDto periode=new PeriodeDto();
 			periode.setIdPeriodicite(typetrouve.get().getPeriodicite().getIdPeriodicite());
 			periode.setPeriode(typetrouve.get().getPeriodicite().getPeriode());

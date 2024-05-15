@@ -49,7 +49,7 @@ public class CompteServiceImpl implements CompteService{
 			        UserDto.setValeurIdentifiant(cd.getInscription().getValueIdentifiant());
 			    newCompte.setInscription(UserDto);
 		    }
-		   
+
 		    Compte compteCree = compteRepository.save(newCompte);
 
 
@@ -83,7 +83,7 @@ public class CompteServiceImpl implements CompteService{
 
 		        existingCompte.setEmail(cd.getEmail());
 		        existingCompte.setUserRole(cd.getUserRole());
-		        
+
 
 		        if (existingCompte.getUserRole() == UserRole.Admin) {
 		            existingCompte.setPassword(new BCryptPasswordEncoder().encode(cd.getPassword()));
@@ -246,11 +246,11 @@ public class CompteServiceImpl implements CompteService{
 			Optional<Compte> existingCompteOptional = compteRepository.findByEmail(email);
 		    if(existingCompteOptional.isPresent()) {
 		        Compte existingCompte = existingCompteOptional.get();
-		        
+
 		        existingCompte.setFailedAttempt(0);
 		        compteRepository.save(existingCompte);
 		    }
-			
+
 		}
 
 
