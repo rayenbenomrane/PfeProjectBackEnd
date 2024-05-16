@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 
 import com.example.dtos.DetailDeclarationDto;
 import com.example.dtos.SaveDeclaration;
+import com.example.dtos.SaveMontant;
 import com.example.entity.Declaration;
 import com.example.entity.DetailDeclaration;
 import com.example.entity.DetailImpot;
 import com.example.entity.ObligationFiscale;
+import com.example.entity.TypeDeclaration;
 import com.example.enums.TypeDeclarationEnum;
 import com.example.repository.DeclarationRepository;
 import com.example.repository.DetailDeclarationRepository;
@@ -63,7 +65,8 @@ public class DeclarationServiceImpl implements DeclarationService{
 	                this.detailDeclarationRepo.save(newDetailDeclaration);
 	                DetailDeclarationDto dto = new DetailDeclarationDto();
 	                dto.setIddetailDeclaration(newDetailDeclaration.getIdDetailDeclaration());
-	                dto.setValeur(null);// Put the DetailImpot object as key and DetailDeclaration object as value into the map
+	                dto.setValeur(null);
+	                dto.setIddeclaration(newDeclaration.getIdDeclaration());// Put the DetailImpot object as key and DetailDeclaration object as value into the map
 	                detailMap.put(detail, dto);
 	            }
 	            return detailMap;
@@ -72,7 +75,8 @@ public class DeclarationServiceImpl implements DeclarationService{
 	                // Return an empty map if it's an initial type
 	                return new HashMap<>();
 	            } else {
-	                // If it's not an initial type, fetch existing details and populate detailMap
+	            	
+	            	
 	                List<DetailImpot> lesDetailsImpot = detailimpotRepo.findByTypeImpot(declaration.get().getObligation().getImpot());
 
 	                // Fetch all detail declarations associated with the given declaration
@@ -89,7 +93,7 @@ public class DeclarationServiceImpl implements DeclarationService{
 	                        DetailDeclarationDto dto = new DetailDeclarationDto();
 	                        dto.setIddetailDeclaration(detailDeclaration.getIdDetailDeclaration());
 	                        dto.setValeur(detailDeclaration.getValeur());
-
+	                        dto.setIddeclaration(declaration.get().getIdDeclaration());
 	                        // Put the DetailImpot object as the key and DetailDeclarationDto object as the value into the map
 	                        detailMap.put(detail, dto);
 	                    });
@@ -100,6 +104,21 @@ public class DeclarationServiceImpl implements DeclarationService{
 	        }
 	    }
 	    return new HashMap<>();
+	}
+
+	@Override
+	public boolean updateMontantaCalculer(SaveMontant di) {
+		Optional<Declaration> declaration=declarationRepo.findById(di.getIdDeclaration());
+		if(declaration.isPresent()) {
+			declaration.get().setMontantaCalculer(di.getMontantApayer());
+			declarationRepo.save(declaration.get());
+			return true;
+		}else return false;
+	}
+
+	@Override
+	public List<Declaration> getDeclarationsByMatriculeFiscale(int matriculeFiscale) {
+		return declarationRepo.findByObligationFiscale_Contribuable_MatriculeFiscale(matriculeFiscale);
 	}
 
 	}

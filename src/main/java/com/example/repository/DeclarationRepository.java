@@ -11,5 +11,5 @@ public interface DeclarationRepository extends JpaRepository<Declaration,Long>{
 
 
 	Optional<Declaration> findByMoisEffetAndAnneeEffetAndObligation(int moisEffet, int anneeEffet, ObligationFiscale obligation);
-
+	List<Declaration> findByObligationFiscale_Contribuable_MatriculeFiscale(int matriculeFiscale);
 }

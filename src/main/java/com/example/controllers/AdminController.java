@@ -2,13 +2,16 @@ package com.example.controllers;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,12 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.CompteDto;
 import com.example.dtos.ContribuableDtos;
+import com.example.dtos.DetailDeclarationDto;
 import com.example.dtos.DetailImpotDto;
+import com.example.dtos.ImpotDto;
 import com.example.dtos.PeriodeDto;
 import com.example.dtos.TypeImpotDto;
 import com.example.dtos.UpdatePasswordDto;
 import com.example.dtos.UserDtos;
 import com.example.entity.DetailImpot;
+import com.example.entity.TypeImpot;
+import com.example.repository.TypeImpotRepository;
 import com.example.service.AdminService;
 import com.example.service.CompteService;
 import com.example.service.ContribuableService;
@@ -52,6 +59,8 @@ public class AdminController {
 	private TypeImpotService impotservice;
 	@Autowired
 	private DetailImpotService detailservice;
+	@Autowired
+	private TypeImpotRepository impotrepo;
 
 
 	 @ExceptionHandler(ExpiredJwtException.class)
@@ -199,6 +208,16 @@ public class AdminController {
 	         return ResponseEntity.notFound().build();
 
 	 }
+	 @PutMapping("/updateimpot")
+	 public ResponseEntity<?> updateimpot(@RequestBody ImpotDto impotDto) {
+	     boolean isUpdated = impotservice.updateImpot(impotDto);
+	     if (isUpdated) {
+	         return ResponseEntity.status(HttpStatus.ACCEPTED).body(isUpdated);
+	     } else {
+	         return ResponseEntity.status(404).body("impot not found");
+	     }
+	 }
+	
 
 
 

@@ -38,6 +38,7 @@ import com.example.dtos.CompteDto;
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.DeclarationDto;
 import com.example.dtos.DetailDeclarationDto;
+import com.example.dtos.ImpotDto;
 import com.example.dtos.ObligationresponseDto;
 import com.example.dtos.PasswordDto;
 import com.example.dtos.SaveDeclaration;
@@ -259,6 +260,14 @@ public double calculate(@RequestBody CalculationRequest request) throws ScriptEx
           throw new RuntimeException("Error evaluating the formula: " + formula, e);
       }
 }
-
+/*@PutMapping("/updateimpot")
+public ResponseEntity<?> updateimpot(@RequestBody ImpotDto impotDto) {
+    boolean isUpdated = impotservice.updateImpot(impotDto);
+    if (isUpdated) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(isUpdated);
+    } else {
+        return ResponseEntity.status(404).body("impot not found");
+    }
+}*/
 }
 

@@ -43,6 +43,10 @@ public class Declaration {
 	private int moisEffet;
 
 	private int anneeEffet;
+	
+	
+	
+	private Float montantaCalculer;
 
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "obligation_id")

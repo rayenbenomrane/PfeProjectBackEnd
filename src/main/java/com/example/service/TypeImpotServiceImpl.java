@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.dtos.ImpotDto;
 import com.example.dtos.PeriodeDto;
 import com.example.dtos.TypeImpotDto;
 import com.example.entity.Echeance;
@@ -148,6 +149,18 @@ nb.setPeriode(td.getPeriodicite().getPeriode());
 			impot.setPeriodicite(periode);
 			return impot;
 		}else return null;
+	}
+
+
+	@Override
+	public boolean updateImpot(ImpotDto id) {
+		Optional<TypeImpot> typetrouve=impotrepo.findByLibelle(id.getLibelle());
+		if(typetrouve.get()!=null) {
+			typetrouve.get().setFormule(id.getFormule());
+			impotrepo.save(typetrouve.get());
+			return true;
+		}else return false;
+		
 	}
 
 }

@@ -26,11 +26,15 @@ import com.example.dtos.DetailDeclarationDto;
 import com.example.dtos.ObligationresponseDto;
 import com.example.dtos.ReclamationDto;
 import com.example.dtos.SaveDeclaration;
+import com.example.dtos.SaveMontant;
 import com.example.dtos.TypeDeclarationDto;
 import com.example.entity.Contribuable;
+import com.example.entity.Declaration;
 import com.example.entity.DetailImpot;
 import com.example.entity.Reclamation;
+import com.example.entity.TypeImpot;
 import com.example.repository.ContribuableRepository;
+import com.example.repository.TypeImpotRepository;
 import com.example.service.ContribuableService;
 import com.example.service.DeclarationService;
 import com.example.service.DetailDeclarationService;
@@ -60,6 +64,8 @@ public class ClientController {
 	private TypeDeclarationService typeservice;
 	@Autowired
 	private DetailDeclarationService detaildeclarationservice;
+	@Autowired
+	private TypeImpotRepository impotrepo;
 
 	 @GetMapping("/contribuable/{id}")
 	    public ResponseEntity<?> findContribuableByIdCompte(@PathVariable("id") long id) {
@@ -139,4 +145,28 @@ public class ClientController {
 	         return ResponseEntity.status(404).body("Detail not found");
 	     }
 	 }
+	 @GetMapping("/formuledeCalcul")
+	 public ResponseEntity<?> findbylibelleimpot(@RequestParam("libelle") String libelle){
+		 Optional<TypeImpot> type=impotrepo.findByLibelle(libelle);
+		 if(type.isPresent()) {
+			 return ResponseEntity.ok(type.get());
+		 }else return ResponseEntity.status(404).body("impot not found");
+	 }
+	 @PutMapping("/updateMontant")
+	 public ResponseEntity<?> updateMontant(@RequestBody SaveMontant montant) {
+	     boolean isUpdated = declarationService.updateMontantaCalculer(montant);
+	     if (isUpdated) {
+	         return ResponseEntity.status(HttpStatus.ACCEPTED).body(isUpdated);
+	     } else {
+	         return ResponseEntity.status(404).body("Montant not found");
+	     }
+	 }
+	 @GetMapping("/declarationbycontribuable")
+     public ResponseEntity<?> getDeclarationsByMatriculeFiscale(@RequestParam("matriculeFiscale") int matriculeFiscale) {
+         List<Declaration> declarations = declarationService.getDeclarationsByMatriculeFiscale(matriculeFiscale);
+         if (declarations.isEmpty()) {
+             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No declarations found ");
+         }
+         return ResponseEntity.ok(declarations);
+     }
 }
