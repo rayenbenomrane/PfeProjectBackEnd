@@ -41,6 +41,9 @@ import com.example.dtos.DetailDeclarationDto;
 import com.example.dtos.ImpotDto;
 import com.example.dtos.ObligationresponseDto;
 import com.example.dtos.PasswordDto;
+import com.example.dtos.PaymentRequest;
+import com.example.dtos.PaymentResponse;
+import com.example.dtos.PaymentStatus;
 import com.example.dtos.SaveDeclaration;
 import com.example.dtos.SignupRequest;
 import com.example.dtos.UserDtos;
@@ -59,6 +62,7 @@ import com.example.service.ContribuableService;
 import com.example.service.DeclarationService;
 import com.example.service.DetailDeclarationService;
 import com.example.service.DetailImpotService;
+import com.example.service.KonnectPaymentService;
 import com.example.service.ObligationFiscaleService;
 import com.example.service.TypeImpotService;
 import com.example.utils.JwtUtils;
@@ -92,12 +96,7 @@ private ObligationFiscaleService obligationFiscaleService;
 @Autowired
 private AdminService adminservice;
 
-@Autowired
-private TypeImpotService impotservice;
 
-
-@Autowired
-private DetailImpotService detailservice;
 
 @Autowired
 private DeclarationService declarationService;
@@ -106,6 +105,7 @@ private DeclarationService declarationService;
 private ContribuableRepository contribuableRepository ;
 @Autowired
 private CompteService compteservice;
+
 
 
 
@@ -269,5 +269,6 @@ public ResponseEntity<?> updateimpot(@RequestBody ImpotDto impotDto) {
         return ResponseEntity.status(404).body("impot not found");
     }
 }*/
+
 }
 

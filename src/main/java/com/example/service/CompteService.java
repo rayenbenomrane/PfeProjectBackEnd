@@ -1,7 +1,9 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import com.example.dtos.CompteById;
 import com.example.dtos.CompteDto;
 
 public interface CompteService {
@@ -12,4 +14,5 @@ public interface CompteService {
 	boolean blocageCompteParEmail(String email);
 	void updateFailedAttempt(String email);
 	void resetFailedAttempt(String email);
+	CompteById getCompteByid(Long id);
 }

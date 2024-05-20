@@ -118,7 +118,7 @@ public class DeclarationServiceImpl implements DeclarationService{
 
 	@Override
 	public List<Declaration> getDeclarationsByMatriculeFiscale(int matriculeFiscale) {
-		return declarationRepo.findByObligationFiscale_Contribuable_MatriculeFiscale(matriculeFiscale);
+		return declarationRepo.findByObligation_Contribuable_MatriculeFiscale(matriculeFiscale);
 	}
 
 	}

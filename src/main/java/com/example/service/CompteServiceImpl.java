@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.dtos.CompteById;
 import com.example.dtos.CompteDto;
 import com.example.entity.Compte;
 import com.example.entity.User;
@@ -251,6 +252,22 @@ public class CompteServiceImpl implements CompteService{
 		        compteRepository.save(existingCompte);
 		    }
 
+		}
+
+
+
+		@Override
+		public CompteById getCompteByid(Long id) {
+			
+			
+		Optional<Compte>  compte=compteRepository.findById(id);
+		if(compte.isPresent()) {
+			CompteById compteDto=new CompteById();
+			compteDto.setEmail(compte.get().getEmail());
+			compteDto.setFirstName(compte.get().getInscription().getNom());
+			compteDto.setLastName(compte.get().getInscription().getPrenom());
+			return compteDto;
+		}else return null;
 		}
 
 

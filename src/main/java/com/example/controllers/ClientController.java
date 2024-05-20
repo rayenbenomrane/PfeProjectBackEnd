@@ -21,9 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.CalculationRequest;
+import com.example.dtos.CompteById;
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.DetailDeclarationDto;
 import com.example.dtos.ObligationresponseDto;
+import com.example.dtos.PaymentRequest;
+import com.example.dtos.PaymentResponse;
+import com.example.dtos.PaymentStatus;
 import com.example.dtos.ReclamationDto;
 import com.example.dtos.SaveDeclaration;
 import com.example.dtos.SaveMontant;
@@ -35,9 +39,11 @@ import com.example.entity.Reclamation;
 import com.example.entity.TypeImpot;
 import com.example.repository.ContribuableRepository;
 import com.example.repository.TypeImpotRepository;
+import com.example.service.CompteService;
 import com.example.service.ContribuableService;
 import com.example.service.DeclarationService;
 import com.example.service.DetailDeclarationService;
+import com.example.service.KonnectPaymentService;
 import com.example.service.ObligationFiscaleService;
 import com.example.service.ReclamationService;
 import com.example.service.TypeDeclarationService;
@@ -66,6 +72,10 @@ public class ClientController {
 	private DetailDeclarationService detaildeclarationservice;
 	@Autowired
 	private TypeImpotRepository impotrepo;
+	@Autowired
+	private KonnectPaymentService konnectService;
+	@Autowired
+	private CompteService compteservice;
 
 	 @GetMapping("/contribuable/{id}")
 	    public ResponseEntity<?> findContribuableByIdCompte(@PathVariable("id") long id) {
@@ -169,4 +179,23 @@ public class ClientController {
          }
          return ResponseEntity.ok(declarations);
      }
+	 @PostMapping("/init")
+	 public ResponseEntity<?> initPayment(@RequestBody PaymentRequest paymentRequest) {
+	     PaymentResponse response = konnectService.initiatePayment(paymentRequest);
+	     return ResponseEntity.ok(response);
+	 }
+
+	 @GetMapping("/{paymentId}")
+	 public ResponseEntity<?> getPaymentStatus(@PathVariable String paymentId) {
+	     PaymentStatus status = konnectService.getPaymentStatus(paymentId);
+	     return ResponseEntity.ok(status);
+	 }
+	 
+	 @GetMapping("/getCompte")
+	 public ResponseEntity<?> getCompteById(@RequestParam("idcompte") Long idCompte){
+		 CompteById compte=compteservice.getCompteByid(idCompte);
+		 if(compte!=null) {
+		 return ResponseEntity.ok(compte);
+	 }else return ResponseEntity.status(404).body("Compte not found");
+		 }
 }

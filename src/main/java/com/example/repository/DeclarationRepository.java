@@ -1,5 +1,6 @@
 package com.example.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,5 +12,5 @@ public interface DeclarationRepository extends JpaRepository<Declaration,Long>{
 
 
 	Optional<Declaration> findByMoisEffetAndAnneeEffetAndObligation(int moisEffet, int anneeEffet, ObligationFiscale obligation);
-	List<Declaration> findByObligationFiscale_Contribuable_MatriculeFiscale(int matriculeFiscale);
+	List<Declaration> findByObligation_Contribuable_MatriculeFiscale(int matriculeFiscale);
 }
