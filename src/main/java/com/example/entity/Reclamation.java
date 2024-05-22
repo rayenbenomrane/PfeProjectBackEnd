@@ -2,6 +2,8 @@ package com.example.entity;
 
 import java.util.Date;
 
+import com.example.dtos.ReclamationDto;
+import com.example.dtos.ReclamtionResponse;
 import com.example.enums.Etat;
 
 import jakarta.persistence.CascadeType;
@@ -58,7 +60,18 @@ public class Reclamation {
 	 @JoinColumn(name = "declaration_id", nullable = true)
 	 	private Declaration declaration;
 
-
+   public ReclamtionResponse getreclamation()
+   {
+	   ReclamtionResponse reclamation=new ReclamtionResponse();
+	   reclamation.setContenu(contenu);
+	   reclamation.setDateReclamation(dateReclamation);
+	   reclamation.setEtat(etat);
+	   reclamation.setDeclaration(declaration);
+	   reclamation.setSolution(solution);
+	   reclamation.setTitre(titre);
+	   reclamation.setIdReclamation(idReclamation);
+	   return reclamation;
+   }
 
 
 

@@ -1,13 +1,16 @@
 package com.example.service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dtos.ReclamationDto;
-
+import com.example.dtos.ReclamtionResponse;
+import com.example.entity.Compte;
 import com.example.entity.Declaration;
 import com.example.entity.Reclamation;
 import com.example.enums.Etat;
@@ -56,4 +59,11 @@ if(c.getIdDeclaration()!=0l) {
 
 
 }
+
+
+	@Override
+	public List<ReclamtionResponse> getAllReclamation() {
+		return reclamationrepo.findAll().stream().map(Reclamation::getreclamation).collect(Collectors.toList());
+		
+	}
 }

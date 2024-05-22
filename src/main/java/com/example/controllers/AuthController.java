@@ -38,6 +38,7 @@ import com.example.dtos.DetailDeclarationDto;
 import com.example.dtos.ObligationresponseDto;
 import com.example.dtos.PasswordDto;
 import com.example.dtos.ReclamationDto;
+import com.example.dtos.ReclamtionResponse;
 import com.example.dtos.SaveDeclaration;
 import com.example.dtos.SignupRequest;
 import com.example.dtos.UserDtos;
@@ -271,6 +272,11 @@ public ResponseEntity<?> saveReclamation(@RequestBody ReclamationDto reclamation
     } else {
         return ResponseEntity.badRequest().body(null);
     }
+}
+@GetMapping("lesreclamations")
+public ResponseEntity<?> lesreclamations(){
+	List<ReclamtionResponse> list=reclamationservice.getAllReclamation();
+	return ResponseEntity.ok(list);
 }
 }
 
