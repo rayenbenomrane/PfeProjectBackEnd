@@ -31,7 +31,7 @@ public class CompteServiceImpl implements CompteService{
 		    Compte newCompte = new Compte();
 		    newCompte.setEmail(cd.getEmail());
 		    newCompte.setUserRole(cd.getUserRole());
-		    if (newCompte.getUserRole() == UserRole.Admin) {
+		    if (newCompte.getUserRole() == UserRole.Admin || newCompte.getUserRole() == UserRole.Responsable) {
 		        newCompte.setPassword(new BCryptPasswordEncoder().encode(cd.getPassword()));
 		    } else {
 		        newCompte.setPassword(cd.getPassword());

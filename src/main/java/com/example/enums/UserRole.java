@@ -1,5 +1,5 @@
 package com.example.enums;
 
 public enum UserRole {
-    Admin,Client
+    Admin,Client,Responsable
 }

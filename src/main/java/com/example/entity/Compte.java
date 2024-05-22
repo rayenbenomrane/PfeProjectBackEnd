@@ -81,7 +81,7 @@ public class Compte implements UserDetails{
 	@Override
 	public boolean isAccountNonLocked() {
 		// TODO Auto-generated method stub
-		if(userRole==UserRole.Admin){
+		if(userRole==UserRole.Admin|| userRole==UserRole.Responsable){
 			return true;
 		}else return inscription.isNonLocked();
 	}
@@ -95,7 +95,7 @@ public class Compte implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
-		if(userRole==UserRole.Admin){
+		if(userRole==UserRole.Admin || userRole==UserRole.Responsable){
 			return true;
 		}else return inscription.isEnabled();
 	}

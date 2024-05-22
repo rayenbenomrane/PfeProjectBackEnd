@@ -6,10 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 
-import javax.script.ScriptException;
 
-import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.AuthenticationRequest;
 import com.example.dtos.AuthenticationResponse;
-import com.example.dtos.CalculationRequest;
+
 import com.example.dtos.CompteDto;
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.DeclarationDto;

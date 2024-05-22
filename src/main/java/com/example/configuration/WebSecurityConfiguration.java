@@ -43,6 +43,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
 	request.dispatcherTypeMatchers(jakarta.servlet.DispatcherType.ASYNC).permitAll().requestMatchers("/api/auth/**").permitAll()
 	.requestMatchers("/api/admin/**").hasAnyAuthority(UserRole.Admin.name())
 	.requestMatchers("/api/user/**").hasAnyAuthority(UserRole.Client.name())
+	.requestMatchers("/api/responsable/**").hasAnyAuthority(UserRole.Responsable.name())
 	.anyRequest().authenticated()).sessionManagement(manager
 	->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authenticationProvider(authenticationProvider())
 	.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

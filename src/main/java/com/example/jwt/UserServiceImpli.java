@@ -15,8 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserServiceImpli implements UserService {
 
-	@Autowired
-	private  UserRepository userRepository;
+	
 	@Autowired
 	private CompteRepository compteRepository;
 

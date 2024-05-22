@@ -16,7 +16,6 @@ import com.example.entity.Declaration;
 import com.example.entity.DetailDeclaration;
 import com.example.entity.DetailImpot;
 import com.example.entity.ObligationFiscale;
-import com.example.entity.TypeDeclaration;
 import com.example.enums.TypeDeclarationEnum;
 import com.example.repository.DeclarationRepository;
 import com.example.repository.DetailDeclarationRepository;
@@ -75,8 +74,8 @@ public class DeclarationServiceImpl implements DeclarationService{
 	                // Return an empty map if it's an initial type
 	                return new HashMap<>();
 	            } else {
-	            	
-	            	
+
+
 	                List<DetailImpot> lesDetailsImpot = detailimpotRepo.findByTypeImpot(declaration.get().getObligation().getImpot());
 
 	                // Fetch all detail declarations associated with the given declaration
