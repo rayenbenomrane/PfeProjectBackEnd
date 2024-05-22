@@ -13,5 +13,5 @@ public class ReclamationDto {
 	    private Etat etat;
 	    private Date dateReclamation;
 	    private String solution;
-	    private ContribuableDtos contribuable;
+	    private long idDeclaration;
 }

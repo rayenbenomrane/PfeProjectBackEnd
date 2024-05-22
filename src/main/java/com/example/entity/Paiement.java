@@ -2,7 +2,7 @@ package com.example.entity;
 
 import java.util.Date;
 
-import com.example.enums.Etat;
+
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -32,34 +32,20 @@ import lombok.ToString;
 @ToString
 @Data
 @Entity
-@Table(name = "\"Reclamation\"")
-public class Reclamation {
+@Table(name = "\"Paiement\"")
+public class Paiement {
 
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator15Name")
-	@SequenceGenerator(name = "yourGenerator15Name", sequenceName = "Reclamation_seq", allocationSize = 1)
-	private long idReclamation;
-
-
-	private String titre;
-
-	private String contenu;
-
-	private Etat etat;
-
-	 private Date dateReclamation;
-
-	 private String solution;
-
-
-
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator40Name")
+    @SequenceGenerator(name = "yourGenerator40Name", sequenceName = "paiement_seq", allocationSize = 1)
+	private Long idPaiment;
+	private String numeroTransaction;
+	private Date datePaiement;
+	
 	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	 @JoinColumn(name = "declaration_id", nullable = true)
+	    @JoinColumn(name = "declaration_id")
 	 	private Declaration declaration;
 
-
-
-
-
+	
 }

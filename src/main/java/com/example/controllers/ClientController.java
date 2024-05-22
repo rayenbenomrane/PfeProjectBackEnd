@@ -25,6 +25,7 @@ import com.example.dtos.CompteById;
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.DetailDeclarationDto;
 import com.example.dtos.ObligationresponseDto;
+import com.example.dtos.PaiementDto;
 import com.example.dtos.PaymentRequest;
 import com.example.dtos.PaymentResponse;
 import com.example.dtos.PaymentStatus;
@@ -45,6 +46,7 @@ import com.example.service.DeclarationService;
 import com.example.service.DetailDeclarationService;
 import com.example.service.KonnectPaymentService;
 import com.example.service.ObligationFiscaleService;
+import com.example.service.PaiementService;
 import com.example.service.ReclamationService;
 import com.example.service.TypeDeclarationService;
 
@@ -76,6 +78,7 @@ public class ClientController {
 	private KonnectPaymentService konnectService;
 	@Autowired
 	private CompteService compteservice;
+	@Autowired PaiementService paiementService;
 
 	 @GetMapping("/contribuable/{id}")
 	    public ResponseEntity<?> findContribuableByIdCompte(@PathVariable("id") long id) {
@@ -198,4 +201,12 @@ public class ClientController {
 		 return ResponseEntity.ok(compte);
 	 }else return ResponseEntity.status(404).body("Compte not found");
 		 }
+	 @PostMapping("/savePaiement")
+	 public ResponseEntity<?> savePaiement(@RequestBody PaiementDto paiement)
+	 {
+		 boolean saved=paiementService.createPaiement(paiement);
+		 if(saved) {
+			    return ResponseEntity.status(HttpStatus.ACCEPTED).body(saved);
+		 }return ResponseEntity.status(404).body("Paiement not found");
+	 }
 }

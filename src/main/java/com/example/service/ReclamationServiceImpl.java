@@ -1,15 +1,18 @@
 package com.example.service;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dtos.ReclamationDto;
-import com.example.entity.Contribuable;
+
+import com.example.entity.Declaration;
 import com.example.entity.Reclamation;
 import com.example.enums.Etat;
-import com.example.repository.ContribuableRepository;
+
+import com.example.repository.DeclarationRepository;
 import com.example.repository.ReclamationRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,31 +24,36 @@ public class ReclamationServiceImpl implements ReclamationService{
 	@Autowired
 	private ReclamationRepository reclamationrepo;
 	@Autowired
-	private ContribuableRepository contribuableRepository;
+	private DeclarationRepository declarationrepo;
 
 
 	@Override
 	public Reclamation saveReclamation(ReclamationDto c) {
+if(c.getIdDeclaration()!=0l) {
+	    Optional<Declaration> declaration=declarationrepo.findById(c.getIdDeclaration());
 
-	    Contribuable existingContribuable = this.contribuableRepository.findById(c.getContribuable().getIdContribuable())
-	            .orElseThrow(() -> new IllegalArgumentException("Contribuable not found"));
-
-	    // Create a new Reclamation object and set its attributes
+	 if(declaration.isPresent()) {
 	    Reclamation newReclamation = new Reclamation();
 	    newReclamation.setContenu(c.getContenu());
 	    newReclamation.setEtat(Etat.EN_ATTENTE);
-	    newReclamation.setSolution(null); // Assuming solution can be null initially
+	    newReclamation.setSolution(null); 
 	    newReclamation.setDateReclamation(new Date());
 	    newReclamation.setTitre(c.getTitre());
-
-	    // Set the existing Contribuable in the Reclamation entity
-	    newReclamation.setContribuable(existingContribuable);
-
-	    // Save the Reclamation entity
+	    newReclamation.setDeclaration(declaration.get());
 	    this.reclamationrepo.save(newReclamation);
-
-	    return newReclamation; // Indicate that the save operation is attempted
+	    return newReclamation; 
+	 }else return null;
+}else {
+	Reclamation newReclamation = new Reclamation();
+    newReclamation.setContenu(c.getContenu());
+    newReclamation.setEtat(Etat.EN_ATTENTE);
+    newReclamation.setSolution(null); 
+    newReclamation.setDateReclamation(new Date());
+    newReclamation.setTitre(c.getTitre());
+    this.reclamationrepo.save(newReclamation);
+    return newReclamation;
 	}
 
 
+}
 }
