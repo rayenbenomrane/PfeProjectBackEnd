@@ -78,7 +78,9 @@ public class ClientController {
 	private KonnectPaymentService konnectService;
 	@Autowired
 	private CompteService compteservice;
-	@Autowired PaiementService paiementService;
+	@Autowired 
+	private PaiementService paiementService;
+	
 
 	 @GetMapping("/contribuable/{id}")
 	    public ResponseEntity<?> findContribuableByIdCompte(@PathVariable("id") long id) {

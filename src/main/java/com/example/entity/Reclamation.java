@@ -59,6 +59,9 @@ public class Reclamation {
 	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	 @JoinColumn(name = "declaration_id", nullable = true)
 	 	private Declaration declaration;
+	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	 @JoinColumn(name = "contribuable_id", nullable = false)
+	 	private Contribuable contribuable;
 
    public ReclamtionResponse getreclamation()
    {
@@ -70,6 +73,7 @@ public class Reclamation {
 	   reclamation.setSolution(solution);
 	   reclamation.setTitre(titre);
 	   reclamation.setIdReclamation(idReclamation);
+	   reclamation.setContribuable(contribuable);
 	   return reclamation;
    }
 

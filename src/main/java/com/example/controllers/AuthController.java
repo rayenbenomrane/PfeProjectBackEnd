@@ -99,8 +99,7 @@ private DeclarationService declarationService;
 private ContribuableRepository contribuableRepository ;
 @Autowired
 private CompteService compteservice;
-@Autowired
-private ReclamationService reclamationservice;
+
 
 
 
@@ -264,19 +263,7 @@ public ResponseEntity<?> updateimpot(@RequestBody ImpotDto impotDto) {
         return ResponseEntity.status(404).body("impot not found");
     }
 }*/
-@PostMapping("/savereclamation")
-public ResponseEntity<?> saveReclamation(@RequestBody ReclamationDto reclamationDto) {
-    Reclamation saved = reclamationservice.saveReclamation(reclamationDto);
-    if (saved!=null) {
-        return ResponseEntity.ok(saved);
-    } else {
-        return ResponseEntity.badRequest().body(null);
-    }
-}
-@GetMapping("lesreclamations")
-public ResponseEntity<?> lesreclamations(){
-	List<ReclamtionResponse> list=reclamationservice.getAllReclamation();
-	return ResponseEntity.ok(list);
-}
+
+
 }
 

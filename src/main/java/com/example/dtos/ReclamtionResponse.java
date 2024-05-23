@@ -2,6 +2,7 @@ package com.example.dtos;
 
 import java.util.Date;
 
+import com.example.entity.Contribuable;
 import com.example.entity.Declaration;
 import com.example.enums.Etat;
 
@@ -16,4 +17,5 @@ public class ReclamtionResponse {
 	    private Date dateReclamation;
 	    private String solution;
 	    private Declaration declaration;
+	    private Contribuable contribuable; 
 }
