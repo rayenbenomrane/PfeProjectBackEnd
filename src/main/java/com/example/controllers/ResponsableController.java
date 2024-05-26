@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,6 +18,7 @@ import com.example.dtos.UpdateSolutionRecDto;
 import com.example.entity.DetailDeclaration;
 import com.example.entity.Reclamation;
 import com.example.service.DetailDeclarationService;
+import com.example.service.NotificationService;
 import com.example.service.ReclamationService;
 
 import jakarta.websocket.server.PathParam;
@@ -32,6 +34,8 @@ public class ResponsableController {
 	private ReclamationService reclamationservice;
 	@Autowired
 	private DetailDeclarationService detailservice;
+	@Autowired
+	private NotificationService notificationservice;
 	
 	
 	
@@ -40,7 +44,9 @@ public class ResponsableController {
 	public ResponseEntity<?> saveReclamation(@RequestBody UpdateSolutionRecDto reclamationDto) {
 	    Reclamation saved = reclamationservice.updateSolution(reclamationDto);
 	    if (saved!=null) {
+	    	notificationservice.creatNotification(reclamationDto.getIdReclamation(), reclamationDto.getSolution());
 	        return ResponseEntity.ok(saved);
+	        
 	    } else {
 	        return ResponseEntity.badRequest().body(null);
 	    }

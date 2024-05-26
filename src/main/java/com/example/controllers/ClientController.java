@@ -24,6 +24,7 @@ import com.example.dtos.CalculationRequest;
 import com.example.dtos.CompteById;
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.DetailDeclarationDto;
+import com.example.dtos.NotificationDto;
 import com.example.dtos.ObligationresponseDto;
 import com.example.dtos.PaiementDto;
 import com.example.dtos.PaymentRequest;
@@ -36,6 +37,7 @@ import com.example.dtos.TypeDeclarationDto;
 import com.example.entity.Contribuable;
 import com.example.entity.Declaration;
 import com.example.entity.DetailImpot;
+import com.example.entity.Notification;
 import com.example.entity.Reclamation;
 import com.example.entity.TypeImpot;
 import com.example.repository.ContribuableRepository;
@@ -45,6 +47,7 @@ import com.example.service.ContribuableService;
 import com.example.service.DeclarationService;
 import com.example.service.DetailDeclarationService;
 import com.example.service.KonnectPaymentService;
+import com.example.service.NotificationService;
 import com.example.service.ObligationFiscaleService;
 import com.example.service.PaiementService;
 import com.example.service.ReclamationService;
@@ -80,6 +83,8 @@ public class ClientController {
 	private CompteService compteservice;
 	@Autowired 
 	private PaiementService paiementService;
+	@Autowired
+	private NotificationService notifservice;
 	
 
 	 @GetMapping("/contribuable/{id}")
@@ -210,5 +215,14 @@ public class ClientController {
 		 if(saved) {
 			    return ResponseEntity.status(HttpStatus.ACCEPTED).body(saved);
 		 }return ResponseEntity.status(404).body("Paiement not found");
+	 }
+	 @GetMapping("/notification")
+	 public ResponseEntity<List<NotificationDto>> getAllNotifications(@RequestParam("matricule") int matricule) {
+	     try {
+	         List<NotificationDto> typeList = notifservice.getNotificationByMatricule(matricule);
+	         return ResponseEntity.ok(typeList);
+	     } catch (ExpiredJwtException ex) {
+	         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+	     }
 	 }
 }

@@ -44,6 +44,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
 	.requestMatchers("/api/admin/**").hasAnyAuthority(UserRole.Admin.name())
 	.requestMatchers("/api/user/**").hasAnyAuthority(UserRole.Client.name())
 	.requestMatchers("/api/responsable/**").hasAnyAuthority(UserRole.Responsable.name())
+	.requestMatchers("/ws/**").permitAll()
 	.anyRequest().authenticated()).sessionManagement(manager
 	->manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authenticationProvider(authenticationProvider())
 	.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
