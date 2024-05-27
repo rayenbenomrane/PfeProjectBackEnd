@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import com.example.enums.NatureRebrique;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -36,7 +38,7 @@ public class DetailDeclaration {
 	private Long idDetailDeclaration;
 
 	private String valeur;
-
+	 private NatureRebrique naturerebrique;
 
 
 

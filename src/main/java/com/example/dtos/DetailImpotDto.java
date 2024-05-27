@@ -1,7 +1,7 @@
 package com.example.dtos;
 
 
-import com.example.enums.NatureRebrique;
+
 import com.example.enums.TypedeDetailImpot;
 
 import lombok.Data;
@@ -15,11 +15,12 @@ public class DetailImpotDto {
 
 	 private TypedeDetailImpot typeDetail;
 
-	 private NatureRebrique naturerebrique;
-
+	 
 	 private int ordre;
 
 	 private boolean  obligatoire;
 
 	 private TypeImpotDto typeImpot;
+	 private boolean calculable;
+	 private String formule;
 }

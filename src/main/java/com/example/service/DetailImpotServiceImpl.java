@@ -28,7 +28,8 @@ public class DetailImpotServiceImpl implements DetailImpotService{
                 .orElseThrow(() -> new IllegalArgumentException("Invalid periodicite"));
 		DetailImpot detail=new DetailImpot();
 		detail.setLibelle(di.getLibelle());
-		detail.setNaturerebrique(di.getNaturerebrique());
+		detail.setCalculable(di.isCalculable());
+		detail.setFormule(di.getFormule());
 		detail.setObligatoire(di.isObligatoire());
 		detail.setOrdre(di.getOrdre());
 		detail.setTypeDetail(di.getTypeDetail());
@@ -38,7 +39,8 @@ public class DetailImpotServiceImpl implements DetailImpotService{
 
 		detaildto.setIdDetailImpot(detailcree.getIdDetailImpot());
 		detaildto.setLibelle(detailcree.getLibelle());
-		detaildto.setNaturerebrique(detailcree.getNaturerebrique());
+		detaildto.setCalculable(detailcree.isCalculable());
+		detaildto.setFormule(detailcree.getFormule());
 		detaildto.setObligatoire(detailcree.isObligatoire());
 		detaildto.setOrdre(detailcree.getOrdre());
 		detaildto.setTypeDetail(detailcree.getTypeDetail());

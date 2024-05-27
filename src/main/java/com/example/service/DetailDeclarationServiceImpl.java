@@ -26,6 +26,7 @@ public class DetailDeclarationServiceImpl implements DetailDeclarationService{
 	Optional<DetailDeclaration> detail=detailrepo.findById(dd.getIddetailDeclaration());
 	if(detail.isPresent()) {
 		detail.get().setValeur(dd.getValeur());
+		detail.get().setNaturerebrique(dd.getNaturerebrique());
 		detailrepo.save(detail.get());
 		return true;
 	}else return false;

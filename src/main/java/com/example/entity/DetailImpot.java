@@ -41,7 +41,9 @@ public class DetailImpot {
 
 	 private TypedeDetailImpot typeDetail;
 
-	 private NatureRebrique naturerebrique;
+	private boolean calculable;
+	
+	private String formule;
 
 	 private int ordre;
 
