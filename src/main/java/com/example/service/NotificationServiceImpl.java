@@ -67,10 +67,13 @@ public class NotificationServiceImpl implements NotificationService{
 	            List<Notification> notifications = notificationRepo.findByReclamation(reclamation);
 	            for (Notification notification : notifications) {
 	                NotificationDto dto = new NotificationDto(
+	                	notification.getIdNotification(),
 	                    reclamation.getIdReclamation(), // Assuming `getId()` returns the id of the reclamation
 	                    notification.getDateNotification(), // Assuming `getDateReponse()` returns the response date
 	                    notification.getReclamation().getTitre(), // Assuming `getTitre()` returns the title
-	                    notification.getReclamation().getSolution() // Assuming `getSolution()` returns the solution
+	                    notification.getReclamation().getSolution(),
+	                    notification.isChecked(),
+	                    notification.isDeleted()// Assuming `getSolution()` returns the solution
 	                );
 	                notificationDtos.add(dto);
 	            }
@@ -78,6 +81,26 @@ public class NotificationServiceImpl implements NotificationService{
 	        return notificationDtos;
 	    }
 	    return Collections.emptyList();
+	}
+
+	@Override
+	public void updateNotification(Long id) {
+		Optional<Notification> notif=notificationRepo.findById(id);
+		if(notif.isPresent()) {
+			notif.get().setChecked(true);
+			notificationRepo.save(notif.get());
+		}
+		
+	}
+
+	@Override
+	public void updateDeleted(long id) {
+		Optional<Notification> notif=notificationRepo.findById(id);
+		if(notif.isPresent()) {
+			notif.get().setDeleted(true);
+			notificationRepo.save(notif.get());
+		}
+		
 	}
 	
 

@@ -225,4 +225,14 @@ public class ClientController {
 	         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 	     }
 	 }
+	 @PutMapping("/updatechecked")
+	 public ResponseEntity<?> updateNotification(@RequestParam("id") long id) {
+	        notifservice.updateNotification(id);
+	        return ResponseEntity.ok().build();
+	    }
+	 @PutMapping("/updatedeleted")
+	 public ResponseEntity<?> updatedeleted(@RequestParam("id") long id) {
+	        notifservice.updateDeleted(id);
+	        return ResponseEntity.ok().build();
+	    }
 }

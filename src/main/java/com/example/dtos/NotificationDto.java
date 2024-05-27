@@ -12,11 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NotificationDto {
-
+	private Long idNotification;
 	private long idReclamation;
 	private Date dateReponse;
 	private String titre;
 	private String Solution;
+	private boolean checked;
+	private boolean deleted;
 	
 	
 }
