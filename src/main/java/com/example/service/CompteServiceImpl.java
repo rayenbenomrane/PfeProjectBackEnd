@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.example.dtos.CompteById;
 import com.example.dtos.CompteDto;
+import com.example.dtos.MotDePassdto;
 import com.example.entity.Compte;
 import com.example.entity.User;
 import com.example.enums.UserRole;
 import com.example.repository.CompteRepository;
+import com.example.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 @Service
@@ -23,7 +25,8 @@ public class CompteServiceImpl implements CompteService{
 
 	@Autowired
 	private CompteRepository compteRepository;
-
+	@Autowired
+	private UserRepository userrepo;
 
 
 		@Override
@@ -258,8 +261,8 @@ public class CompteServiceImpl implements CompteService{
 
 		@Override
 		public CompteById getCompteByid(Long id) {
-			
-			
+
+
 		Optional<Compte>  compte=compteRepository.findById(id);
 		if(compte.isPresent()) {
 			CompteById compteDto=new CompteById();
@@ -272,6 +275,60 @@ public class CompteServiceImpl implements CompteService{
 
 
 
+		@Override
+		public boolean updatepassword(MotDePassdto md) {
+		    // Fetch the user account by id
+		    Optional<Compte> userOptional = compteRepository.findById(md.getIdCompte());
+		    
+		    if (userOptional.isPresent()) {
+		        Compte user = userOptional.get();
+		        
+		        // Fetch the associated user details by email
+		        Optional<User> userDetailOptional = userrepo.findById(user.getInscription().getIdInscription());
+		        
+		        if (userDetailOptional.isPresent()) {
+		            User userDetail = userDetailOptional.get();
+		            
+		            // Verify the old password
+		            if (verifyPassword(md.getAncienMotDePass(), user.getPassword())) {
+		                // Encode the new password
+		                String encodedNewPassword = new BCryptPasswordEncoder().encode(md.getMotDePass());
+		                
+		                // Update passwords in both Compte and User
+		                user.setPassword(encodedNewPassword);
+		                userDetail.setPassword(encodedNewPassword);
+		                
+		                // Save the updated entities
+		                compteRepository.save(user);
+		                userrepo.save(userDetail);
+		                
+		                return true;
+		            } else {
+		                // Old password verification failed
+		                return false;
+		            }
+		        } else {
+		            // User details not found
+		            return false;
+		        }
+		    } else {
+		        // User account not found
+		        return false;
+		    }
+		}
+
+
+		
+		@Override
+		public boolean verifyPassword(String rawPassword, String encodedPasswordFromDB) {
+			 if (rawPassword == null || encodedPasswordFromDB == null) {
+			        return false;
+			    }
+		       BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		    return encoder.matches(rawPassword, encodedPasswordFromDB);
+		
+
+		}
 
 
 

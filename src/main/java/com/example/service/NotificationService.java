@@ -3,7 +3,6 @@ package com.example.service;
 import java.util.List;
 
 import com.example.dtos.NotificationDto;
-import com.example.entity.Notification;
 
 public interface NotificationService {
 
@@ -11,5 +10,5 @@ public interface NotificationService {
 	List<NotificationDto> getNotificationByMatricule(int matricule);
 	void updateNotification(Long id);
 	void updateDeleted(long id);
-	
+
 }

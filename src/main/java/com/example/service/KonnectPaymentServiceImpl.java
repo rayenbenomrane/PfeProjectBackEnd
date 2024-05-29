@@ -18,10 +18,10 @@ public class KonnectPaymentServiceImpl implements KonnectPaymentService{
 	 @Autowired
 	    private KonnectConfig konnectConfig;
 
-	    
+
 	 private final RestTemplate restTemplate;
 
-	    
+
 	    public KonnectPaymentServiceImpl(RestTemplate restTemplate) {
 	        this.restTemplate = restTemplate;
 	    }

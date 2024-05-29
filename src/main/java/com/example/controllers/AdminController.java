@@ -3,10 +3,8 @@ package com.example.controllers;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.CompteDto;
 import com.example.dtos.ContribuableDtos;
-
 import com.example.dtos.DetailImpotDto;
 import com.example.dtos.ImpotDto;
 import com.example.dtos.PeriodeDto;
@@ -27,8 +24,6 @@ import com.example.dtos.TypeImpotDto;
 import com.example.dtos.UpdatePasswordDto;
 import com.example.dtos.UserDtos;
 import com.example.entity.DetailImpot;
-
-
 import com.example.service.AdminService;
 import com.example.service.CompteService;
 import com.example.service.ContribuableService;
@@ -59,7 +54,7 @@ public class AdminController {
 	private TypeImpotService impotservice;
 	@Autowired
 	private DetailImpotService detailservice;
-	
+
 
 
 	 @ExceptionHandler(ExpiredJwtException.class)
@@ -216,7 +211,7 @@ public class AdminController {
 	         return ResponseEntity.status(404).body("impot not found");
 	     }
 	 }
-	
+
 
 
 

@@ -1,9 +1,6 @@
 package com.example.entity;
 
 import java.util.Date;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -37,17 +34,17 @@ public class Notification {
 	    @GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator77Name")
 	    @SequenceGenerator(name = "yourGenerator77Name", sequenceName = "notification_seq", allocationSize = 1)
 		private Long idNotification;
-		
-		
+
+
 		private Date dateNotification;
-		
-		
+
+
 		private boolean checked;
-		
+
 		private boolean deleted;
-		
+
 		 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 		    @JoinColumn(name = "reclamation_id")
 		private Reclamation reclamation;
-	 
+
 }

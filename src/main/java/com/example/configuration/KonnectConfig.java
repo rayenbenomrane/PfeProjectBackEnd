@@ -23,5 +23,5 @@ public class KonnectConfig {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-    
+
 }

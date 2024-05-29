@@ -17,5 +17,5 @@ public class ReclamtionResponse {
 	    private Date dateReclamation;
 	    private String solution;
 	    private Declaration declaration;
-	    private Contribuable contribuable; 
+	    private Contribuable contribuable;
 }

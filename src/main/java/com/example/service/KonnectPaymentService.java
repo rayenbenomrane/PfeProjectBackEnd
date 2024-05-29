@@ -8,6 +8,6 @@ public interface KonnectPaymentService {
 
 	public PaymentResponse initiatePayment(PaymentRequest paymentRequest);
 	 public PaymentStatus getPaymentStatus(String paymentId);
-	
-	
+
+
 }

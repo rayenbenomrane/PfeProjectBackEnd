@@ -3,6 +3,8 @@ package com.example.controllers;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.script.ScriptException;
 
@@ -24,6 +26,7 @@ import com.example.dtos.CalculationRequest;
 import com.example.dtos.CompteById;
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.DetailDeclarationDto;
+import com.example.dtos.MotDePassdto;
 import com.example.dtos.NotificationDto;
 import com.example.dtos.ObligationresponseDto;
 import com.example.dtos.PaiementDto;
@@ -37,7 +40,6 @@ import com.example.dtos.TypeDeclarationDto;
 import com.example.entity.Contribuable;
 import com.example.entity.Declaration;
 import com.example.entity.DetailImpot;
-import com.example.entity.Notification;
 import com.example.entity.Reclamation;
 import com.example.entity.TypeImpot;
 import com.example.repository.ContribuableRepository;
@@ -81,11 +83,11 @@ public class ClientController {
 	private KonnectPaymentService konnectService;
 	@Autowired
 	private CompteService compteservice;
-	@Autowired 
+	@Autowired
 	private PaiementService paiementService;
 	@Autowired
 	private NotificationService notifservice;
-	
+
 
 	 @GetMapping("/contribuable/{id}")
 	    public ResponseEntity<?> findContribuableByIdCompte(@PathVariable("id") long id) {
@@ -143,19 +145,20 @@ public class ClientController {
 	 }
 	 @PostMapping("/calculate")
 	 public double calculate(@RequestBody CalculationRequest request) throws ScriptException {
-	 	  String formula = request.getFormula();
-	       for (String key : request.getValues().keySet()) {
-	           formula = formula.replaceAll("\\b" + key + "\\b", String.valueOf(request.getValues().get(key)));
-	       }
+	     String formula = request.getFormula();
+	     for (String key : request.getValues().keySet()) {
+	         formula = formula.replaceAll("\\b" + Pattern.quote(key) + "\\b", Matcher.quoteReplacement(String.valueOf(request.getValues().get(key))));
+	     }
 
-	       try (Context context = Context.create()) {
-	           Value result = context.eval("js", formula);
-	           return result.asDouble();
-	       } catch (Exception e) {
-	           e.printStackTrace();
-	           throw new RuntimeException("Error evaluating the formula: " + formula, e);
-	       }
+	     try (Context context = Context.create()) {
+	         Value result = context.eval("js", formula);
+	         return result.asDouble();
+	     } catch (Exception e) {
+	         e.printStackTrace();
+	         throw new RuntimeException("Error evaluating the formula: " + formula, e);
+	     }
 	 }
+
 	 @PutMapping("/update")
 	 public ResponseEntity<?> updateDetail(@RequestBody DetailDeclarationDto detailDeclarationDto) {
 	     boolean isUpdated = detaildeclarationservice.updateDetail(detailDeclarationDto);
@@ -200,7 +203,7 @@ public class ClientController {
 	     PaymentStatus status = konnectService.getPaymentStatus(paymentId);
 	     return ResponseEntity.ok(status);
 	 }
-	 
+
 	 @GetMapping("/getCompte")
 	 public ResponseEntity<?> getCompteById(@RequestParam("idcompte") Long idCompte){
 		 CompteById compte=compteservice.getCompteByid(idCompte);
@@ -235,4 +238,11 @@ public class ClientController {
 	        notifservice.updateDeleted(id);
 	        return ResponseEntity.ok().build();
 	    }
+	 @PutMapping("/updatepassword")
+	 public ResponseEntity<?> updatePassword(@RequestBody MotDePassdto dd){
+		 boolean saved=compteservice.updatepassword(dd);
+		 if(saved) {
+			return ResponseEntity.ok().build();
+		 }return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+	 }
 }

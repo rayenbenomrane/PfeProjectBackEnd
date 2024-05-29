@@ -15,7 +15,7 @@ public class DetailImpotDto {
 
 	 private TypedeDetailImpot typeDetail;
 
-	 
+
 	 private int ordre;
 
 	 private boolean  obligatoire;

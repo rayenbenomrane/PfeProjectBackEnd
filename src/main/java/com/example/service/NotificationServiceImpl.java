@@ -20,7 +20,7 @@ import com.example.repository.ReclamationRepository;
 @Service
 public class NotificationServiceImpl implements NotificationService{
 
-	
+
 	@Autowired
 	private ReclamationRepository reclamationrepo;
 	@Autowired
@@ -29,7 +29,7 @@ public class NotificationServiceImpl implements NotificationService{
 	private  SimpMessagingTemplate template ;
 	@Autowired
 	private ContribuableRepository contribuablerepo;
-	
+
 	@Override
 	public void creatNotification(Long id, String Solution) {
 		Optional<Reclamation> reclamation=reclamationrepo.findById(id);
@@ -45,13 +45,13 @@ public class NotificationServiceImpl implements NotificationService{
 			notification.setIdReclamation(id);
 			notification.setSolution(Solution);
 			notification.setTitre(reclamation.get().getTitre());
-			
+
 			template.convertAndSendToUser(matriculeFiscale,"/queue/notification",notification);
 			notificationRepo.save(notif);
-			
-			
+
+
 		}
-		
+
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class NotificationServiceImpl implements NotificationService{
 			notif.get().setChecked(true);
 			notificationRepo.save(notif.get());
 		}
-		
+
 	}
 
 	@Override
@@ -100,8 +100,8 @@ public class NotificationServiceImpl implements NotificationService{
 			notif.get().setDeleted(true);
 			notificationRepo.save(notif.get());
 		}
-		
+
 	}
-	
+
 
 }

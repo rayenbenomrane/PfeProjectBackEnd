@@ -160,7 +160,7 @@ nb.setPeriode(td.getPeriodicite().getPeriode());
 			impotrepo.save(typetrouve.get());
 			return true;
 		}else return false;
-		
+
 	}
 
 }

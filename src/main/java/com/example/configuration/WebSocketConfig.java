@@ -19,7 +19,7 @@ import com.example.dtos.Principal;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 
-	
+
 	@Override
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
         stompEndpointRegistry.addEndpoint("/ws")
@@ -48,7 +48,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 	            }
 	        });
 	    }
-	
-	
+
+
 }
 

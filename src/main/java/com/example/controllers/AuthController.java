@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,16 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dtos.AuthenticationRequest;
 import com.example.dtos.AuthenticationResponse;
-
 import com.example.dtos.CompteDto;
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.DeclarationDto;
 import com.example.dtos.DetailDeclarationDto;
-
+import com.example.dtos.MotDePassdto;
 import com.example.dtos.ObligationresponseDto;
 import com.example.dtos.PasswordDto;
-import com.example.dtos.ReclamationDto;
-import com.example.dtos.ReclamtionResponse;
 import com.example.dtos.SaveDeclaration;
 import com.example.dtos.SignupRequest;
 import com.example.dtos.UserDtos;
@@ -47,7 +42,6 @@ import com.example.entity.Compte;
 import com.example.entity.Contribuable;
 import com.example.entity.Declaration;
 import com.example.entity.DetailImpot;
-import com.example.entity.Reclamation;
 import com.example.jwt.UserService;
 import com.example.repository.CompteRepository;
 import com.example.repository.ContribuableRepository;
@@ -56,9 +50,7 @@ import com.example.service.AuthService;
 import com.example.service.CompteService;
 import com.example.service.ContribuableService;
 import com.example.service.DeclarationService;
-
 import com.example.service.ObligationFiscaleService;
-import com.example.service.ReclamationService;
 import com.example.utils.JwtUtils;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -263,7 +255,13 @@ public ResponseEntity<?> updateimpot(@RequestBody ImpotDto impotDto) {
         return ResponseEntity.status(404).body("impot not found");
     }
 }*/
-
+@PutMapping("/updatepassword")
+public ResponseEntity<?> updatePassword(@RequestBody MotDePassdto dd){
+	 boolean saved=compteservice.updatepassword(dd);
+	 if(saved) {
+		return ResponseEntity.ok().build();
+	 }return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+}
 
 }
 

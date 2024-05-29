@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.repository.CompteRepository;
-import com.example.repository.UserRepository;
 
 import lombok.NoArgsConstructor;
 
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserServiceImpli implements UserService {
 
-	
+
 	@Autowired
 	private CompteRepository compteRepository;
 

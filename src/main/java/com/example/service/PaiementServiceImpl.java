@@ -20,7 +20,7 @@ public class PaiementServiceImpl implements PaiementService {
 	private DeclarationRepository declarationrepo;
 	@Autowired
 	private PaiementRepository paiementrepo;
-	
+
 	@Override
 	public boolean createPaiement(PaiementDto paiementDto) {
 	    Optional<Declaration> optionalDeclaration = declarationrepo.findById(paiementDto.getIddeclaration());
@@ -38,12 +38,12 @@ public class PaiementServiceImpl implements PaiementService {
 	        Paiement savedPaiement = paiementrepo.save(paiement);
 
 	        return savedPaiement != null;
-	    }else 
-	    	return false; 
+	    }else
+	    	return false;
 	    	}else {
 	        return false;
 	    }
 	}
 
-	
+
 }

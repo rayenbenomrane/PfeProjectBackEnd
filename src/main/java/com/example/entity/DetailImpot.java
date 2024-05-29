@@ -1,6 +1,6 @@
 package com.example.entity;
 
-import com.example.enums.NatureRebrique;
+
 import com.example.enums.TypedeDetailImpot;
 
 import jakarta.persistence.CascadeType;
@@ -42,7 +42,7 @@ public class DetailImpot {
 	 private TypedeDetailImpot typeDetail;
 
 	private boolean calculable;
-	
+
 	private String formule;
 
 	 private int ordre;

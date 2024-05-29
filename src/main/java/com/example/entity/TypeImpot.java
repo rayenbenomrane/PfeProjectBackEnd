@@ -38,7 +38,7 @@ public class TypeImpot {
 	private long idTypeImpot;
 
 	private String libelle;
-	
+
 	private String formule;
 
 

@@ -32,8 +32,9 @@ public class ReclamationServiceImpl implements ReclamationService{
 	@Autowired
 	private ContribuableRepository contribuableRepository;
 
+	@Override
 	public Reclamation saveReclamation(ReclamationDto c) {
-       
+
         Contribuable existingContribuable = this.contribuableRepository.findById(c.getContribuable().getIdContribuable())
                 .orElseThrow(() -> new IllegalArgumentException("Contribuable not found"));
 
@@ -45,19 +46,19 @@ public class ReclamationServiceImpl implements ReclamationService{
             Reclamation newReclamation = new Reclamation();
             newReclamation.setContenu(c.getContenu());
             newReclamation.setEtat(Etat.EN_ATTENTE);
-            newReclamation.setSolution(null); 
+            newReclamation.setSolution(null);
             newReclamation.setDateReclamation(new Date());
             newReclamation.setTitre(c.getTitre());
             newReclamation.setDeclaration(declaration.get());
             newReclamation.setContribuable(existingContribuable);
             this.reclamationrepo.save(newReclamation);
-            return newReclamation; 
+            return newReclamation;
          }else return null;
     }else {
         Reclamation newReclamation = new Reclamation();
         newReclamation.setContenu(c.getContenu());
         newReclamation.setEtat(Etat.EN_ATTENTE);
-        newReclamation.setSolution(null); 
+        newReclamation.setSolution(null);
         newReclamation.setDateReclamation(new Date());
         newReclamation.setTitre(c.getTitre());
         newReclamation.setContribuable(existingContribuable);
@@ -72,7 +73,7 @@ public class ReclamationServiceImpl implements ReclamationService{
 	@Override
 	public List<ReclamtionResponse> getAllReclamation() {
 		return reclamationrepo.findAll().stream().map(Reclamation::getreclamation).collect(Collectors.toList());
-		
+
 	}
 
 

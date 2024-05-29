@@ -7,5 +7,5 @@ public class ImpotDto {
 
 	private String libelle;
 	private String formule;
-	
+
 }

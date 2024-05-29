@@ -2,8 +2,6 @@ package com.example.dtos;
 
 import java.util.Date;
 
-import com.example.entity.Declaration;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +17,6 @@ public class NotificationDto {
 	private String Solution;
 	private boolean checked;
 	private boolean deleted;
-	
-	
+
+
 }

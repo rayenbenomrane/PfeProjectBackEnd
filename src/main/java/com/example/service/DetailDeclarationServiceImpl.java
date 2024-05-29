@@ -14,13 +14,13 @@ import com.example.repository.DetailDeclarationRepository;
 @Service
 public class DetailDeclarationServiceImpl implements DetailDeclarationService{
 
-	
-	@Autowired 
+
+	@Autowired
 	private DetailDeclarationRepository detailrepo;
 	@Autowired
 	private DeclarationRepository declarationrepo;
-	
-	
+
+
 	@Override
 	public boolean updateDetail(DetailDeclarationDto dd) {
 	Optional<DetailDeclaration> detail=detailrepo.findById(dd.getIddetailDeclaration());
@@ -38,8 +38,8 @@ public class DetailDeclarationServiceImpl implements DetailDeclarationService{
 		Optional<Declaration> declaration=declarationrepo.findById(id);
 		List<DetailDeclaration> list=detailrepo.findByDeclaration(declaration.get());
 		return list;
-		
+
 	}
-	
+
 
 }
