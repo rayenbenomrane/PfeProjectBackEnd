@@ -109,14 +109,16 @@ public class ClientController {
 	 }
 	 @PostMapping("/declaration")
 	 public ResponseEntity<?> createDeclaration(@RequestBody SaveDeclaration declarationDtos) {
-	     Map<DetailImpot, DetailDeclarationDto> detailMap = declarationService.saveDeclaration(declarationDtos);
-
-	     if (detailMap.isEmpty()) {
-	         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de création de déclaration!");
-	     } else {
-	         return ResponseEntity.status(HttpStatus.CREATED).body(detailMap);
-	     }
-	 }
+         Map<DetailImpot, DetailDeclarationDto> detailMap = declarationService.saveDeclaration(declarationDtos);
+         if(detailMap!=null) {
+        	 if (detailMap.isEmpty()) {
+                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de création de déclaration!");
+             } else {
+                 return ResponseEntity.status(HttpStatus.CREATED).body(detailMap);
+             } 
+         }else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("declaration deja existante!");
+        
+     }
 	 @GetMapping("/obligationContribuable/{contribuableId}")
 	 public ResponseEntity<?> getObligationsByContribuable(@PathVariable Long contribuableId) {
 	     Optional<Contribuable> cd = this.contribuableRepository.findById(contribuableId);

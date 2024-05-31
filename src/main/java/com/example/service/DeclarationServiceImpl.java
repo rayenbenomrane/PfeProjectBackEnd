@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ import com.example.repository.DeclarationRepository;
 import com.example.repository.DetailDeclarationRepository;
 import com.example.repository.DetailImpotRepository;
 import com.example.repository.ObligationFiscaleRepository;
+
+import ch.qos.logback.classic.Logger;
 @Service
 public class DeclarationServiceImpl implements DeclarationService{
 
@@ -33,6 +36,7 @@ public class DeclarationServiceImpl implements DeclarationService{
 	private DetailDeclarationRepository detailDeclarationRepo;
 	@Autowired
 	private DeclarationRepository declarationRepo;
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(DeclarationServiceImpl.class);
 
 	@Override
 	public Map<DetailImpot, DetailDeclarationDto> saveDeclaration(SaveDeclaration dc) {
@@ -59,6 +63,8 @@ public class DeclarationServiceImpl implements DeclarationService{
 
 	                // Assuming you have setters for detailImpot and declaration in DetailDeclaration class
 	                newDetailDeclaration.setDetailImpot(detail);
+	                
+	               
 	                newDetailDeclaration.setDeclaration(newDeclaration);
 
 	                this.detailDeclarationRepo.save(newDetailDeclaration);
@@ -71,11 +77,12 @@ public class DeclarationServiceImpl implements DeclarationService{
 	            return detailMap;
 	        } else {
 	            if (dc.getType().getLibelle() == TypeDeclarationEnum.Initial) {
-	                // Return an empty map if it's an initial type
+	                
 	                return new HashMap<>();
 	            } else {
 
-
+	            	declaration.get().setType(dc.getType());
+	            	this.declarationRepo.save(declaration.get());
 	                List<DetailImpot> lesDetailsImpot = detailimpotRepo.findByTypeImpot(declaration.get().getObligation().getImpot());
 
 	                // Fetch all detail declarations associated with the given declaration
