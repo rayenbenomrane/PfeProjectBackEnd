@@ -240,9 +240,36 @@ public class ClientController {
 	    }
 	 @PutMapping("/updatepassword")
 	 public ResponseEntity<?> updatePassword(@RequestBody MotDePassdto dd){
-		 boolean saved=compteservice.updatepassword(dd);
-		 if(saved) {
-			return ResponseEntity.ok().build();
-		 }return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+	      boolean saved=compteservice.updatepassword(dd);
+	      if(saved) {
+	         return ResponseEntity.ok(saved);
+	      }else return ResponseEntity.status(404).body("Compte not found");
+	 }
+	 @GetMapping("/reclamationsByContribuable")
+     public ResponseEntity<?> reclamationByContribuable(@RequestParam("matriculeFiscale") int matriculeFiscale) {
+         List<Reclamation> listeReclamations= reclamationservice.reclamationByContribuable(matriculeFiscale);
+             if (listeReclamations != null) 
+                 return ResponseEntity.ok(listeReclamations);
+
+             return ResponseEntity.status(404).body("no reclamation found");
+
+     }
+	 @PutMapping("/acceptreclamation")
+	 public ResponseEntity<?> acceptReclamation(@RequestParam("id") long id){
+		 
+		 boolean updated=reclamationservice.updateEtat(id);
+		 if(updated) {
+	         return ResponseEntity.ok(updated);
+	      }else return ResponseEntity.status(404).body("Compte not found");
+		 
+	 }
+	 @PutMapping("/refusreclamation")
+	 public ResponseEntity<?> refusReclamation(@RequestParam("id") long id){
+		 
+		 boolean updated=reclamationservice.refusEtat(id);
+		 if(updated) {
+	         return ResponseEntity.ok(updated);
+	      }else return ResponseEntity.status(404).body("Compte not found");
+		 
 	 }
 }

@@ -11,10 +11,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.dtos.PasswordDto;
+import com.example.dtos.ResetPassword;
 import com.example.dtos.SignupRequest;
 import com.example.dtos.UserDtos;
+import com.example.entity.Compte;
 import com.example.entity.User;
 import com.example.enums.UserRole;
+import com.example.repository.CompteRepository;
 import com.example.repository.UserRepository;
 
 import jakarta.mail.MessagingException;
@@ -30,6 +33,8 @@ public class AuthServiceImpl implements AuthService {
 	private JavaMailSender mailSender;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private CompteRepository compteRepo;
 	@Override
 	public UserDtos  createCustomer(SignupRequest signupRequest) {
 
@@ -175,6 +180,43 @@ public class AuthServiceImpl implements AuthService {
 	     createdUserDto.setPoste(createdCustomer.get().getPoste());
 	     return createdUserDto;
 	}
+	@Override
+    public boolean sendUpdatePasswordEmail(String email) throws UnsupportedEncodingException, MessagingException {
+Optional<User> ins=this.userRepository.findByEmail(email);
+if(ins.isPresent()) {
+          String subject = "Password Reset Request";
+            String senderName = "Direction Générale des Impôts";
+            String mailContent = "<p>Dear " + email + ",</p>";
+            mailContent += "<p>We received a request to reset your password. Please click the link below to reset your password: <br></p>";
+            String url = "http://localhost:4200/admin/resetpassword/"+email;
+            mailContent += "<h2><a href="+ url + ">Reset Password</a></h2>";
+            mailContent += "<p>If you did not request a password reset, please ignore this email.</p>";
+            mailContent += "<p><br>Direction Générale des Impôts</p>";
+
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+
+            helper.setFrom("pfedgi1920@gmail.com", senderName);
+            helper.setTo(email);
+            helper.setSubject(subject);
+            helper.setText(mailContent, true);
+
+            mailSender.send(message);
+            return true;
+}else return false;
+    }
+    @Override
+    public boolean resetPassword(ResetPassword rp) {
+        Optional<User> ins=this.userRepository.findByEmail(rp.getEmail());
+        Optional<Compte> compte=this.compteRepo.findByEmail(rp.getEmail());
+        if(ins.isPresent()&&compte.isPresent()) {
+            ins.get().setPassword(new BCryptPasswordEncoder().encode(rp.getPassword()));
+            compte.get().setPassword(new BCryptPasswordEncoder().encode(rp.getPassword()));
+            this.compteRepo.save(compte.get());
+            this.userRepository.save(ins.get());
+            return true;
+        }else return false;
+    }
 
 
 }

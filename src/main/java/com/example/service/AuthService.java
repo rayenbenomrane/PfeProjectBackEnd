@@ -3,6 +3,7 @@ package com.example.service;
 import java.io.UnsupportedEncodingException;
 
 import com.example.dtos.PasswordDto;
+import com.example.dtos.ResetPassword;
 import com.example.dtos.SignupRequest;
 import com.example.dtos.UserDtos;
 
@@ -14,4 +15,6 @@ public interface AuthService {
 	  boolean verify(String verificationCode);
 	  UserDtos validePassword(PasswordDto pd);
 	  UserDtos convertUser(String code);
+	boolean sendUpdatePasswordEmail(String email) throws UnsupportedEncodingException, MessagingException;
+	boolean resetPassword(ResetPassword rp);
 }

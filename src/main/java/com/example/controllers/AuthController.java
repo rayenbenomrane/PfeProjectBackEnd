@@ -34,6 +34,7 @@ import com.example.dtos.DetailDeclarationDto;
 import com.example.dtos.MotDePassdto;
 import com.example.dtos.ObligationresponseDto;
 import com.example.dtos.PasswordDto;
+import com.example.dtos.ResetPassword;
 import com.example.dtos.SaveDeclaration;
 import com.example.dtos.SignupRequest;
 import com.example.dtos.UserDtos;
@@ -255,13 +256,21 @@ public ResponseEntity<?> updateimpot(@RequestBody ImpotDto impotDto) {
         return ResponseEntity.status(404).body("impot not found");
     }
 }*/
-@PutMapping("/updatepassword")
-public ResponseEntity<?> updatePassword(@RequestBody MotDePassdto dd){
-	 boolean saved=compteservice.updatepassword(dd);
-	 if(saved) {
-		return ResponseEntity.ok().build();
-	 }return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+@GetMapping("/passwordoublier")
+public ResponseEntity<?> changePasswordOublier(@RequestParam("email") String email) throws UnsupportedEncodingException, MessagingException{
+    boolean present=authService.sendUpdatePasswordEmail(email);
+    if(present) {
+         return ResponseEntity.ok(present);
+    }else return ResponseEntity.status(404).body("Compte not found");
 }
+
+@PutMapping("/resetpassword")
+public ResponseEntity<?> resetPassword(@RequestBody ResetPassword rs) {
+    boolean present=authService.resetPassword(rs);
+    if(present) {
+         return ResponseEntity.ok(present);
+    }else return ResponseEntity.status(404).body("Compte not found");
+    }
 
 }
 

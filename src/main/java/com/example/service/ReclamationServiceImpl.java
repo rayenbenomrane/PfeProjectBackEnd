@@ -97,4 +97,34 @@ public class ReclamationServiceImpl implements ReclamationService{
 	            return null;
 	        }
 	}
+	@Override
+	public List<Reclamation> reclamationByContribuable(int matriculeFiscale){
+        Optional<Contribuable> contribuable=contribuableRepository.findByMatriculeFiscale(matriculeFiscale);
+        if(contribuable.isPresent()) {
+            List<Reclamation> listeReclamations=reclamationrepo.findByContribuable(contribuable.get());
+            return listeReclamations;
+        }else return null;
+    }
+
+
+	@Override
+	public boolean updateEtat(Long id) {
+		Optional<Reclamation> reclamation=reclamationrepo.findById(id);
+		if(reclamation.isPresent()) {
+			
+			reclamation.get().setEtat(Etat.RESOLUE);
+			reclamationrepo.save(reclamation.get());
+			return true;
+		}else return false;
+	}
+	@Override
+	public boolean refusEtat(Long id) {
+		Optional<Reclamation> reclamation=reclamationrepo.findById(id);
+		if(reclamation.isPresent()) {
+			
+			reclamation.get().setEtat(Etat.REFUSEE);
+			reclamationrepo.save(reclamation.get());
+			return true;
+		}else return false;
+	}
 }
