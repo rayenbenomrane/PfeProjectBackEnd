@@ -1,5 +1,7 @@
 package com.example.dtos;
 
+import com.example.enums.Periode;
+
 import lombok.Data;
 
 
@@ -7,9 +9,9 @@ import lombok.Data;
 @Data
 public class TypeImpotDto {
 
-
+	private long id;
 	private String libelle;
 
- 	private PeriodeDto periodicite;
+ 	private Periode periodicite;
 
 }

@@ -44,6 +44,10 @@ public class PaiementServiceImpl implements PaiementService {
 	        return false;
 	    }
 	}
+	@Override
+	 public List<Paiement> getPaiementsByContribuableMatriculeFiscale(int matriculeFiscale) {
+	        return paiementrepo.findByDeclaration_Obligation_Contribuable_MatriculeFiscale(matriculeFiscale);
+	    }
 
 
 }

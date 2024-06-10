@@ -38,7 +38,7 @@ public class DetailDeclaration {
 	private Long idDetailDeclaration;
 
 	private String valeur;
-	 private NatureRebrique naturerebrique;
+	 
 
 
 

@@ -32,7 +32,9 @@ public class Periodicite {
 	 @GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator9Name")
 	 @SequenceGenerator(name = "yourGenerator9Name", sequenceName = "periodicite_seq", allocationSize = 1)
 	private long idPeriodicite;
-
+	 public Periodicite(Periode periode) {
+	        this.periode = periode;
+	    }
 	private Periode periode;
 	public PeriodeDto getperiodicite() {
 		PeriodeDto periode1=new PeriodeDto();

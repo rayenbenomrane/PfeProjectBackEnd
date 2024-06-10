@@ -12,5 +12,5 @@ public class DetailDeclarationDto {
 
 	private String valeur;
 	private Long iddeclaration;
-	 private NatureRebrique naturerebrique;
+	
 }

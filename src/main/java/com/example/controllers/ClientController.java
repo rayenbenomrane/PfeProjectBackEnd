@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.dtos.CalculationRequest;
 import com.example.dtos.CompteById;
@@ -36,12 +38,15 @@ import com.example.dtos.PaymentStatus;
 import com.example.dtos.ReclamationDto;
 import com.example.dtos.SaveDeclaration;
 import com.example.dtos.SaveMontant;
-import com.example.dtos.TypeDeclarationDto;
+
 import com.example.entity.Contribuable;
 import com.example.entity.Declaration;
 import com.example.entity.DetailImpot;
+import com.example.entity.Paiement;
 import com.example.entity.Reclamation;
+
 import com.example.entity.TypeImpot;
+import com.example.enums.TypeDeclarationEnum;
 import com.example.repository.ContribuableRepository;
 import com.example.repository.TypeImpotRepository;
 import com.example.service.CompteService;
@@ -53,7 +58,7 @@ import com.example.service.NotificationService;
 import com.example.service.ObligationFiscaleService;
 import com.example.service.PaiementService;
 import com.example.service.ReclamationService;
-import com.example.service.TypeDeclarationService;
+
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
@@ -73,8 +78,7 @@ public class ClientController {
 	private ContribuableRepository contribuableRepository ;
 	@Autowired
 	private ObligationFiscaleService obligationFiscaleService;
-	@Autowired
-	private TypeDeclarationService typeservice;
+	
 	@Autowired
 	private DetailDeclarationService detaildeclarationservice;
 	@Autowired
@@ -137,14 +141,12 @@ public class ClientController {
 
 	 }
 	 @GetMapping("/typedeclaration")
-	 public ResponseEntity<List<TypeDeclarationDto>> getAllcompte() {
-	     try {
-	         List<TypeDeclarationDto> typeList = typeservice.lesTypes();
-	         return ResponseEntity.ok(typeList);
-	     } catch (ExpiredJwtException ex) {
-	         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-	     }
-	 }
+	 public ResponseEntity<List<TypeDeclarationEnum>> getAllTypeDeclaration() {
+
+         List<TypeDeclarationEnum> typeList = Arrays.asList(TypeDeclarationEnum.values());
+         return ResponseEntity.ok(typeList);
+
+ }
 	 @PostMapping("/calculate")
 	 public double calculate(@RequestBody CalculationRequest request) throws ScriptException {
 	     String formula = request.getFormula();
@@ -274,4 +276,12 @@ public class ClientController {
 	      }else return ResponseEntity.status(404).body("Compte not found");
 		 
 	 }
+	    @GetMapping("/mespaiements")
+	    public List<Paiement> getPaiementsByContribuableMatriculeFiscale(@RequestParam("matriculeFiscale") int matriculeFiscale) {
+	    	List<Paiement> paiements = paiementService.getPaiementsByContribuableMatriculeFiscale(matriculeFiscale);
+	        if (paiements == null || paiements.isEmpty()) {
+	            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Paiement non trouvé");
+	        }
+	        return paiements;
+	    }
 }

@@ -17,8 +17,8 @@ public class ContribuableDtos {
     private String adress;
     private Date dateDeMatriculation;
     private String raisonSocial;
-    private FormeJuridique formeJuridique;
-    private Pays pays;
-    private  Activite activite;
+    private String formeJuridique;
+    private String pays;
+    private String activite;
 	private String Directeur;
 }

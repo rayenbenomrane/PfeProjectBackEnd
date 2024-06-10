@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,9 +33,10 @@ public class Pays {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator4Name")
     @SequenceGenerator(name = "yourGenerator4Name", sequenceName = "pays_seq", allocationSize = 1)
-private long idPays;
-private String libelle;
-@OneToMany(mappedBy = "pays")
-@JsonIgnore
-private Set<Contribuable> contribuables;
+	private long idPays;
+	@Column(unique = true)
+	private String libelle;
+	@OneToMany(mappedBy = "pays")
+	@JsonIgnore
+	private Set<Contribuable> contribuables;
 }

@@ -2,8 +2,10 @@ package com.example.entity;
 
 import com.example.dtos.PeriodeDto;
 import com.example.dtos.TypeImpotDto;
+import com.example.enums.Periode;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -36,24 +38,22 @@ public class TypeImpot {
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "yourGenerator8Name")
 	@SequenceGenerator(name = "yourGenerator8Name", sequenceName = "typeImpot_seq", allocationSize = 1)
 	private long idTypeImpot;
-
+	@Column(unique = true)
 	private String libelle;
 
 	private String formule;
 
 
 
-	 @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-	    @JoinColumn(name = "periodicite_id")
-	 	private Periodicite periodicite;
+	
+	
+	 	private Periode periodicite;
 
 public TypeImpotDto getImpot() {
 	TypeImpotDto impot=new TypeImpotDto();
 	impot.setLibelle(libelle);
-	PeriodeDto pd=new PeriodeDto();
-	pd.setIdPeriodicite(periodicite.getIdPeriodicite());
-	pd.setPeriode(periodicite.getPeriode());
-	impot.setPeriodicite(pd);
+	impot.setId(idTypeImpot);
+	impot.setPeriodicite(periodicite);
 	return impot;
 }
 

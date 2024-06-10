@@ -2,12 +2,15 @@ package com.example.controllers;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,19 +22,28 @@ import com.example.dtos.CompteDto;
 import com.example.dtos.ContribuableDtos;
 import com.example.dtos.DetailImpotDto;
 import com.example.dtos.ImpotDto;
+import com.example.dtos.ObligationresponseDto;
 import com.example.dtos.PeriodeDto;
 import com.example.dtos.TypeImpotDto;
 import com.example.dtos.UpdatePasswordDto;
 import com.example.dtos.UserDtos;
+import com.example.entity.Contribuable;
+import com.example.entity.Declaration;
 import com.example.entity.DetailImpot;
+import com.example.entity.TypeImpot;
+import com.example.enums.Periode;
+import com.example.repository.ContribuableRepository;
 import com.example.service.AdminService;
 import com.example.service.CompteService;
 import com.example.service.ContribuableService;
+import com.example.service.DeclarationService;
 import com.example.service.DetailImpotService;
+import com.example.service.ObligationFiscaleService;
 import com.example.service.PeriodiciteService;
 import com.example.service.TypeImpotService;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.lang.Arrays;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 
@@ -54,8 +66,13 @@ public class AdminController {
 	private TypeImpotService impotservice;
 	@Autowired
 	private DetailImpotService detailservice;
+	@Autowired
+	private DeclarationService declarationService;
 
-
+	@Autowired
+	private ContribuableRepository contribuableRepository ;
+	@Autowired
+	private ObligationFiscaleService obligationFiscaleService;
 
 	 @ExceptionHandler(ExpiredJwtException.class)
 	    public ResponseEntity<String> handleExpiredJwtException(ExpiredJwtException ex) {
@@ -154,21 +171,20 @@ public class AdminController {
 	      return ResponseEntity.status(HttpStatus.CREATED).body(cd);
 	 }
 	 @PostMapping("/typeImpot")
-	 public ResponseEntity<?> createImpot(@RequestBody TypeImpotDto typeImpot ){
-	 	TypeImpotDto impotcree=typeImpotservice.saveImpot(typeImpot);
-	 	if(impotcree==null) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation de Contribuable!");
-	     return ResponseEntity.status(HttpStatus.CREATED).body(impotcree);
-
-	 }
-	 @GetMapping("/lesperiodes")
-	 public ResponseEntity<List<PeriodeDto>> getAllperiodes() {
+	 public ResponseEntity<?> createImpot(@RequestBody TypeImpotDto typeImpot) {
 	     try {
-	         List<PeriodeDto> contribuableList = periodeservice.findAllPeriode();
-	         return ResponseEntity.ok(contribuableList);
-	     } catch (ExpiredJwtException ex) {
-	         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+	         TypeImpotDto impotCreated = impotservice.saveImpot(typeImpot);
+	         return ResponseEntity.status(HttpStatus.CREATED).body(impotCreated);
+	     } catch (DataIntegrityViolationException e) {
+	         // Handle unique constraint violation exception
+	         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Libelle must be unique.");
 	     }
 	 }
+	 @GetMapping("/lesperiodes")
+	 public ResponseEntity<List<Periode>> getPeriodes() {
+		    List<Periode> periodes = java.util.Arrays.asList(Periode.values());
+		    return ResponseEntity.ok(periodes);
+		}
 	 @GetMapping("/lesimpots")
 	 public ResponseEntity<List<TypeImpotDto>> getAllimpots() {
 	     try {
@@ -202,7 +218,7 @@ public class AdminController {
 	         return ResponseEntity.notFound().build();
 
 	 }
-	 @PutMapping("/updateimpot")
+	 /*@PutMapping("/updateimpot")
 	 public ResponseEntity<?> updateimpot(@RequestBody ImpotDto impotDto) {
 	     boolean isUpdated = impotservice.updateImpot(impotDto);
 	     if (isUpdated) {
@@ -210,10 +226,50 @@ public class AdminController {
 	     } else {
 	         return ResponseEntity.status(404).body("impot not found");
 	     }
+	 }*/
+	 @PostMapping("/contribuable")
+	 public ResponseEntity<?> createContribuable(@RequestBody ContribuableDtos contribuableDto) {
+	     try {
+	         ContribuableDtos savedContribuable = contribuableservice.saveContribuable(contribuableDto);
+	         return ResponseEntity.status(HttpStatus.CREATED).body(savedContribuable);
+	     } catch (Exception e) {
+	         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Une erreur s'est produite lors de la création du contribuable: " + e.getMessage());
+	     }
 	 }
 
 
+	 @GetMapping("/declarationbycontribuable")
+	 public ResponseEntity<?> getDeclarationsByMatriculeFiscale(@RequestParam("matriculeFiscale") int matriculeFiscale) {
+	     List<Declaration> declarations = declarationService.getDeclarationsByMatriculeFiscale(matriculeFiscale);
+	     if (declarations.isEmpty()) {
+	         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No declarations found ");
+	     }
+	     return ResponseEntity.ok(declarations);
+	 }
+	 @PutMapping("/updateimpot")
+	 public ResponseEntity<?> updateTypeImpot(@RequestBody TypeImpotDto request) {
+	     TypeImpot result =impotservice.updateTypeImpot(request); 
+	     if (result!=null) {
+	         return ResponseEntity.ok(result);
+	     } else {
+	         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Impot not found!"); 
+	     }
+	 }
+	 @GetMapping("/obligationContribuable/{contribuableId}")
+	 public ResponseEntity<?> getObligationsByContribuable(@PathVariable Long contribuableId) {
+	     Optional<Contribuable> cd = this.contribuableRepository.findById(contribuableId);
+	     if(cd.isPresent()) {
+	     List<ObligationresponseDto> obligations = obligationFiscaleService.getlesObligationsdeContribuable(cd.get());
+	     return ResponseEntity.ok(obligations);
+	 }else return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de consulter de déclaration!");
+	     }
+	 @GetMapping("/contribuableMatricule")
+	 public ResponseEntity<?> findByMatriculeFiscale(@RequestParam("matriculeFiscale") int matriculeFiscale) {
+	 		ContribuableDtos contribuable = contribuableservice.findContribuable(matriculeFiscale);
+	         if (contribuable != null)
+	         	return ResponseEntity.ok(contribuable);
 
+	         return ResponseEntity.notFound().build();
 
-
+	 }
 }

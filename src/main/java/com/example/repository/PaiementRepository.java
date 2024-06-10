@@ -11,5 +11,6 @@ public interface PaiementRepository extends JpaRepository<Paiement,Long> {
 
 
 	List<Paiement> findByNumeroTransaction(String numeroTransaction);
+	 List<Paiement> findByDeclaration_Obligation_Contribuable_MatriculeFiscale(int matriculeFiscale);
 
 }

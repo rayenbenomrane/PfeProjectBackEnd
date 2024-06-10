@@ -3,8 +3,11 @@ package com.example.entity;
 
 import java.util.List;
 
+import org.antlr.v4.runtime.misc.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,6 +38,8 @@ public class FormeJuridique {
     @SequenceGenerator(name = "yourGenerator3Name", sequenceName = "forme_juridique_seq", allocationSize = 1)
     private Long idFormeJuridique;
 
+    
+    @Column(unique = true)
     private String libelle;
 
     @OneToMany(mappedBy = "formeJuridique")

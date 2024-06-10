@@ -49,10 +49,8 @@ public class DetailImpotServiceImpl implements DetailImpotService{
 	TypeImpotDto savedImpot=new TypeImpotDto();
 
 		savedImpot.setLibelle(detailcree.getTypeImpot().getLibelle());
-		PeriodeDto pd=new PeriodeDto();
-		pd.setIdPeriodicite(detailcree.getTypeImpot().getPeriodicite().getIdPeriodicite());
-		pd.setPeriode(detailcree.getTypeImpot().getPeriodicite().getPeriode());
-		savedImpot.setPeriodicite(pd);
+		
+		savedImpot.setPeriodicite(detailcree.getTypeImpot().getPeriodicite());
 
 
 		detaildto.setTypeImpot(savedImpot);

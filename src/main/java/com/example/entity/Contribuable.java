@@ -70,15 +70,15 @@ public class Contribuable {
 	    }
 	    public ContribuableDtos getContribuable() {
 	    	ContribuableDtos contribuable=new ContribuableDtos();
-	    	contribuable.setActivite(activite);
+	    	contribuable.setActivite(activite.getLibelle());
 	    	contribuable.setAdress(adress);
 	    	contribuable.setDateDeMatriculation(dateDeMatriculation);
 	    	contribuable.setDirecteur(directeur);
-	    	contribuable.setFormeJuridique(formeJuridique);
+	    	contribuable.setFormeJuridique(formeJuridique.getLibelle());
 	    	contribuable.setMatriculeFiscale(matriculeFiscale);
 	    	contribuable.setEmail(email);
 	    	contribuable.setRaisonSocial(raisonSocial);
-	    	contribuable.setPays(pays);
+	    	contribuable.setPays(pays.getLibelle());
 	    	contribuable.setNomCommercial(nomCommercial);
 	    	return contribuable;
 

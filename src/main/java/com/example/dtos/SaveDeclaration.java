@@ -1,6 +1,7 @@
 package com.example.dtos;
 
-import com.example.entity.TypeDeclaration;
+
+import com.example.enums.TypeDeclarationEnum;
 
 import lombok.Data;
 
@@ -15,5 +16,5 @@ public class SaveDeclaration {
 
 	private Long idObligation;
 
-	private TypeDeclaration type;
+	private TypeDeclarationEnum type;
 }

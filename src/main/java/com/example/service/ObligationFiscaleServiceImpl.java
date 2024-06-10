@@ -52,10 +52,8 @@ public class ObligationFiscaleServiceImpl implements ObligationFiscaleService{
 
 		        TypeImpotDto impot=new TypeImpotDto();
 		        impot.setLibelle(obligation.getImpot().getLibelle());
-		        PeriodeDto periode=new PeriodeDto();
-		        periode.setIdPeriodicite(obligation.getImpot().getPeriodicite().getIdPeriodicite());
-		        periode.setPeriode(obligation.getImpot().getPeriodicite().getPeriode());
-		        impot.setPeriodicite(periode);
+		        
+		        impot.setPeriodicite(obligation.getImpot().getPeriodicite());
 		        obligationDto.setImpot(impot);
 
 		        lesObligationsDto.add(obligationDto);

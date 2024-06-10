@@ -48,6 +48,9 @@ public class DeclarationServiceImpl implements DeclarationService{
 	    if (obligation.isPresent()) {
 	        Optional<Declaration> declaration = declarationRepo.findByMoisEffetAndAnneeEffetAndObligation(dc.getMoisEffet(), dc.getAnneeEffet(), obligation.get());
 	        if (!declaration.isPresent()) {
+	        	if (dc.getType()!= TypeDeclarationEnum.Initial) {
+	                 return new HashMap<>();
+	             }
 	            Declaration newDeclaration = new Declaration();
 	            newDeclaration.setObligation(obligation.get());
 	            newDeclaration.setAnneeEffet(dc.getAnneeEffet());
@@ -59,9 +62,7 @@ public class DeclarationServiceImpl implements DeclarationService{
 
 	            for (DetailImpot detail : lesDetailsImpot) {
 	                DetailDeclaration newDetailDeclaration = new DetailDeclaration();
-	                newDetailDeclaration.setValeur(""); // Set valeur if needed
-
-	                // Assuming you have setters for detailImpot and declaration in DetailDeclaration class
+	                newDetailDeclaration.setValeur(""); 
 	                newDetailDeclaration.setDetailImpot(detail);
 	                
 	               
@@ -76,7 +77,7 @@ public class DeclarationServiceImpl implements DeclarationService{
 	            }
 	            return detailMap;
 	        } else {
-	            if (dc.getType().getLibelle() == TypeDeclarationEnum.Initial) {
+	            if (dc.getType() == TypeDeclarationEnum.Initial) {
 	                
 	                return new HashMap<>();
 	            } else {
