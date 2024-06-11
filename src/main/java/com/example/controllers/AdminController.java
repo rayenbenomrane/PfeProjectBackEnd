@@ -24,6 +24,7 @@ import com.example.dtos.DetailImpotDto;
 import com.example.dtos.ImpotDto;
 import com.example.dtos.ObligationresponseDto;
 import com.example.dtos.PeriodeDto;
+import com.example.dtos.SaveObligation;
 import com.example.dtos.TypeImpotDto;
 import com.example.dtos.UpdatePasswordDto;
 import com.example.dtos.UserDtos;
@@ -58,10 +59,7 @@ public class AdminController {
 	private AdminService adminservice;
 	@Autowired
 	private ContribuableService contribuableservice;
-	@Autowired
-	private TypeImpotService typeImpotservice;
-	@Autowired
-	private PeriodiciteService periodeservice;
+	
 	@Autowired
 	private TypeImpotService impotservice;
 	@Autowired
@@ -218,7 +216,7 @@ public class AdminController {
 	         return ResponseEntity.notFound().build();
 
 	 }
-	 /*@PutMapping("/updateimpot")
+	 @PutMapping("/updateimpot1")
 	 public ResponseEntity<?> updateimpot(@RequestBody ImpotDto impotDto) {
 	     boolean isUpdated = impotservice.updateImpot(impotDto);
 	     if (isUpdated) {
@@ -226,7 +224,7 @@ public class AdminController {
 	     } else {
 	         return ResponseEntity.status(404).body("impot not found");
 	     }
-	 }*/
+	 }
 	 @PostMapping("/contribuable")
 	 public ResponseEntity<?> createContribuable(@RequestBody ContribuableDtos contribuableDto) {
 	     try {
@@ -272,4 +270,13 @@ public class AdminController {
 	         return ResponseEntity.notFound().build();
 
 	 }
+	 @PostMapping("/obligation")
+	 public ResponseEntity<?> createobligation(@RequestBody SaveObligation obligation){
+		 
+		 boolean saved=obligationFiscaleService.saveObligation(obligation);
+		 if(saved) {
+			 return ResponseEntity.ok(saved);
+		 }else  return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Probleme de creation de obligation!");
+	 }
+	 
 }

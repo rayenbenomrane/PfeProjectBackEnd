@@ -1,5 +1,6 @@
 package com.example.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,18 +17,22 @@ import com.example.dtos.SaveMontant;
 import com.example.entity.Declaration;
 import com.example.entity.DetailDeclaration;
 import com.example.entity.DetailImpot;
+import com.example.entity.Echeance;
 import com.example.entity.ObligationFiscale;
+import com.example.entity.TypeImpot;
 import com.example.enums.TypeDeclarationEnum;
 import com.example.repository.DeclarationRepository;
 import com.example.repository.DetailDeclarationRepository;
 import com.example.repository.DetailImpotRepository;
+import com.example.repository.EcheanceRepository;
 import com.example.repository.ObligationFiscaleRepository;
 
 import ch.qos.logback.classic.Logger;
 @Service
 public class DeclarationServiceImpl implements DeclarationService{
-
-
+	
+	@Autowired
+	private EcheanceRepository echeancerepo;
 	@Autowired
 	private ObligationFiscaleRepository obligationRepo;
 	@Autowired
@@ -113,15 +118,41 @@ public class DeclarationServiceImpl implements DeclarationService{
 	    return new HashMap<>();
 	}
 
+	
 	@Override
 	public boolean updateMontantaCalculer(SaveMontant di) {
-		Optional<Declaration> declaration=declarationRepo.findById(di.getIdDeclaration());
-		if(declaration.isPresent()) {
-			declaration.get().setMontantaCalculer(di.getMontantApayer());
-			declarationRepo.save(declaration.get());
-			return true;
-		}else return false;
+	    Optional<Declaration> declarationOpt = declarationRepo.findById(di.getIdDeclaration());
+	    if (declarationOpt.isPresent()) {
+	        Declaration declaration = declarationOpt.get();
+	        ObligationFiscale obligation = declaration.getObligation();
+	        TypeImpot impot = obligation.getImpot();
+	        List<Echeance> echeances = echeancerepo.findByTypeImpot(impot);
+
+	        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+	        int missedMonths = 0;
+	        Date declarationDate = declaration.getDateDeclaration();
+	        System.out.println("Declaration Date: " + declarationDate);
+	        	float montantAPayer=0f;
+	        for (Echeance echeance : echeances) {
+	            if(declaration.getAnneeEffet()==currentYear) {
+	            	if(declaration.getMoisEffet()==echeance.getMois()) {
+	            		montantAPayer+=5f;
+	            	}else montantAPayer+=5f;
+	            }else montantAPayer+=missedMonths+12;
+	        }
+
+	        montantAPayer+=di.getMontantApayer();
+	        declaration.setMontantaCalculer(montantAPayer);
+	        declarationRepo.save(declaration);
+	        return true;
+	    } else {
+	       
+	        return false;
+	    }
 	}
+
+	
+
 
 	@Override
 	public List<Declaration> getDeclarationsByMatriculeFiscale(int matriculeFiscale) {

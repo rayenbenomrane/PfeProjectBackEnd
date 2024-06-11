@@ -5,18 +5,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.auditing.CurrentDateTimeProvider;
 import org.springframework.stereotype.Service;
 
 import com.example.dtos.ImpotDto;
-import com.example.dtos.PeriodeDto;
 import com.example.dtos.TypeImpotDto;
 import com.example.entity.Echeance;
-import com.example.entity.Periodicite;
 import com.example.entity.TypeImpot;
 import com.example.enums.Periode;
 import com.example.repository.EcheanceRepository;
-import com.example.repository.PeriodiciteRepository;
 import com.example.repository.TypeImpotRepository;
 
 import jakarta.transaction.Transactional;
@@ -28,8 +24,8 @@ public class TypeImpotServiceImpl implements TypeImpotService{
 
 	@Autowired
 	private EcheanceRepository echeanceRepository;
-	
-	
+
+
 	@Autowired
 	private TypeImpotRepository impotrepo;
 
@@ -37,11 +33,11 @@ public class TypeImpotServiceImpl implements TypeImpotService{
 	public TypeImpotDto saveImpot(TypeImpotDto td) {
 		TypeImpot impot=new TypeImpot();
 		impot.setLibelle(td.getLibelle());
-		 
+
 
 impot.setPeriodicite(td.getPeriodicite());
 
-	
+
 		TypeImpot  impot1=impotrepo.save(impot);
 		if(impot.getPeriodicite()==Periode.MENSUELLE) {
 			 for (int mois = 1; mois <= 12; mois++) {
@@ -49,22 +45,22 @@ impot.setPeriodicite(td.getPeriodicite());
 		            echeance.setJour(15); // Jour de l'échéance (exemple : le 15 de chaque mois)
 		            echeance.setMois(mois+1); // Mois de l'échéance (1 pour janvier, 2 pour février, etc.)
 		            echeance.setNumeroEcheance(mois); // Numéro de l'échéance (1 à 12 pour chaque mois)
-		            
-		            
+
+
 		            int annee = 0;
 		            if (mois == 12) {
 		            	echeance.setMois(1);
 		                annee = 1;
 		            }
-		           
-		            echeance.setAnnee(annee); 
-		            
-		            echeance.setTypeImpot(impot); 
 
-		           
+		            echeance.setAnnee(annee);
+
+		            echeance.setTypeImpot(impot);
+
+
 		            echeanceRepository.save(echeance); // Assurez-vous d'injecter echeanceRepository dans votre classe
 		        }
-			
+
 		}else if (impot.getPeriodicite() == Periode.TRIMESTRE) {
 	        for (int trimestre = 1; trimestre <= 4; trimestre++) {
 	        	Echeance echeance = new Echeance();
@@ -76,50 +72,50 @@ impot.setPeriodicite(td.getPeriodicite());
 	            	echeance.setMois(1);
 	                annee = 1;
 	            }
-	            echeance.setAnnee(annee); 
-	            
-	            echeance.setTypeImpot(impot); 
+	            echeance.setAnnee(annee);
 
-	           
+	            echeance.setTypeImpot(impot);
+
+
 	            echeanceRepository.save(echeance);
 	        }
 	    } else if (impot.getPeriodicite() == Periode.SEMESTRE) {
 	        for (int semestre = 1; semestre <= 2; semestre++) {
 	        	Echeance echeance = new Echeance();
-	            echeance.setJour(15); 
-	            echeance.setMois(7); 
+	            echeance.setJour(15);
+	            echeance.setMois(7);
 	            echeance.setNumeroEcheance(semestre);
 	            int annee = 0;
 	            if (semestre == 2) {
 	            	echeance.setMois(1);
 	                annee = 1;
 	            }
-	            echeance.setAnnee(annee); 
-	            
-	            echeance.setTypeImpot(impot); 
-	            
-	           
+	            echeance.setAnnee(annee);
+
+	            echeance.setTypeImpot(impot);
+
+
 	            echeanceRepository.save(echeance);
 	        }
 	    } else if (impot.getPeriodicite() == Periode.ANNUELLE) {
 	    	Echeance echeance = new Echeance();
-            echeance.setJour(15); 
-            echeance.setMois(1); 
+            echeance.setJour(15);
+            echeance.setMois(1);
             echeance.setNumeroEcheance(1);
-         
-           
-            echeance.setAnnee(1); 
-            
-            echeance.setTypeImpot(impot); 
-            
-           
+
+
+            echeance.setAnnee(1);
+
+            echeance.setTypeImpot(impot);
+
+
             echeanceRepository.save(echeance);
 	    }
-		
+
 		TypeImpotDto savedImpot=new TypeImpotDto();
-		
+
 		savedImpot.setLibelle(impot1.getLibelle());
-	
+
 		savedImpot.setPeriodicite(impot1.getPeriodicite());
 		return savedImpot;
 	}
@@ -138,8 +134,8 @@ impot.setPeriodicite(td.getPeriodicite());
 		if(typetrouve.get()!=null) {
 			TypeImpotDto impot=new TypeImpotDto();
 			impot.setLibelle(typetrouve.get().getLibelle());
+			impot.setFormule(typetrouve.get().getFormule());
 
-			
 			impot.setPeriodicite(typetrouve.get().getPeriodicite());
 			return impot;
 		}else return null;
@@ -162,9 +158,9 @@ impot.setPeriodicite(td.getPeriodicite());
 		 Optional<TypeImpot> type=impotrepo.findById(td.getId());
 		 if(type.isPresent()) {
 			 type.get().setLibelle(td.getLibelle());
-			
+
 			 if(!type.get().getPeriodicite().equals(td.getPeriodicite())) {
-				
+
 				 type.get().setPeriodicite(td.getPeriodicite());
 				 echeanceRepository.deleteByTypeImpot(type.get());
 				 createEcheances(type.get());
@@ -173,7 +169,7 @@ impot.setPeriodicite(td.getPeriodicite());
 			 return type.get();
 		 }return null;
 	 }
-	 
+
 
 	    private void createEcheances(TypeImpot typeImpot) {
 	        if (typeImpot.getPeriodicite() == Periode.MENSUELLE) {
@@ -234,7 +230,7 @@ impot.setPeriodicite(td.getPeriodicite());
 	        }
 	    }
 
-	
-	
-	
+
+
+
 }
